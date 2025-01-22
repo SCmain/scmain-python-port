@@ -1,0 +1,248 @@
+#AUTO
+MO
+MT-1,-1,-1,-1,-1,-1,-1,-1
+EI 256
+VTYPE = 0
+VINDX = 0
+VPRO = 0 'r offset
+VPZO = 0 'z offset
+VPWO = 0 'w offset
+VRTO = 0 'T offset
+VRRO = 0 'R offset
+VRZO = 0 'Z offset
+VRWO = 0 'W offset
+VPRC = 0 'r customized home
+VPZC = 0 'z customized home
+VPWC = 0 'w customized home
+VRTC = 0 'T customized home
+VRRC = 0 'R customized home
+VRZC = 0 'Z customized home
+VRWC = 0 'W customized home
+VRET = 0 'R Retract position
+VEXT = 0 'R Extend flag
+VREP = 0
+VRXP = 0
+VTPO = 0
+VZPO = 0
+VHMG = 0 'homing flag: 0=not homing, 1=homing in progress
+VHMD = 0 'homed flag: 0=not homed, 1=homed
+VHGR = 0 'homing R
+VHMR = 0 'home done R
+#ENDFN
+EN
+' home r-axis''''''''''''''''''''''''''''''''''''''''''''
+#HOMr
+VHMG = VHMG | 32;  '00100000
+VHMD = VHMD & 223; '11011111
+HMF;BGF;AMF
+#EDGr
+SP ,,,,,100
+FEF;BGF;AMF
+JP#CONr,(_SCF=9)
+FEF;BGF;AMF
+JP#CONr,(_SCF=9)
+VHMG = VHMG & 239
+JP#ENDFN
+#CONr
+SP ,,,,,20
+FIF;BGF;AMF
+JP#CNr2, (_SCF=10)
+VHMG = VHMG & 239
+JP#ENDFN
+#CNr2
+WT 100
+SP ,,,,,30000
+DP ,,,,,VPRO
+PA ,,,,,VPRC;BGF;AMF
+WT 100
+VHMG = VHMG & 239; 'homing r done
+VHMD = VHMD | 32;  'home r complete
+EN
+' home z-axis'''''''''''''''''''''''''''''''''''''''''''''
+#HOMz
+VHMG = VHMG | 64;  '01000000
+VHMD = VHMD & 191; '10111111
+HMG;BGG;AMG
+JP#CONz, (_SCG=10)
+HMG;BGG;AMG
+JP#CONz, (_SCG=10)
+VHMG = VHMG & 191; 'homing z done (not successful)
+JP#ENDFN
+#CONz
+WT 100
+SP ,,,,,,30000
+DP ,,,,,,VPZO
+PA ,,,,,,VPZC;BGG;AMG
+WT 100
+VHMG = VHMG & 191; 'homing z done
+VHMD = VHMD | 64;  'home z complete
+EN
+' home w-axis''''''''''''''''''''''''''''''''''''''''''''''
+#HOMw
+VHMG = VHMG | 128; '10000000
+VHMD = VHMD & 127; '01111111
+HMH;BGH;AMH
+#EDGw
+SP ,,,,,,,100
+FEH;BGH;AMH
+JP#CONw, (_SCH=9)
+FEH;BGH;AMH
+JP#CONw, (_SCH=9)
+VHMG = VHMG & 127; 'homing w done (not successful)
+JP#ENDFN
+#CONw
+SP ,,,,,,,20
+FIH;BGH;AMH
+JP#CNw2, (_SCH=10)
+FIH;BGH;AMH
+JP#CNw2, (_SCH=10)
+VHMG = VHMG & 127; 'homing w done (not successful)
+JP#ENDFN
+#CNw2
+WT 100
+SP ,,,,,,,30000
+DP ,,,,,,,VPWO
+PA ,,,,,,,VPWC;BGH;AMH
+WT 100
+VHMG = VHMG & 127; 'homing z done
+VHMD = VHMD | 128; 'home z complete
+EN
+' home T-axis'''''''''''''''''''''''''''''''''''''''''''''''
+#HOMT
+VHMG = VHMG | 1;   '00000001
+VHMD = VHMD & 254; '11111110
+HMX;BGX;AMX
+#EDGT
+SP 100
+FEX;BGX;AMX
+JP#CONT,(_SCX=9)
+FEX;BGX;AMX
+JP#CONT,(_SCX=9)
+VHGT = 0
+JP#ENDFN
+#CONT
+SP 20
+FIX;BGX;AMX
+JP#CNT2,_SCX=10
+FIX;BGX;AMX
+JP#CNT2,_SCX=10
+VHMG = VHMG & 254; 'homing T done (not successful)
+JP#ENDFN
+#CNT2
+WT 100
+SP 40000
+DP VRTO
+PA VRTC;BGX;AMX
+WT 100
+VHMG = VHMG & 254; 'homing T done
+VHMD = VHMD | 1;   'home T complete
+EN
+' home R-axis '''''''''''''''''''''''''''''''''''''''''''''''
+#HOMR
+VHMG = VHMG | 2;   '00000010
+VHMD = VHMD & 253; '11111101
+HMY;BGY;AMY
+JP#CONR,_SCY=10
+HMY;BGY;AMY
+JP#CONR,_SCY=10
+VHMG = VHMG & 253; 'homing R done (not successful)
+JP#ENDFN
+#CONR
+WT 100
+SP ,20000
+DP ,VRRO
+PA ,VRRC;BGY;AMY
+WT 100
+VHMG = VHMG & 253; 'homing R done
+VHMD = VHMD | 2;   'home R complete
+EN
+' home Z-axis '''''''''''''''''''''''''''''''''''''''''''''''
+#HOMZ
+VHMG = VHMG | 4;   '00000100
+VHMD = VHMD & 251; '11111011
+HMZ;BGZ;AMZ
+#EDGZ
+SP ,,100
+FEZ;BGZ;AMZ
+JP#CONZ,_SCZ=9
+FEZ;BGZ;AMZ
+JP#CONZ,_SCZ=9
+VHMG = VHMG & 251; 'homing Z done (not successful)
+JP#ENDFN
+#CONZ
+SP ,,20
+FIZ;BGZ;AMZ
+JP#CNZ2,_SCZ=10
+FIZ;BGZ;AMZ
+JP#CNZ2,_SCZ=10
+VHMG = VHMG & 251; 'homing Z done (not successful)
+JP#ENDFN
+#CNZ2
+WT 100
+SP ,,20000
+DP ,,VRZO
+PA ,,VRZC;BGZ;AMZ
+VHMG = VHMG & 251; 'homing Z done
+VHMD = VHMD | 4;   'home Z complete
+EN
+' home W-axis '''''''''''''''''''''''''''''''''''''''''''''''
+#HOMW
+VHMG = VHMG | 8;   '00001000
+VHMD = VHMD & 247; '11110111
+HMW;BGW;AMW
+#EDGW
+SP ,,,100
+FEW;BGW;AMW
+JP#CONW, (_SCW=9)
+FEW;BGW;AMW
+JP#CONW, (_SCW=9)
+VHMG = VHMG & 247; 'homing W done (not successful)
+JP#ENDFN
+#CONW
+SP ,,,20
+FIW;BGW;AMW
+JP#CNW2, _SCW=10
+FIW;BGW;AMW
+JP#CNW2, _SCW=10
+VHMG = VHMG & 247; 'homing W done (not successful)
+JP#ENDFN
+#CNW2
+WT 100
+SP ,,,20000
+DP ,,,VRWO
+PA ,,,VRWC;BGW;AMW
+WT 100
+JP#ENDFN,_SCW<>1
+VHMG = VHMG & 247; 'homing W done
+VHMD = VHMD | 8;   'home W complete
+EN
+' home ALL axes '''''''''''''''''''''''''''''''''''''''''''''''
+#HOMA
+JS#HOMR
+#WT4R
+VHGR = VHMG & 2; 'homing R in progress?
+JP#WT4R, VHGR>1
+VHMR = VHMD & 253; 'home R complete?
+JP#ENDFN, VHMR>1
+JS#HOMT,2
+JS#HOMZ,3
+EN
+' home all axes '''''''''''''''''''''''''''''''''''''''''''''''
+#HOMa
+DP,,,,0
+JS#HOMr,4
+JS#HOMz,5
+EN
+' MTCR move to station coordinates, extend if requested''''''''
+#MTCR
+JP#NORET, (VRET=0)
+PA ,VREP;BGY;AMY
+WT 100
+#NORET
+PA VTPO,,VZPO;BGXZ;AMXZ
+WT 100
+JP#NOEXT, (VEXT=0)
+PA ,VRXP;BGY;AMY
+WT 100
+#NOEXT
+EN
