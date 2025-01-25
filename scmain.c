@@ -1,28 +1,47 @@
 /***************************************************************\
  *
- *              Copyright (c) 2007 XyZ Automation, Inc.
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
  *
- * Program:     main module
+ * File Name            : scmain.c
+ * Description          : This is main module for the whole system/software.
+ *                      In this module, it does initialization of all the other
+ *                      modules, providing all the configuration information
+ *                      for the entire system. It also handles the main loop
+ *                      through which all system-wide activity is handled, from
+ *                      comm port I/O to macro scheduling and execution.
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
  *
- * File:        scmain.c
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Functions:   main
- *              Init
- *              FailureExit
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * Description: This is main module for the whole system/software.
- *      In this module, it does initialization of all the other
- *      modules, providing all the configuration information
- *      for the entire system. It also handles the main loop
- *      through which all system-wide activity is handled, from
- *      comm port I/O to macro scheduling and execution.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Program              : scmain module
+ 
+ * Main Functions       :   main
+ *                          Init
+ *                          FailureExit
  *
  * Environment: SUSE LINUX C
  *
  * Modification history:
  *
- * Rev      Date    Brief Description
- * 01A      040607  Initial version
+ * Rev      Date        Brief Description
+ * 01A      04.06.2007  Initial version
+ * 01B      13.01.2025  Take over
  *
 \***************************************************************/
 #include <sys/io.h>
