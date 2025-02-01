@@ -1,10 +1,8 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
  * Program:     low-level command, command interpreter and Opcode table.
  *
  * File:        LLexec.c
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -33,7 +31,6 @@
  *
  * Program:     low-level command, command interpreter and Opcode table.
  *
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Functions:
  *

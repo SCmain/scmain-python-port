@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-/****************************************************************
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -28,7 +25,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Program:     Aligner Module CCD interrupt functions
  * File:        alisr.c
@@ -42,31 +38,24 @@
  ****************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
-<<<<<<< HEAD
 #include <sys/io.h>
 #include <time.h>
 #include <pthread.h>
-=======
 #include <sys/io.h>
 #include <time.h>
 #include <pthread.h>
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <unistd.h>
 
 #include "sck.h"
 #include "alk.h"
 #include "alpre.h"
-<<<<<<< HEAD
 #include "alisr.h"
-=======
 #include "alisr.h"
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "alstep.h"
 #include "sctim.h"
 #include "scintr.h"
 #include "ser.h"
 #include "scttr.h"
-<<<<<<< HEAD
 #include "fiol.h"
 #include "gag.h"
 #include "scio.h"
@@ -75,7 +64,6 @@
 void ALChuckVacuum(int iFlagArg);
 void ALPinVacuum(int iFlagArg);
 int ALWaferOnChuck(void);
-=======
 #include "fiol.h"
 #include "gag.h"
 #include "scio.h"
@@ -84,7 +72,6 @@ int ALWaferOnChuck(void);
 void ALChuckVacuum(int iFlagArg);
 void ALPinVacuum(int iFlagArg);
 int ALWaferOnChuck(void);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /********** Variables used globally within this file **********/
 unsigned short gusPortRead;          // portread - reading from ccd data port
@@ -109,7 +96,6 @@ long glReverseMode;
 // PIC to really get messed up, variable helps to track us the timeframe when we writing to PIC
 // and thus to identify whether this write causes the problem of surious interrupts
 int iWritingToPICFlag = FALSE;
-<<<<<<< HEAD
 int giThreadAlignerCreated = 0;
 
 pthread_t threadAL;
@@ -309,7 +295,6 @@ void *procAL(void *ptr)
 
 void takeAMeasurement(void)
 {
-=======
 int giThreadAlignerCreated = 0;
 
 pthread_t threadAL;
@@ -509,7 +494,6 @@ void *procAL(void *ptr)
 
 void takeAMeasurement(void)
 {
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     gusPortRead = inw( AL_CCD_DATA_ADR );
     ALSelectCCDType(AL_CCD_DATA_SEL_MASK, AL_CCD_CHUCK_DATA);
 

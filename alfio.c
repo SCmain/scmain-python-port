@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 /**********************************************************************
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -29,7 +27,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  *  Program:        Aligner Module GetSet functions
  *  File:           WAGetSet.c
@@ -53,13 +50,10 @@
 #include "alfio.h"
 #include "fiol.h"
 #include "fiog.h"
-<<<<<<< HEAD
 
 extern int giVersionPA;
-=======
 
 extern int giVersionPA;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /*******************************************************************************
  * Function:    ALSetIntVars
@@ -423,7 +417,6 @@ int ALGetAligningSpeed(int iWhichArg, long *lpWaferSpeedArg, long *lpWaferAccelA
 	{
 	    lpWaferSpeedArg[giAxisIndx] = lpWaferSpeedArg[0];
 	    lpWaferAccelArg[giAxisIndx] = lpWaferAccelArg[0];
-<<<<<<< HEAD
 	}
 	if(!giVersionPA)
 	{
@@ -432,7 +425,6 @@ int ALGetAligningSpeed(int iWhichArg, long *lpWaferSpeedArg, long *lpWaferAccelA
 		lpWaferSpeedArg[i+4] = lpWaferSpeedArg[i];
 		lpWaferAccelArg[i+4] = lpWaferAccelArg[i];
 	    }
-=======
 	}
 	if(!giVersionPA)
 	{
@@ -441,7 +433,6 @@ int ALGetAligningSpeed(int iWhichArg, long *lpWaferSpeedArg, long *lpWaferAccelA
 		lpWaferSpeedArg[i+4] = lpWaferSpeedArg[i];
 		lpWaferAccelArg[i+4] = lpWaferAccelArg[i];
 	    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	}
     }
     else
@@ -479,7 +470,6 @@ int ALGetAligningSpeed(int iWhichArg, long *lpWaferSpeedArg, long *lpWaferAccelA
             return FAILURE;
     	// Conversion intended for single axis aligner but is good for both
     	lpWaferSpeedArg[giAxisIndx] = lWaferSpeed;
-<<<<<<< HEAD
     	lpWaferAccelArg[giAxisIndx] = lWaferAccel;
 //printf("giAxisIndx=%d waferSpeed=%d Accel=%d\n",giAxisIndx, lWaferSpeed, lWaferAccel);
 //		if(!giVersionPA)
@@ -489,7 +479,6 @@ int ALGetAligningSpeed(int iWhichArg, long *lpWaferSpeedArg, long *lpWaferAccelA
 //				lpWaferSpeedArg[i+4] = lpWaferSpeedArg[i];
 //				lpWaferAccelArg[i+4] = lpWaferAccelArg[i];
 //			}
-=======
     	lpWaferAccelArg[giAxisIndx] = lWaferAccel;
 //printf("giAxisIndx=%d waferSpeed=%d Accel=%d\n",giAxisIndx, lWaferSpeed, lWaferAccel);
 //		if(!giVersionPA)
@@ -499,7 +488,6 @@ int ALGetAligningSpeed(int iWhichArg, long *lpWaferSpeedArg, long *lpWaferAccelA
 //				lpWaferSpeedArg[i+4] = lpWaferSpeedArg[i];
 //				lpWaferAccelArg[i+4] = lpWaferAccelArg[i];
 //			}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //		}
 	}
 	return SUCCESS;
@@ -520,7 +508,6 @@ int ALSetAligningGASpeed(unsigned long ulAxisArg, long *lpWaferSpeedArg, long *l
 
     memcpy(laWaferDecel, lpWaferAccelArg, sizeof(long)*8);
     /* set operating speed, acceleration and deceleration */
-<<<<<<< HEAD
     if(ROSetParameter(FALSE, ulAxisArg, lpWaferSpeedArg, OPERATIONAL_SPEED)==FAILURE)
     {
 printf("axis=%d speed=%d\n",ulAxisArg,lpWaferSpeedArg[4]);
@@ -535,7 +522,6 @@ printf("axis=%d accel=%d\n",ulAxisArg,lpWaferAccelArg[4]);
     {
 printf("axis=%d decel=%d\n",ulAxisArg,laWaferDecel[4]);
         goto error_exit;
-=======
     if(ROSetParameter(FALSE, ulAxisArg, lpWaferSpeedArg, OPERATIONAL_SPEED)==FAILURE)
     {
 printf("axis=%d speed=%d\n",ulAxisArg,lpWaferSpeedArg[4]);
@@ -550,7 +536,6 @@ printf("axis=%d accel=%d\n",ulAxisArg,lpWaferAccelArg[4]);
     {
 printf("axis=%d decel=%d\n",ulAxisArg,laWaferDecel[4]);
         goto error_exit;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     return SUCCESS;
 error_exit:

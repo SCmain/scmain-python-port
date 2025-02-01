@@ -1,8 +1,6 @@
-<<<<<<< HEAD
 /****************************************************************
  *
  * Program:     Wafer Aligner Interface funciton
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -31,7 +29,6 @@
  *
  *
  * Program:     Wafer Aligner Interface function
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   Initialization
  * Description: Initialize the Aligner module
  *

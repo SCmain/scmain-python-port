@@ -1,9 +1,7 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
  * Program:     VerGen decryption program
  * File:        vergen.h
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -29,7 +27,6 @@
  *
  * Program:     VerGen decryption program
  * File:        vergen.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   main
  * Description: This is a program to generate a binary file with
  *      all the system configuration information that can be read

@@ -1,7 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -28,7 +26,6 @@
  *
  *
  *
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Program:     Aligner low level commands
  *
  * Functions:   ex_SCSN
@@ -2436,7 +2433,8 @@ int ex_RCCD(instr_ptr instr)
 <<<<<<< HEAD
 	else if (instr->nofopr == 2)
 	{
-	    Optr = instr->opr_ptr;		if(CMDSetIndirectReg(Optr, lValue[0])==FAILURE)
+	    Optr = instr->opr_ptr;
+		if(CMDSetIndirectReg(Optr, lValue[0])==FAILURE)
 			return FAILURE;
 	    Optr = Optr->next;
 		if(CMDSetIndirectReg(Optr, lValue[1])==FAILURE)
