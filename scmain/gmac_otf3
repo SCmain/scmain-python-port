@@ -1,0 +1,553 @@
+#AUTO
+MO
+'MT1,1,1,1,1,1,1,-1
+VTYPE = 0        
+VINDX = 0
+VPRO = 0 'r offset
+VPZO = 0 'z offset
+VPWO = 0 'w offset
+VRTO = 0 'T offset
+VRRO = 0 'R offset
+VRZO = 0 'Z offset
+VRWO = 0 'W offset
+VPRC = 0 'r customized home
+VPZC = 0 'z customized home
+VPWC = 0 'w customized home
+VRTC = 0 'T customized home
+VRRC = 0 'R customized home
+VRZC = 0 'Z customized home
+VRWC = 0 'W customized home
+VRET = 0 'R Retract position
+VEXT = 0 'R Extend flag
+VREP = 0
+VRXP = 0
+VTPO = 0
+VZPO = 0
+VHMG = 0 'homing flag: 0=not homing, 1=homing in progress
+VHMD = 0 'homed flag: 0=not homed, 1=homed
+VHGR = 0 'homing R
+VHMR = 0 'home done R
+VSFE = 200 'Find Edge speed
+VSFI = 50  'Find Index speed
+VSPA = 40000 'Custom PA speed
+VMTC = 0
+JP#ENDFN
+' home r-axis''''''''''''''''''''''''''''''''''''''''''''
+#HOMr
+VHMG = VHMG | 32  '00100000
+VHMD = VHMD & 223 '11011111
+HMF;BGF;AMF
+JP#CNr2, _SCF=10
+SP ,,,,,VSFE
+FEF;BGF;AMF
+JP#CONr,(_SCF=9)
+FEF;BGF;AMF
+JP#CONr,(_SCF=9)
+VHMG = VHMG & 223
+JP#ENDFN
+#CONr
+SP ,,,,,VSFI
+FIF;BGF;AMF
+JP#CNr2, (_SCF=10)
+VHMG = VHMG & 223
+JP#ENDFN
+#CNr2
+WT 100
+SP ,,,,,VSPA
+DP ,,,,,VPRO
+PA ,,,,,VPRC;BGF;AMF
+WT 100
+VHMG = VHMG & 223 'homing r done
+VHMD = VHMD | 32  'home r complete
+EN
+' home z-axis'''''''''''''''''''''''''''''''''''''''''''''
+#HOMz
+VHMG = VHMG | 64  '01000000
+VHMD = VHMD & 191 '10111111
+HMG;BGG;AMG
+JP#CONz, (_SCG=10)
+HMG;BGG;AMG
+JP#CONz, (_SCG=10)
+VHMG = VHMG & 191 'homing z done (not successful)
+JP#ENDFN
+#CONz
+WT 100
+SP ,,,,,,VSPA
+DP ,,,,,,VPZO
+PA ,,,,,,VPZC;BGG;AMG
+WT 100
+VHMG = VHMG & 191 'homing z done
+VHMD = VHMD | 64  'home z complete
+EN
+' home w-axis''''''''''''''''''''''''''''''''''''''''''''''
+#HOMw
+VHMG = VHMG | 128 '10000000
+VHMD = VHMD & 127 '01111111
+HMH;BGH;AMH
+JP#CNw2, _SCH=10
+SP ,,,,,,,VSFE
+FEH;BGH;AMH
+JP#CONw, (_SCH=9)
+FEH;BGH;AMH
+JP#CONw, (_SCH=9)
+VHMG = VHMG & 127 'homing w done (not successful)
+JP#ENDFN
+#CONw
+SP ,,,,,,,VSFI
+FIH;BGH;AMH
+JP#CNw2, (_SCH=10)
+FIH;BGH;AMH
+JP#CNw2, (_SCH=10)
+VHMG = VHMG & 127 'homing w done (not successful)
+JP#ENDFN
+#CNw2
+WT 100
+SP ,,,,,,,VSPA
+DP ,,,,,,,VPWO
+PA ,,,,,,,VPWC;BGH;AMH
+WT 100
+VHMG = VHMG & 127 'homing z done
+VHMD = VHMD | 128 'home z complete
+EN
+' home T-axis'''''''''''''''''''''''''''''''''''''''''''''''
+#HOMT
+VHMG = VHMG | 1   '00000001
+VHMD = VHMD & 254 '11111110
+HMX;BGX;AMX
+JP#CNT2, _SCX=10
+SP VSFE
+FEX;BGX;AMX
+JP#CONT,(_SCX=9)
+FEX;BGX;AMX
+JP#CONT,(_SCX=9)
+JP#ENDFN
+#CONT
+SP VSFI
+FIX;BGX;AMX
+JP#CNT2,_SCX=10
+FIX;BGX;AMX
+JP#CNT2,_SCX=10
+VHMG = VHMG & 254 'homing T done (not successful)
+JP#ENDFN
+#CNT2
+WT 100
+SP VSPA
+DP VRTO
+PA VRTC;BGX;AMX
+WT 100
+VHMG = VHMG & 254 'homing T done
+VHMD = VHMD | 1   'home T complete
+EN
+' home R-axis '''''''''''''''''''''''''''''''''''''''''''''''
+#HOMR
+VHMG = VHMG | 2   '00000010
+VHMD = VHMD & 253 '11111101
+HMY;BGY;AMY
+JP#CONR,_SCY=10
+HMY;BGY;AMY
+JP#CONR,_SCY=10
+VHMG = VHMG & 253 'homing R done (not successful)
+JP#ENDFN
+#CONR
+WT 100
+SP ,VSPA
+DP ,VRRO
+PA ,VRRC;BGY;AMY
+WT 100
+VHMG = VHMG & 253 'homing R done
+VHMD = VHMD | 2   'home R complete
+EN
+' home Z-axis '''''''''''''''''''''''''''''''''''''''''''''''
+#HOMZ
+VHMG = VHMG | 4   '00000100
+VHMD = VHMD & 251 '11111011
+HMZ;BGZ;AMZ
+JP#CNZ2,_SCZ=10
+SP ,,VSFE
+FEZ;BGZ;AMZ
+JP#CONZ,_SCZ=9
+FEZ;BGZ;AMZ
+JP#CONZ,_SCZ=9
+VHMG = VHMG & 251; 'homing Z done (not successful)
+JP#ENDFN
+#CONZ
+SP ,,VSFI
+FIZ;BGZ;AMZ
+JP#CNZ2,_SCZ=10
+FIZ;BGZ;AMZ
+JP#CNZ2,_SCZ=10
+VHMG = VHMG & 251; 'homing Z done (not successful)
+JP#ENDFN
+#CNZ2
+WT 100
+SP ,,VSPA
+DP ,,VRZO
+PA ,,VRZC;BGZ;AMZ
+VHMG = VHMG & 251 'homing Z done
+VHMD = VHMD | 4   'home Z complete
+EN
+' home W-axis '''''''''''''''''''''''''''''''''''''''''''''''
+#HOMW
+VHMG = VHMG | 8   '00001000
+VHMD = VHMD & 247 '11110111
+HMW;BGW;AMW
+JP#CNW2, _SCW=10
+SP ,,,VSFE
+FEW;BGW;AMW
+JP#CONW, (_SCW=9)
+FEW;BGW;AMW
+JP#CONW, (_SCW=9)
+VHMG = VHMG & 247 'homing W done (not successful)
+JP#ENDFN
+#CONW
+SP ,,,VSFI
+FIW;BGW;AMW
+JP#CNW2, _SCW=10
+FIW;BGW;AMW
+JP#CNW2, _SCW=10
+VHMG = VHMG & 247 'homing W done (not successful)
+JP#ENDFN
+#CNW2
+WT 100
+SP ,,,VSPA
+DP ,,,VRWO
+PA ,,,VRWC;BGW;AMW
+WT 100
+JP#ENDFN,_SCW<>1
+VHMG = VHMG & 247 'homing W done
+VHMD = VHMD | 8   'home W complete
+EN
+' home ALL axes '''''''''''''''''''''''''''''''''''''''''''''''
+#HOMA
+JS#HOMR
+VHMR = VHMD & 2 'home R complete?
+JP#ENDFN, VHMR=0
+VHMG = VHMG | 5   '00000101
+VHMD = VHMD & 250 '11111010
+HMXZ;BGXZ;AMXZ
+JP#CNTZ2, _SCX=10
+SP VSFE
+FEX;BGX;AMX
+JP#CNTZ1,(_SCX=9)
+FEX;BGX;AMX
+JP#CNTZ1,(_SCX=9)
+VHMG = VHMG & 250
+JP#ENDFN
+#CNTZ1
+SP VSFI
+FIX;BGX;AMX
+JP#CNTZ2, (_SCX=10)
+FIX;BGX;AMX
+JP#CNTZ2,(_SCX=10)
+VHMG = VHMG & 250 'homing T,Z done (not successful)
+JP#ENDFN
+#CNTZ2
+JP#CNTZ4, _SCZ=10
+SP ,,VSFE
+FEZ;BGZ;AMZ
+JP#CNTZ3,(_SCZ=9)
+FEZ;BGZ;AMZ
+JP#CNTZ3,(_SCZ=9)
+VHMG = VHMG & 250
+JP#ENDFN
+#CNTZ3
+SP ,,VSFI
+FIZ;BGZ;AMZ
+JP#CNTZ4, (_SCZ=10)
+FIZ;BGZ;AMZ
+JP#CNTZ4, (_SCZ=10)
+VHMG = VHMG & 250 'homing T,Z done (not successful)
+JP#ENDFN
+#CNTZ4
+WT 100
+SP VSPA,,VSPA
+DP VRTO,,VRZO
+PA VRTC,,VRZC;BGXZ;AMXZ
+WT 100
+VHMG = VHMG & 250 'homing T,Z done
+VHMD = VHMD | 5   'home T,Z complete
+EN
+' home all axes '''''''''''''''''''''''''''''''''''''''''''''''
+#HOMa
+DP,,,,0
+VHMG = VHMG | 96  '01100000
+VHMD = VHMD & 159 '10011111
+HMFG;BGFG;AMFG
+JP#CNzH, (_SCG=10)
+HMG;BGG;AMG
+JP#CNzH, (_SCG=10)
+VHMG = VHMG & 159
+JP#ENDFN
+#CNzH
+JP#CNrz2, _SCF=10
+SP ,,,,,VSFE
+FEF;BGF;AMF
+JP#CONrz,(_SCF=9)
+FEF;BGF;AMF
+JP#CONrz,(_SCF=9)
+VHMG = VHMG & 159
+JP#ENDFN
+#CONrz
+SP ,,,,,VSFI
+FIF;BGF;AMF
+JP#CNrz2, (_SCF=10)
+FIF;BGF;AMF
+JP#CNrz2, (_SCF=10)
+VHMG = VHMG & 159
+JP#ENDFN
+#CNrz2
+WT 100
+SP ,,,,,VSPA,VSPA
+DP ,,,,,VPRO,VPZO
+PA ,,,,,VPRC,VPZC;BGFG;AMFG
+WT 100
+VHMG = VHMG & 159 'homing r done
+VHMD = VHMD | 96  'home r complete
+EN
+' MTCR move to station coordinates, extend if requested''''''''
+#MTCR
+VMTC=1
+JP#NORET, (VRET=0)
+PA ,VREP;BGY;AMY
+WT 100
+#NORET
+PA VTPO,,VZPO;BGXZ;AMXZ
+WT 100
+JP#NOEXT, (VEXT=0)
+PA ,VRXP;BGY;AMY
+VMTC=0
+WT 100
+#NOEXT
+#ENDFN
+EN
+#XDCL
+DA TOR[0],POS[0]
+DM TOR[1000],POS[1000]
+VR1 = 0
+#XDC1
+TOR[VR1]=0
+POS[VR1]=0
+VR1=VR1+1
+#XDC1,(VR1<1000)
+EN
+#XRCT
+JS#XDCL
+RA TOR[], POS[]
+RD _TTA, _TPA
+RC 1
+EN
+#XRCR
+JS#XDCL
+RA TOR[], POS[]
+RD _TTB, _TPB
+RC 1
+EN
+#XRCZ
+JS#XDCL
+RA TOR[], POS[]
+RD _TTC, _TPC
+RC 1
+EN
+#XRCW
+JS#XDCL
+RA TOR[], POS[]
+RD _TTD, _TPD
+RC 1
+EN
+#XRCt
+JS#XDCL
+RA TOR[], POS[]
+RD _TTE, _TPE
+RC 1
+EN
+#XRCr
+JS#XDCL
+RA TOR[], POS[]
+RD _TTF, _TPF
+RC 1
+EN
+#XRCz
+JS#XDCL
+RA TOR[], POS[]
+RD _TTG, _TPG
+RC 1
+EN
+#XRCw
+JS#XDCL
+RA TOR[], POS[]
+RD _TTH, _TPH
+RC 1
+EN
+'otf continuously monitors status of input 1,2,3
+'any input changes, latch Y pos, save latch pos, re-arm it
+'this program is to be killed when otf is done.
+#OTF
+VSEN1 = 1
+VSEN2 = 1
+VSEN3 = 1
+VPS1=0
+VPS2=0
+VPS3=0
+VPS4=0
+VPS5=0
+VPS6=0
+VCNT = 0
+SB 8
+SB 7
+WT 2
+ALB
+#LPS2
+VSEN2 = @IN[6]
+JP#LPS2, (VSEN2 = 1)
+CB 7
+WT 2
+VPS2 = _RLB
+SB 7
+WT 2
+ALB
+#LPS13
+VSEN1 = @IN[5]
+VSEN3 = @IN[7]
+JP#TR01, (VSEN1 = 0)
+JP#TR03, (VSEN3 = 0)
+JP#LPS13
+#TR01
+CB 7
+WT 2
+VPS1 = _RLB
+SB 7
+WT 2
+ALB
+#LP13
+VSEN3 = @IN[7]
+JP#LP13, (VSEN3 = 1)
+CB 7
+WT 2
+VPS3 = _RLB
+SB 7
+WT 2
+ALB
+JP#LP33
+#TR03
+CB 7
+WT 2
+VPS3 = _RLB
+SB 7
+WT 2
+ALB
+#LP31
+VSEN1 = @IN[5]
+JP#LP31, (VSEN1 = 1)
+CB 7
+WT 2
+VPS1 = _RLB
+SB 7
+WT 2
+ALB
+#LP33
+VSEN1 = @IN[5]
+VSEN3 = @IN[7]
+JP#TR41, (VSEN1 = 1)
+JP#TR43, (VSEN3 = 1)
+JP#LP33
+#TR41
+CB 7
+WT 2
+VPS4 = _RLB
+SB 7
+WT 2
+ALB
+#LP43
+VSEN3 = @IN[7]
+JP#LP43, (VSEN3 = 0)
+CB 7
+WT 2
+VPS6 = _RLB
+SB 7
+WT 2
+ALB
+JP#LP55
+#TR43
+CB 7
+WT 2
+VPS6 = _RLB
+SB 7
+WT 2
+ALB
+#LP45
+VSEN1 = @IN[5]
+JP#LP45, (VSEN1 = 0)
+CB 7
+WT 2
+VPS4 = _RLB
+SB 7
+WT 2
+ALB
+#LP55
+VSEN2 = @IN[6]
+JP#LP55, (VSEN2 = 0)
+CB 7
+WT 2
+VPS5 = _RLB
+VCNT = 6
+CB 8
+EN
+'OTF 2ND VERSION
+#OTF2
+VSEN1 = 1
+VSEN2 = 1
+VSEN3 = 1
+VSEO1 = 1
+VSEO2 = 1
+VSEO3 = 1
+VPS1=0
+VPS2=0
+VPS3=0
+VPS4=0
+VPS5=0
+VPS6=0
+VCNT = 0
+SB 8
+#LOTF2
+JP#EOTF2, (VCNT > 1) & (VSEN1 = 1) & (VSEN2 = 1) & (VSEN3 = 1)
+JP#EOTF2, (VCNT > 5)
+VSEN1 = @IN[5]
+VSEN2 = @IN[6]
+VSEN3 = @IN[7]
+JP#TR12, (VSEN1 <> VSEO1)
+JP#TR22, (VSEN2 <> VSEO2)
+JP#TR32, (VSEN3 <> VSEO3)
+JP#LOTF2
+#TR12
+VCNT = VCNT+1
+JP#TR121, (VSEN1 = 1)
+VPS1=_TPB
+VSEO1 = VSEN1
+JP#LOTF2
+#TR121
+VPS4=_TPB
+VSEO1 = VSEN1
+JP#LOTF2
+#TR22
+VCNT = VCNT+1
+JP#TR221, (VSEN2 = 1)
+VPS2=_TPB
+VSEO2 = VSEN2
+JP#LOTF2
+#TR221
+VPS5=_TPB
+VSEO2 = VSEN2
+JP#LOTF2
+#TR32
+VCNT = VCNT+1
+JP#TR321, (VSEN3 = 1)
+VPS3=_TPB
+VSEO3 = VSEN3
+JP#LOTF2
+#TR321
+VPS6=_TPB
+VSEO3 = VSEN3
+JP#LOTF2
+#EOTF2
+CB 8
+EN

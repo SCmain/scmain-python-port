@@ -1,0 +1,32 @@
+#AUTO
+MO
+MT-1,-1,-1,-1,-1,-1,-1,-1
+EI 256
+VTYPE = 0
+VINDX = 0
+VPRO = 0 'r offset
+VPZO = 0 'z offset
+VPWO = 0 'w offset
+VRTO = 0 'T offset
+VRRO = 0 'R offset
+VRZO = 0 'Z offset
+VRWO = 0 'W offset
+VPRC = 0 'r customized home
+VPZC = 0 'z customized home
+VPWC = 0 'w customized home
+VRTC = 0 'T customized home
+VRRC = 0 'R customized home
+VRZC = 0 'Z customized home
+VRWC = 0 'W customized home
+VRET = 0 'R Retract position
+VEXT = 0 'R Extend flag
+VREP = 0
+VRXP = 0
+VTPO = 0
+VZPO = 0
+VHMG = 0 'homing flag: 0=not homing, 1=homing in progress
+VHMD = 0 'homed flag: 0=not homed, 1=homed
+VHGR = 0 'homing R
+VHMR = 0 'home done R
+#ENDFN
+EN
