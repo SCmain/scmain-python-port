@@ -1,8 +1,37 @@
+<<<<<<< HEAD
+=======
+/***************************************************************\
+ *
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *******************************************************************/
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 #include <stdio.h>
 
 typedef unsigned char BYTE;
 
+<<<<<<< HEAD
 typedef union uSysBytesName
 {
     struct
@@ -42,6 +71,47 @@ typedef struct tgSecsHeader
     BYTE m_bUpperBlockNumber; // 0???????
     BYTE m_bLowerBlockNumber;
 }  stSecsHeader, *npstSecsHeader, *fpstSecsHeader;
+=======
+typedef union uSysBytesName
+{
+    struct
+    {
+        BYTE um_bSystem1;
+        BYTE um_bSystem2;
+        BYTE um_bSystem3;
+        BYTE um_bSystem4;
+    } stSysBytes;
+
+    unsigned long   u_ulSystemBytes;
+
+} uSysBytes;
+
+/*typedef struct tgSecsHeader
+{
+    uSysBytes m_uSystemBytesUnion;
+    BYTE m_bUpperDevID: 7;        // 0???????
+    BYTE m_bRbit  : 1;            // ?0000000
+    BYTE m_bLowerDevID;
+    BYTE m_bStream : 7;           // 0???????
+    BYTE m_bWbit   : 1;           // ?0000000
+    BYTE m_bFunction;
+    BYTE m_bUpperBlockNumber : 7; // 0???????
+    BYTE m_bEbit         : 1;     // ?0000000
+    BYTE m_bLowerBlockNumber;
+}  stSecsHeader, *npstSecsHeader, *fpstSecsHeader;
+*/
+
+typedef struct tgSecsHeader
+{
+    uSysBytes m_uSystemBytesUnion;
+    BYTE m_bUpperDevID;        // 0???????
+    BYTE m_bLowerDevID;
+    BYTE m_bStream;           // 0???????
+    BYTE m_bFunction;
+    BYTE m_bUpperBlockNumber; // 0???????
+    BYTE m_bLowerBlockNumber;
+}  stSecsHeader, *npstSecsHeader, *fpstSecsHeader;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 typedef union uCombine
 {

@@ -1,8 +1,37 @@
 /***************************************************************\
  *
+<<<<<<< HEAD
  * Program:     low-level command, command interpreter and Opcode table.
  *
  * File:        LLexcomm.c
+=======
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ * Program:     low-level command, command interpreter and Opcode table.
+ *
+ * File:        cmdser.c
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Functions:
  *
@@ -320,7 +349,11 @@ int ex_READ(instr_ptr instr)
     int nLen, iPortOpen, iRindx, iNumBytes, iCmdPort;
     char *sPtr;
     char sBuf[MAXLINE];
+<<<<<<< HEAD
     int iReadDone;
+=======
+    int iReadDone;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     iCmdPort = SERGetCmdPort();
 
@@ -336,12 +369,21 @@ int ex_READ(instr_ptr instr)
 
     Optr = instr->opr_ptr;              /* get first operand, the Port Number */
     if((iReturn=CMDgetIntegerValue(Optr, &iPort))==FAILURE)
+<<<<<<< HEAD
 	goto exit_point;
 
     // overwrite the port
     iPort = SERGetCmdPort();
 
     /* validate the comm port and make sure it is already open. */
+=======
+	goto exit_point;
+
+    // overwrite the port
+    iPort = SERGetCmdPort();
+
+    /* validate the comm port and make sure it is already open. */
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     //iPort = iPort + 1;
     if ((iReturn=SERGetCommVals(iPort, PORT_OPEN, &iPortOpen)) == FAILURE)
         goto exit_point;
@@ -355,6 +397,7 @@ int ex_READ(instr_ptr instr)
     if((iReturn=CMDgetIndirectValue(Optr, &iRindx))==FAILURE)
 	goto exit_point;
     /* check for anything in comm buffer to read. If 0 returned, that's meant there is nothing
+<<<<<<< HEAD
      * in the comm buffer. Otherwise there is something in the comm buffer. */
     iReadDone = 0;
 
@@ -362,6 +405,15 @@ int ex_READ(instr_ptr instr)
     {
     	if(SERRxBuffAvail(iPort)>0)
     	{
+=======
+     * in the comm buffer. Otherwise there is something in the comm buffer. */
+    iReadDone = 0;
+
+    while(!iReadDone)
+    {
+    	if(SERRxBuffAvail(iPort)>0)
+    	{
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //	    iReturn = COReadStringCR(iPort, sBuf);
 //            iNumBytes = -1;                 /* specify to read whole message from comm buffer up to \r */
             /* read the message from the comm buffer. */
@@ -371,12 +423,21 @@ int ex_READ(instr_ptr instr)
 	    	iComErr = TRUE;
 	    	goto exit_point;
             }
+<<<<<<< HEAD
             nLen = strlen(sBuf);            /* number of bytes have read from the comm buffer. */
 	    iReadDone = 1;
 //printf("READ: %s\n", sBuf);
     	}
 //    	else
 //            nLen = 0;                       /* nothing in the comm buffer  */
+=======
+            nLen = strlen(sBuf);            /* number of bytes have read from the comm buffer. */
+	    iReadDone = 1;
+//printf("READ: %s\n", sBuf);
+    	}
+//    	else
+//            nLen = 0;                       /* nothing in the comm buffer  */
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     /* store the number of bytes just read to the register */
     if( (iReturn=RGSetRegister(iRindx,(long)nLen)) == FAILURE )
@@ -490,14 +551,22 @@ int ex_READC(instr_ptr instr)
 
     Optr = Optr->next;  /* get second operand which is number of bytes to read from the comm port*/
     if((iReturn=CMDgetIntegerValue(Optr, &iNumBytes))==FAILURE)
+<<<<<<< HEAD
 	goto exit_point;
 
 //    SERFlushRxBuff((int)lPort);
     SERFlushRxBuff(iCmdPort);
+=======
+	goto exit_point;
+
+//    SERFlushRxBuff((int)lPort);
+    SERFlushRxBuff(iCmdPort);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* check for comm buffer if there is anything in comm buffer. */
 //    if(SERRxBuffAvail((int)lPort) > 0)
 //    {
         /* read the number of bytes that specified from comm buffer. */
+<<<<<<< HEAD
 //        if( (iReturn=SERGetsRxBuff((int)lPort,sBuf,TRUE,&iNumBytes,TRUE))==FAILURE )
 //	if (iReturn = COReadStringCR((int)lPort, sBuf, &iNumCharsLeftAfterRead)==FAILURE)
 	if (iReturn = COReadStringCR(iCmdPort, sBuf, &iNumCharsLeftAfterRead)==FAILURE)
@@ -512,11 +581,31 @@ printf("Port=%d COreadStrCR=%s\n",iCmdPort,sBuf);
 //    }
 //    else
 //        lBytesRead = 0; /* nothing in the comm buffer. */
+=======
+//        if( (iReturn=SERGetsRxBuff((int)lPort,sBuf,TRUE,&iNumBytes,TRUE))==FAILURE )
+//	if (iReturn = COReadStringCR((int)lPort, sBuf, &iNumCharsLeftAfterRead)==FAILURE)
+	if (iReturn = COReadStringCR(iCmdPort, sBuf, &iNumCharsLeftAfterRead)==FAILURE)
+	{
+//        if( (iReturn=SERGetcRxBuff((int)lPort,sBuf,TRUE))==FAILURE )
+printf("Port=%d COreadStrCR=%s\n",iCmdPort,sBuf);
+            goto exit_point;
+	}
+printf("Port=%d COreadStrCR=%s\n",iCmdPort,sBuf);
+//        lBytesRead = (long)iNumBytes;
+        lBytesRead = (long)strlen(sBuf);
+//    }
+//    else
+//        lBytesRead = 0; /* nothing in the comm buffer. */
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr = Optr->next;  /* get third operand which is the register index to store the number of bytes that
                          * had read from the comm buffer */
     if((iReturn=CMDSetIndirectReg(Optr, lBytesRead))==FAILURE)
+<<<<<<< HEAD
 	goto exit_point;
+=======
+	goto exit_point;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* get the fourth operand which is the register to store the character or string value */
     Optr = Optr->next;

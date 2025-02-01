@@ -1,7 +1,37 @@
+<<<<<<< HEAD
 /****************************************************************
  *
  * Program:     Controller firmware
  * File:        timer.c
+=======
+/***************************************************************\
+ *
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ * Program:     Controller firmware
+ * File:        sctim.c
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   TIEnableTimer
  *              TIActivateWD
  *              TIDisableTimer
@@ -58,10 +88,17 @@
  ****************************************************************/
 
 #include <malloc.h>
+<<<<<<< HEAD
 #include <signal.h>
 #include <string.h>
 #include <sys/time.h>
 #include <time.h>
+=======
+#include <signal.h>
+#include <string.h>
+#include <sys/time.h>
+#include <time.h>
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <sys/io.h>
 #include "sck.h"
 #include "sctim.h"
@@ -74,6 +111,7 @@
 #include "ro.h"
 #include "fiog.h"
 #include "scmem.h"
+<<<<<<< HEAD
 
 int     ulTimerInterval = 0;
 
@@ -167,29 +205,141 @@ int MainTimerDelay(long lMsecArg)
 {
     int iTimerIndex;
 
+=======
+
+int     ulTimerInterval = 0;
+
+int	giDispTime = 0;
+
+struct sigaction gSigAction;
+struct itimerval gSysTimer;
+
+//void timer_handler(int signum)
+//{
+//  ++(*ulSysTimer);
+//  if (*ulSysTimer % 100 == 0)  printf("%llu\n\r", *ulSysTimer);
+//}
+
+#define MAXLONGVAL 2147383600
+
+unsigned long glTimerMsec = 0;
+unsigned long glTimerMday = 0;
+unsigned long glTarMsec[10] = {0,0,0,0,0,0,0,0,0,0};
+unsigned long glTarMday[10] = {0,0,0,0,0,0,0,0,0,0};
+int  giTimerUsed[10] = {0,0,0,0,0,0,0,0,0,0};
+long glExpireCount = 0;
+
+pthread_t threadTimer;
+
+void *procTimer(void *ptr)
+{
+    // int i;
+    struct timespec ntv;
+
+    ntv.tv_sec = 0;
+    ntv.tv_nsec = 1000;
+
+    while(1)
+    {
+	if(++glTimerMsec >= MAXLONGVAL)
+	{
+	    ++glTimerMday;
+	    glTimerMsec = 0;
+    	}
+	nanosleep(&ntv, NULL);
+    }
+}
+
+void MainTimerHandler(int signum)
+{
+    if(++glTimerMsec >= MAXLONGVAL)
+    {
+	++glTimerMday;
+	glTimerMsec = 0;
+    }
+}
+
+int MainTimerExpired(int iTimerArg)
+{
+    if(iTimerArg < 0 || iTimerArg >= 10) return 1;
+//    if(++glExpireCount <= 35) return 0;
+    glExpireCount = 0;
+
+    if(glTimerMday < glTarMday[iTimerArg]) return 0;
+    if(glTimerMsec < glTarMsec[iTimerArg]) return 0;
+    return 1;
+}    
+
+int MainTimerSet(int iTimerArg, long lMsecArg)
+{
+    if(iTimerArg < 0 || iTimerArg >= 10) return FAILURE;
+
+    glTarMsec[iTimerArg] = glTimerMsec + lMsecArg;
+    glTarMday[iTimerArg] = glTimerMday;
+
+    if (glTarMsec[iTimerArg] >= MAXLONGVAL)
+    {
+	++glTarMday[iTimerArg];
+    	glTarMsec[iTimerArg] -= MAXLONGVAL;
+    }
+
+    return SUCCESS;
+}
+
+int MainReadTimer(int iTimerArg, long *lTimerValArg)
+{
+    // need to check for Mday overrun
+    if(iTimerArg < 0 || iTimerArg >= 10) return FAILURE;
+
+    *lTimerValArg = (glTarMday[iTimerArg] - glTimerMday) + glTarMsec[iTimerArg] - glTimerMsec;
+    return SUCCESS;
+}
+
+int MainTimerDelay(long lMsecArg)
+{
+    int iTimerIndex;
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Check out a timer. */
     if ((iTimerIndex = TIGetCounter()) == FAILURE)
         return FAILURE;
 
     /* Set it. */
     if (MainTimerSet(iTimerIndex, lMsecArg) == FAILURE)
+<<<<<<< HEAD
         return FAILURE;
+=======
+        return FAILURE;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Wait until it times out refreshing the watchdog timer while you wait. */
     while (!MainTimerExpired(iTimerIndex))
     {
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 
     /* Check the timer back in. */
     if (TIReturnCounter(iTimerIndex) == FAILURE)
         return FAILURE;
+<<<<<<< HEAD
 
     return SUCCESS;
     
 }
 
 
+=======
+
+    return SUCCESS;
+    
+}
+
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /****************************************************************
  *
@@ -250,6 +400,7 @@ int TIEnableTimer()
     *ulSysTimer = 0;
     *ulSysTimerOverflow = 0;
 
+<<<<<<< HEAD
 
 
     /* Install timer handler as the signal handler */
@@ -265,6 +416,23 @@ int TIEnableTimer()
     gSysTimer.it_interval.tv_usec = 10000;
     // start a REAL timer. it counts down
 //    setitimer(ITIMER_REAL, &gSysTimer, NULL);
+=======
+
+
+    /* Install timer handler as the signal handler */
+    memset(&gSigAction, 0, sizeof(gSigAction));
+    gSigAction.sa_handler = &MainTimerHandler;
+    sigaction (SIGALRM, &gSigAction, NULL);
+
+    // configure the timer to expire after 1 msec
+    gSysTimer.it_value.tv_sec = 0;
+    gSysTimer.it_value.tv_usec = 10000;
+    // and every 1 msec after that
+    gSysTimer.it_interval.tv_sec = 0;
+    gSysTimer.it_interval.tv_usec = 10000;
+    // start a REAL timer. it counts down
+//    setitimer(ITIMER_REAL, &gSysTimer, NULL);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 
     /* Indicate that the timer module was initialized. This variable will be
@@ -362,8 +530,13 @@ int TIActivateWD()
  *
  ***************************************************************/
 void TIResetComputer()
+<<<<<<< HEAD
 {
     char sBuf[30] = "shutdown +0 -r"; // linux shutdown zero wait and restart
+=======
+{
+    char sBuf[30] = "shutdown +0 -r"; // linux shutdown zero wait and restart
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* FAR_FUNC_PTR is a typedef for a pointer to a generic far function. */
 //    typedef int (*FAR_FUNC_PTR)(void);
@@ -386,12 +559,21 @@ void TIResetComputer()
 
     /* Close all initialized devices, including this one, as appropriate. */
 //    SERClosePorts(COM2);
+<<<<<<< HEAD
 //    SERClosePorts(COM3);
 //    SERClosePorts(COM4);
 //    SERClosePorts(COM1);
 //    TIDisableTimer();
 
     system(sBuf);
+=======
+//    SERClosePorts(COM3);
+//    SERClosePorts(COM4);
+//    SERClosePorts(COM1);
+//    TIDisableTimer();
+
+    system(sBuf);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Set flag address and value for hard reset. */
 //    iBootFlag = (int  *) 0x00000072L;
@@ -503,6 +685,7 @@ int TIReturnCounter(unsigned uWhichTimerArg)
  *
  ***************************************************************/
 int TISetCounter(unsigned uWhichTimerArg, unsigned uTimeoutArg)
+<<<<<<< HEAD
 {
 //    struct timeval tv;
 //    struct timezone tz;
@@ -512,6 +695,17 @@ int TISetCounter(unsigned uWhichTimerArg, unsigned uTimeoutArg)
 //    return MainTimerSet((int)uWhichTimerArg, (long)uTimeoutArg);
 
     // Original func 
+=======
+{
+//    struct timeval tv;
+//    struct timezone tz;
+    struct timespec tv;
+    unsigned long long ur, uSec, ulMsec;
+
+//    return MainTimerSet((int)uWhichTimerArg, (long)uTimeoutArg);
+
+    // Original func 
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (!iTimerEnabled)
         return FAILURE;
@@ -521,6 +715,7 @@ int TISetCounter(unsigned uWhichTimerArg, unsigned uTimeoutArg)
 
     if (!iTimerUsed[uWhichTimerArg])
         return FAILURE;
+<<<<<<< HEAD
 
 //    gettimeofday(&tv, &tz);
 //    clock_gettime(CLOCK_REALTIME, &tv);
@@ -539,6 +734,26 @@ printf("TISetCounter cur time: %d:%d\n",(int)tv.tv_sec, (int)tv.tv_nsec);
     ulTimerCounter[uWhichTimerArg][1] = tv.tv_nsec;
 if(giDispTime)
 printf("TISetCounter exp time: %d:%d\n",(int)tv.tv_sec, (int)tv.tv_nsec);
+=======
+
+//    gettimeofday(&tv, &tz);
+//    clock_gettime(CLOCK_REALTIME, &tv);
+    clock_gettime(CLOCK_MONOTONIC, &tv);
+if(giDispTime)
+printf("TISetCounter cur time: %d:%d\n",(int)tv.tv_sec, (int)tv.tv_nsec);
+//  convert nsec to msec
+    ulMsec = tv.tv_nsec/1000 + 1000*uTimeoutArg;
+    uSec = ulMsec / 1000000;
+    ur = ulMsec - (1000000 * uSec);
+//printf("sec=%d usec=%d tiemout=%d ulMsec=%d uSec=%d ur=%d\n",tv.tv_sec, tv.tv_usec, uTimeoutArg, ulMsec, uSec, ur);
+    tv.tv_sec += uSec;
+    tv.tv_nsec = 1000 * ur;
+//printf("sec=%d usec=%d tiemout=%d ulMsec=%d uSec=%d ur=%d\n",tv.tv_sec, tv.tv_usec, uTimeoutArg, ulMsec, uSec, ur);
+    ulTimerCounter[uWhichTimerArg][0] = tv.tv_sec;
+    ulTimerCounter[uWhichTimerArg][1] = tv.tv_nsec;
+if(giDispTime)
+printf("TISetCounter exp time: %d:%d\n",(int)tv.tv_sec, (int)tv.tv_nsec);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Set the timeout value. See the function header comments for more details. */
 //    ulTimerCounter[uWhichTimerArg] = TIGetTimerVals(SYS_TIMER)+(long long unsigned)uTimeoutArg;
@@ -570,6 +785,7 @@ printf("TISetCounter exp time: %d:%d\n",(int)tv.tv_sec, (int)tv.tv_nsec);
  ***************************************************************/
 int TIReadCounter(unsigned uWhichTimerArg, unsigned *uTimerValArg)
 {
+<<<<<<< HEAD
 //    struct timeval tv;
 //    struct timezone tz;
     struct timespec tv;
@@ -581,6 +797,19 @@ int TIReadCounter(unsigned uWhichTimerArg, unsigned *uTimerValArg)
 
     // Original code
 
+=======
+//    struct timeval tv;
+//    struct timezone tz;
+    struct timespec tv;
+
+    unsigned long long uSec, ulMsec;
+
+//    return MainReadTimer((int) uWhichTimerArg, (long *) uTimerValArg);
+
+
+    // Original code
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (!iTimerEnabled)
         return FAILURE;
 
@@ -594,6 +823,7 @@ int TIReadCounter(unsigned uWhichTimerArg, unsigned *uTimerValArg)
      * Otherwise there can be no differences returned. */
     if (!iTimerActive[uWhichTimerArg])
         return FAILURE;
+<<<<<<< HEAD
 
 //    gettimeofday(&tv, &tz);
 
@@ -607,6 +837,21 @@ int TIReadCounter(unsigned uWhichTimerArg, unsigned *uTimerValArg)
 //    *uTimerValArg = (unsigned)(ulTimerCounter[uWhichTimerArg]-TIGetTimerVals(SYS_TIMER));
 
     *uTimerValArg = (1000000000*uSec + ulMsec)/1000000000;
+=======
+
+//    gettimeofday(&tv, &tz);
+
+    clock_gettime(CLOCK_MONOTONIC, &tv);
+
+    uSec =  tv.tv_sec - ulTimerCounter[uWhichTimerArg][0];
+    ulMsec = tv.tv_nsec - ulTimerCounter[uWhichTimerArg][1];
+
+    /* Return the difference between the current time and
+     * the timeout time. See the function header comments for more details. */
+//    *uTimerValArg = (unsigned)(ulTimerCounter[uWhichTimerArg]-TIGetTimerVals(SYS_TIMER));
+
+    *uTimerValArg = (1000000000*uSec + ulMsec)/1000000000;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 
     return SUCCESS;
@@ -632,6 +877,7 @@ int TIReadCounter(unsigned uWhichTimerArg, unsigned *uTimerValArg)
  *
  ***************************************************************/
 int TICountExpired(unsigned uWhichTimerArg)
+<<<<<<< HEAD
 {
 //    struct timeval tv;
 //    struct timezone tz;
@@ -646,6 +892,22 @@ int TICountExpired(unsigned uWhichTimerArg)
 //    return MainTimerExpired((int) uWhichTimerArg);
 
     // Original code
+=======
+{
+//    struct timeval tv;
+//    struct timezone tz;
+//    int uSec, ulMsec;
+    struct timespec tv;
+
+
+//    uSec = ulTimerCounter[uWhichTimerArg][0] / 1000;
+//    ulMSec = ulTimerCounter[uWhichTimerArg][1] % 1000;
+//    gettimeofday(&tv, &tz);
+
+//    return MainTimerExpired((int) uWhichTimerArg);
+
+    // Original code
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (!iTimerEnabled)
         return FAILURE;
@@ -664,6 +926,7 @@ int TICountExpired(unsigned uWhichTimerArg)
     /* Refresh the watchdog timer. */
     //if (TIRefreshWD() == FAILURE)
     //    return FAILURE;
+<<<<<<< HEAD
 //    //printf("tCounter=%llu timer=%u sysTimer=%llu\n\r", ulTimerCounter[uWhichTimerArg], uWhichTimerArg, TIGetTimerVals(SYS_TIMER));
 
     /* Disable the timer. This timer has timed out and needs to be reset. */
@@ -678,6 +941,22 @@ int TICountExpired(unsigned uWhichTimerArg)
     {
 if(giDispTime)
 printf("TICountExpire time: %d:%d\n",(int)tv.tv_sec, (int)tv.tv_nsec);
+=======
+//    //printf("tCounter=%llu timer=%u sysTimer=%llu\n\r", ulTimerCounter[uWhichTimerArg], uWhichTimerArg, TIGetTimerVals(SYS_TIMER));
+
+    /* Disable the timer. This timer has timed out and needs to be reset. */
+//if (uWhichTimerArg == 137)
+////printf("timercount=%d systimer=%d, timer=%d\n",ulTimerCounter[uWhichTimerArg], TIGetTimerVals(SYS_TIMER), uWhichTimerArg);
+
+//    uSec = ulTimerCounter[uWhichTimerArg][0] / 1000;
+//    ulMSec = ulTimerCounter[uWhichTimerArg][1] % 1000;
+//    gettimeofday(&tv, &tz);
+    clock_gettime(CLOCK_MONOTONIC, &tv);
+    if (tv.tv_sec >= ulTimerCounter[uWhichTimerArg][0] && tv.tv_nsec >= ulTimerCounter[uWhichTimerArg][1])
+    {
+if(giDispTime)
+printf("TICountExpire time: %d:%d\n",(int)tv.tv_sec, (int)tv.tv_nsec);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         iTimerActive[uWhichTimerArg] = FALSE;
         /* Indicate to the calling function that a timeout occurred. */
         return TRUE;
@@ -719,11 +998,19 @@ printf("TICountExpire time: %d:%d\n",(int)tv.tv_sec, (int)tv.tv_nsec);
 int TIDelay(unsigned uTimeoutArg)
 {
     int iTimerIndex;
+<<<<<<< HEAD
 
 //    return MainTimerDelay((int) uTimeoutArg);
 
 
     // Original code
+=======
+
+//    return MainTimerDelay((int) uTimeoutArg);
+
+
+    // Original code
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Check out a timer. */
     if ((iTimerIndex = TIGetCounter()) == FAILURE)
@@ -839,7 +1126,11 @@ long long unsigned TIGetTimerVals(int iValueDescArg)
     switch (iValueDescArg)
     {
         case SYS_TIMER :
+<<<<<<< HEAD
             ulValueTemp = *ulSysTimer;
+=======
+            ulValueTemp = *ulSysTimer;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("TIGetTimerVals = %d\n",*ulSysTimer);
             break;
 
@@ -931,12 +1222,21 @@ int TISetTimerVals(int iValueDescArg, long long unsigned ulNewTimerValueArg)
  *
  ***************************************************************/
 void TITimerPROC()
+<<<<<<< HEAD
 {
     /* run this proc only certain interval */
 
     if(++ulTimerInterval <= 725) return;
     ulTimerInterval = 0;
 //printf("TITimerPROC: iChangeLE=%d iMacroSwitchTime=%d\n",iChangeLEDStat, iMacroSwitchTime);
+=======
+{
+    /* run this proc only certain interval */
+
+    if(++ulTimerInterval <= 725) return;
+    ulTimerInterval = 0;
+//printf("TITimerPROC: iChangeLE=%d iMacroSwitchTime=%d\n",iChangeLEDStat, iMacroSwitchTime);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* The ulSysTimerOverflow is never actually used. */
     if (++(*ulSysTimer) == 0) (*ulSysTimerOverflow)++;
@@ -965,6 +1265,7 @@ void TITimerPROC()
 //    }
 
 }
+<<<<<<< HEAD
 
 unsigned long TIRSTime(void)
 {
@@ -1005,4 +1306,46 @@ unsigned long TIRSTimeTMR(void)
 
     ulTime = MAXLONGVAL * glTimerMday + glTimerMsec;
     return ulTime;
+=======
+
+unsigned long TIRSTime(void)
+{
+    struct timespec tv;
+//    struct timezone tz;
+    unsigned long ulTime;
+
+//    int uSec, ulMsec;
+
+
+//    uSec = ulTimerCounter[uWhichTimerArg][0] / 1000;
+//    ulMSec = ulTimerCounter[uWhichTimerArg][1] % 1000;
+//    gettimeofday(&tv, &tz);
+
+    clock_gettime(CLOCK_MONOTONIC, &tv);
+    ulTime = tv.tv_sec * 1000 + tv.tv_nsec/1000000;
+//printf("sec=%d usec=%d ulTime=%ld\n",tv.tv_sec, tv.tv_nsec, ulTime);
+
+    return ulTime;
+}
+
+unsigned long TIRSTimeTMR(void)
+{
+//    struct timespec tv;
+//    struct timezone tz;
+    unsigned long ulTime;
+
+//    int uSec, ulMsec;
+
+
+//    uSec = ulTimerCounter[uWhichTimerArg][0] / 1000;
+//    ulMSec = ulTimerCounter[uWhichTimerArg][1] % 1000;
+//    gettimeofday(&tv, &tz);
+
+//    clock_gettime(CLOCK_MONOTONIC, &tv);
+//    ulTime = tv.tv_sec * 1000 + tv.tv_nsec/1000000;
+//printf("sec=%d usec=%d ulTime=%ld\n",tv.tv_sec, tv.tv_nsec, ulTime);
+
+    ulTime = MAXLONGVAL * glTimerMday + glTimerMsec;
+    return ulTime;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }

@@ -1,4 +1,31 @@
+<<<<<<< HEAD
 /******************************************************************************\
+=======
+/***************************************************************\
+ *
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Program:     Scan mapper Module
  * File:        map.c
@@ -28,7 +55,11 @@
 #include <math.h>
 #include <memory.h>
 #include <malloc.h>
+<<<<<<< HEAD
 #include <string.h>
+=======
+#include <string.h>
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <stdlib.h>
 
 #include "sck.h"
@@ -38,7 +69,11 @@
 #include "mapfn.h"
 #include "mapstn.h"
 #include "map.h"
+<<<<<<< HEAD
 #include "scstat.h"
+=======
+#include "scstat.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "otf.h"
 
 // Globals
@@ -462,7 +497,11 @@ int MPFilterPass3( int iStnArg, int bCalibArg, int iIterArg, int iNewSchemeArg )
  *
  ***************************************************************/
 int MPFilterPass4( int iStationIndexArg, int iCalibArg, long lTorgArg, char cCalStationArg, int iIOShift )
+<<<<<<< HEAD
 { 
+=======
+{ 
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     int iRet;
     long    lPosition[8]={0,0,0,0,0, 0, 0, 0};
     int  iStn;

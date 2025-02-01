@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /****************************************************************
  * Copyright
  * This software is the copyrighted property of XyZ Automation, Inc., A California Corporation.
@@ -7,6 +8,32 @@
  * representative of a licensed customer, XyZ Automation, Inc. authorizes you to copy, distribute
  * and use the software for yourself or, if applicable, only within the customer organization, and
  * only for the intended purposes authorized by XyZ Automation, Inc..
+=======
+/***************************************************************\
+ *
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Program:     Controller firmware
  * File:        ser.c
@@ -42,7 +69,11 @@
  *              SERSendSECSMsg
  *              SERSetSECSStatus
  *
+<<<<<<< HEAD
  * Description: Handles low-level RS-232 communications
+=======
+ * Description: Handles low-level RS-232 communications
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *		Implements Ethernet communication commands & responses.
  *
  ****************************************************************/
@@ -58,6 +89,7 @@
 #include <termios.h>
 #include <malloc.h>
 #include <errno.h>
+<<<<<<< HEAD
 #include <string.h>
 //#include <pthread.h>        /* for POSIX threads */
 //#include <sys/socket.h> /* for socket(), bind(), and connect() */
@@ -65,6 +97,15 @@
 
 //#include <netinet/in.h>
 //#include <linux/if.h>
+=======
+#include <string.h>
+//#include <pthread.h>        /* for POSIX threads */
+//#include <sys/socket.h> /* for socket(), bind(), and connect() */
+//#include <arpa/inet.h>  /* for sockaddr_in and inet_ntoa() */
+
+//#include <netinet/in.h>
+//#include <linux/if.h>
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 #include "sck.h"
 #include "ser.h"
@@ -77,6 +118,7 @@
 #include "secsl.h"
 #include "scttr.h"
 #include "scproc.h"
+<<<<<<< HEAD
 #include "scver.h"
 #include "fiog.h"
 #include "fio.h"
@@ -102,6 +144,33 @@ int giChkSum = 0;
 int giFlowDropCount = 1;
 int SERFlushRxBuff(int iPortNumArg);
 
+=======
+#include "scver.h"
+#include "fiog.h"
+#include "fio.h"
+#include "scmem.h"
+#include "roga.h"
+#include "scio.h"
+#include "otf.h"
+
+//#undef COMPORT6
+//PMP #define COMPORT6
+
+int giMaxFD;
+fd_set	fdsInput;
+fd_set	fdsOutput;
+
+struct timeval	stTimeout;
+
+unsigned int uiEOTretries = 0;
+unsigned int uiPrevAct = 99999;
+int giSECSComplete = 1;
+int giChkSum = 0;
+
+int giFlowDropCount = 1;
+int SERFlushRxBuff(int iPortNumArg);
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /****************************************************************
  *
@@ -225,7 +294,11 @@ int SERInitPorts(   int iPortNumArg, int iBaudRateArg, int iParityArg,
 		RTSCTS = 0;
 		break;
 	case 1:
+<<<<<<< HEAD
 		RTSCTS = CRTSCTS;
+=======
+		RTSCTS = CRTSCTS;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("comport=%d RTSCTS=%d\n",iPortNumArg, RTSCTS);
 		break;
     }
@@ -261,10 +334,17 @@ int SERInitPorts(   int iPortNumArg, int iBaudRateArg, int iParityArg,
 
 
     pCommData->m_iFD = open(caCommDevName[iPortNumArg-1], O_RDWR | O_NOCTTY | O_NONBLOCK);
+<<<<<<< HEAD
     if (pCommData->m_iFD == -1) {
         // PMP- device file does not exist
         pCommData->m_iPortOpen = FALSE;
     }
+=======
+    if (pCommData->m_iFD == -1) {
+        // PMP- device file does not exist
+        pCommData->m_iPortOpen = FALSE;
+    }
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 
 
@@ -303,7 +383,11 @@ int SERInitPorts(   int iPortNumArg, int iBaudRateArg, int iParityArg,
 
     iRet = A_OK;
     if (S2InitSecs(iPortNumArg) == FAILURE) goto error_exit;
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (iSECSArg)
     {
@@ -336,7 +420,11 @@ int SERInitPorts(   int iPortNumArg, int iBaudRateArg, int iParityArg,
 
     /* Check out a counter from the timer module. */
     if ((iaTimerIndex[iPortNumArg-1]=TIGetCounter()) == FAILURE)
+<<<<<<< HEAD
     { 
+=======
+    { 
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("SERInitPorts failed checking out a counter from timer module\n");
     	return FAILURE;
     }
@@ -495,6 +583,7 @@ int SERWriteString(int iPortNumArg, int iLengthArg, char *cpStrOutArg, int *iNum
     pCommData1 = stCommData;
     pCommData2 = stCommData + 1;
     pCommData3 = stCommData + 2;
+<<<<<<< HEAD
 
 #ifdef COMPORT6
     pCommData4 = stCommData + 3;
@@ -518,6 +607,31 @@ int SERWriteString(int iPortNumArg, int iLengthArg, char *cpStrOutArg, int *iNum
     if (pCommData6->m_iFD != -1)
         FD_SET(pCommData6->m_iFD, &fdsOutput);
 #endif
+=======
+
+#ifdef COMPORT6
+    pCommData4 = stCommData + 3;
+    pCommData5 = stCommData + 4;
+    pCommData6 = stCommData + 5;
+#endif
+
+    // PMP- check if port is open before setting device mask
+    if (pCommData1->m_iFD != -1)
+        FD_SET(pCommData1->m_iFD, &fdsOutput);
+    if (pCommData2->m_iFD != -1)
+        FD_SET(pCommData2->m_iFD, &fdsOutput);
+    if (pCommData3->m_iFD != -1)
+        FD_SET(pCommData3->m_iFD, &fdsOutput);
+
+#ifdef COMPORT6
+    if (pCommData4->m_iFD != -1)
+        FD_SET(pCommData4->m_iFD, &fdsOutput);
+    if (pCommData5->m_iFD != -1)
+        FD_SET(pCommData5->m_iFD, &fdsOutput);
+    if (pCommData6->m_iFD != -1)
+        FD_SET(pCommData6->m_iFD, &fdsOutput);
+#endif
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // Check if any char in port to read
     iRet = select(giMaxFD+1, NULL, &fdsOutput, NULL, &stTimeout);
@@ -537,12 +651,20 @@ int SERWriteString(int iPortNumArg, int iLengthArg, char *cpStrOutArg, int *iNum
     if ((pCommData1->m_iFD != -1) && FD_ISSET(pCommData1->m_iFD, &fdsOutput))
     {
         if (pCommData1 == pCommData)
+<<<<<<< HEAD
 	{
+=======
+	{
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("writing... %s   ", cpStrOutArg);
 		TIDelay(20);
     		if (iLengthArg > 0)
 			write(pCommData->m_iFD, cpStrOutArg, iLengthArg);
+<<<<<<< HEAD
     		*iNumBytesWrittenArg = iLengthArg;
+=======
+    		*iNumBytesWrittenArg = iLengthArg;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("     ending...\n");
     		return A_OK;
 	}
@@ -569,7 +691,11 @@ int SERWriteString(int iPortNumArg, int iLengthArg, char *cpStrOutArg, int *iNum
 	    	return A_OK;
 	}
     }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #ifdef COMPORT6
     if ((pCommData4->m_iFD != -1) && FD_ISSET(pCommData4->m_iFD, &fdsOutput))
     {
@@ -581,7 +707,11 @@ int SERWriteString(int iPortNumArg, int iLengthArg, char *cpStrOutArg, int *iNum
 	    	*iNumBytesWrittenArg = iLengthArg;
 	    	return A_OK;
 	}
+<<<<<<< HEAD
     }
+=======
+    }
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if ((pCommData5->m_iFD != -1) && FD_ISSET(pCommData5->m_iFD, &fdsOutput))
     {
         if (pCommData5 == pCommData)
@@ -603,9 +733,15 @@ int SERWriteString(int iPortNumArg, int iLengthArg, char *cpStrOutArg, int *iNum
 	    	*iNumBytesWrittenArg = iLengthArg;
 	    	return A_OK;
 	}
+<<<<<<< HEAD
     }
 #endif
 
+=======
+    }
+#endif
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return A_OK;
 }
@@ -661,6 +797,7 @@ int COReadChar(int iPortNumArg, char *cCharInArg, int *iNumCharsLeftArg, unsigne
     pCommData1 = stCommData;
     pCommData2 = stCommData + 1;
     pCommData3 = stCommData + 2;
+<<<<<<< HEAD
 
 #ifdef COMPORT6
     pCommData4 = stCommData + 3;
@@ -686,6 +823,33 @@ int COReadChar(int iPortNumArg, char *cCharInArg, int *iNumCharsLeftArg, unsigne
         FD_SET(pCommData6->m_iFD, &fdsInput);
 #endif
 
+=======
+
+#ifdef COMPORT6
+    pCommData4 = stCommData + 3;
+    pCommData5 = stCommData + 4;
+    pCommData6 = stCommData + 5;
+#endif
+
+    // PMP - avoid setting input mask for not open device
+    if (pCommData1->m_iFD != -1)
+        FD_SET(pCommData1->m_iFD, &fdsInput);
+    if (pCommData2->m_iFD != -1)
+        FD_SET(pCommData2->m_iFD, &fdsInput);
+    if (pCommData3->m_iFD != -1)
+        FD_SET(pCommData3->m_iFD, &fdsInput);
+
+
+#ifdef COMPORT6
+    if (pCommData4->m_iFD != -1)
+        FD_SET(pCommData4->m_iFD, &fdsInput);
+    if (pCommData5->m_iFD != -1)
+        FD_SET(pCommData5->m_iFD, &fdsInput);
+    if (pCommData6->m_iFD != -1)
+        FD_SET(pCommData6->m_iFD, &fdsInput);
+#endif
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // Check if any char in port to read
     iRet = select(giMaxFD+1, &fdsInput, NULL, NULL, &stTimeout);
@@ -760,16 +924,26 @@ int COReadChar(int iPortNumArg, char *cCharInArg, int *iNumCharsLeftArg, unsigne
     	return A_OK;
 	}
     }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #ifdef COMPORT6
     if ((pCommData4->m_iFD != -1) && FD_ISSET(pCommData4->m_iFD, &fdsInput))
     {
 	if(pCommData4 == pCommData)
 	{
     	// Read the port
+<<<<<<< HEAD
     	giRXNumCharLeft[iPortNumArg-1] = read(pCommData->m_iFD, caRXCommBuf[iPortNumArg-1], RX_BUF_SIZE);
 
 //int i;
+=======
+    	giRXNumCharLeft[iPortNumArg-1] = read(pCommData->m_iFD, caRXCommBuf[iPortNumArg-1], RX_BUF_SIZE);
+
+//int i;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //for(i=0; i<giRXNumCharLeft[3];++i)
 //printf("com4 read char=%2x charleft=%d\n",caRXCommBuf[3][i], i);
     	if (giRXNumCharLeft[iPortNumArg-1] <= 0)
@@ -777,6 +951,7 @@ int COReadChar(int iPortNumArg, char *cCharInArg, int *iNumCharsLeftArg, unsigne
 		*iStatusArg = STATUS_ERR;
 		return STATUS_ERR;
     	}
+<<<<<<< HEAD
     	*cCharInArg = caRXCommBuf[iPortNumArg-1][0];
 
 	// clear RX buf if ENQ received 
@@ -789,21 +964,7 @@ int COReadChar(int iPortNumArg, char *cCharInArg, int *iNumCharsLeftArg, unsigne
 	}
     }
 
-    if ((pCommData5->m_iFD != -1) && FD_ISSET(pCommData5->m_iFD, &fdsInput))
-    {
-	if(pCommData5 == pCommData)
-	{
-    	// Read the port
-    	giRXNumCharLeft[iPortNumArg-1] = read(pCommData->m_iFD, caRXCommBuf[iPortNumArg-1], RX_BUF_SIZE);
-
-//int i;
-//for(i=0; i<giRXNumCharLeft[3];++i)
-//printf("com4 read char=%2x charleft=%d\n",caRXCommBuf[3][i], i);
-    	if (giRXNumCharLeft[iPortNumArg-1] <= 0)
-    	{
-		*iStatusArg = STATUS_ERR;
-		return STATUS_ERR;
-    	}
+=======
     	*cCharInArg = caRXCommBuf[iPortNumArg-1][0];
 
 	// clear RX buf if ENQ received 
@@ -812,6 +973,51 @@ int COReadChar(int iPortNumArg, char *cCharInArg, int *iNumCharsLeftArg, unsigne
     	*iNumCharsLeftArg = --giRXNumCharLeft[iPortNumArg-1];
     	giRXCommBufIndex[iPortNumArg-1] = 1;
     	*iStatusArg = 0;
+    	return A_OK;
+	}
+    }
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
+    if ((pCommData5->m_iFD != -1) && FD_ISSET(pCommData5->m_iFD, &fdsInput))
+    {
+	if(pCommData5 == pCommData)
+	{
+    	// Read the port
+<<<<<<< HEAD
+    	giRXNumCharLeft[iPortNumArg-1] = read(pCommData->m_iFD, caRXCommBuf[iPortNumArg-1], RX_BUF_SIZE);
+
+//int i;
+=======
+    	giRXNumCharLeft[iPortNumArg-1] = read(pCommData->m_iFD, caRXCommBuf[iPortNumArg-1], RX_BUF_SIZE);
+
+//int i;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
+//for(i=0; i<giRXNumCharLeft[3];++i)
+//printf("com4 read char=%2x charleft=%d\n",caRXCommBuf[3][i], i);
+    	if (giRXNumCharLeft[iPortNumArg-1] <= 0)
+    	{
+		*iStatusArg = STATUS_ERR;
+		return STATUS_ERR;
+    	}
+<<<<<<< HEAD
+    	*cCharInArg = caRXCommBuf[iPortNumArg-1][0];
+
+	// clear RX buf if ENQ received 
+//	if(*cCharInArg == 5) giRXNumCharLeft[iPortNumArg-1] = 1;
+
+    	*iNumCharsLeftArg = --giRXNumCharLeft[iPortNumArg-1];
+    	giRXCommBufIndex[iPortNumArg-1] = 1;
+    	*iStatusArg = 0;
+=======
+    	*cCharInArg = caRXCommBuf[iPortNumArg-1][0];
+
+	// clear RX buf if ENQ received 
+//	if(*cCharInArg == 5) giRXNumCharLeft[iPortNumArg-1] = 1;
+
+    	*iNumCharsLeftArg = --giRXNumCharLeft[iPortNumArg-1];
+    	giRXCommBufIndex[iPortNumArg-1] = 1;
+    	*iStatusArg = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     	return A_OK;
 	}
     }
@@ -821,9 +1027,15 @@ int COReadChar(int iPortNumArg, char *cCharInArg, int *iNumCharsLeftArg, unsigne
 	if(pCommData6 == pCommData)
 	{
     	// Read the port
+<<<<<<< HEAD
     	giRXNumCharLeft[iPortNumArg-1] = read(pCommData->m_iFD, caRXCommBuf[iPortNumArg-1], RX_BUF_SIZE);
 
 //int i;
+=======
+    	giRXNumCharLeft[iPortNumArg-1] = read(pCommData->m_iFD, caRXCommBuf[iPortNumArg-1], RX_BUF_SIZE);
+
+//int i;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //for(i=0; i<giRXNumCharLeft[3];++i)
 //printf("com4 read char=%2x charleft=%d\n",caRXCommBuf[3][i], i);
     	if (giRXNumCharLeft[iPortNumArg-1] <= 0)
@@ -831,6 +1043,7 @@ int COReadChar(int iPortNumArg, char *cCharInArg, int *iNumCharsLeftArg, unsigne
 		*iStatusArg = STATUS_ERR;
 		return STATUS_ERR;
     	}
+<<<<<<< HEAD
     	*cCharInArg = caRXCommBuf[iPortNumArg-1][0];
 
 	// clear RX buf if ENQ received 
@@ -843,6 +1056,20 @@ int COReadChar(int iPortNumArg, char *cCharInArg, int *iNumCharsLeftArg, unsigne
 	}
     }
 #endif
+=======
+    	*cCharInArg = caRXCommBuf[iPortNumArg-1][0];
+
+	// clear RX buf if ENQ received 
+//	if(*cCharInArg == 5) giRXNumCharLeft[iPortNumArg-1] = 1;
+
+    	*iNumCharsLeftArg = --giRXNumCharLeft[iPortNumArg-1];
+    	giRXCommBufIndex[iPortNumArg-1] = 1;
+    	*iStatusArg = 0;
+    	return A_OK;
+	}
+    }
+#endif
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // no char in port yet.
     *iStatusArg = 0;
@@ -866,6 +1093,7 @@ int COReadString (int iPortNumArg, int iNumCharsLeftArg, char *fpcaMsgBlockArg, 
         return FAILURE;
 
     iRdone = FALSE;
+<<<<<<< HEAD
     i = 0;
     for(i=0; i<=giRXNumCharLeft[iPortNumArg-1]; i++)
     {
@@ -875,6 +1103,17 @@ int COReadString (int iPortNumArg, int iNumCharsLeftArg, char *fpcaMsgBlockArg, 
     *iNumCharsLeftAfterReadArg = giRXNumCharLeft[iPortNumArg-1];
     giRXNumCharLeft[iPortNumArg-1] = 0;
     *iStatusArg = A_OK;
+=======
+    i = 0;
+    for(i=0; i<=giRXNumCharLeft[iPortNumArg-1]; i++)
+    {
+  	fpcaMsgBlockArg[i] = caRXCommBuf[iPortNumArg-1][i];
+//printf("COReadString char=%2x i=%d\n",fpcaMsgBlockArg[i], i);
+    }
+    *iNumCharsLeftAfterReadArg = giRXNumCharLeft[iPortNumArg-1];
+    giRXNumCharLeft[iPortNumArg-1] = 0;
+    *iStatusArg = A_OK;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 //    while (!iRdone)
 //    {
@@ -893,10 +1132,17 @@ int COReadString (int iPortNumArg, int iNumCharsLeftArg, char *fpcaMsgBlockArg, 
 //    }
 //    *iRetArg = A_OK;
     return A_OK;
+<<<<<<< HEAD
 }
 
 
 int COReadStringCR (int iPortNumArg, char *fpcaMsgBlockArg)
+=======
+}
+
+
+int COReadStringCR (int iPortNumArg, char *fpcaMsgBlockArg)
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 {
     int iRet;                   /* Return code. Used wherever needed. */
     struct CommStr *pCommData;  /* Pointer to data structure. Changes for each port.
@@ -911,6 +1157,7 @@ int COReadStringCR (int iPortNumArg, char *fpcaMsgBlockArg)
      * a verification that the port is open is necessary. */
     if (!pCommData->m_iPortOpen)
         return FAILURE;
+<<<<<<< HEAD
 
 //    SERFlushComBuffer(iPortNumArg);
 
@@ -919,6 +1166,16 @@ int COReadStringCR (int iPortNumArg, char *fpcaMsgBlockArg)
     nChar = read(pCommData->m_iFD, fpcaMsgBlockArg, RX_BUF_SIZE);
 //printf("COReadStringCR chars=%s slen=%d i=%d\n",fpcaMsgBlockArg, strlen(fpcaMsgBlockArg), i);
     iRet = A_OK;
+=======
+
+//    SERFlushComBuffer(iPortNumArg);
+
+    iRdone = FALSE;
+    i=0;
+    nChar = read(pCommData->m_iFD, fpcaMsgBlockArg, RX_BUF_SIZE);
+//printf("COReadStringCR chars=%s slen=%d i=%d\n",fpcaMsgBlockArg, strlen(fpcaMsgBlockArg), i);
+    iRet = A_OK;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return iRet;
 }
 /****************************************************************
@@ -961,22 +1218,38 @@ int SERWriteChar(int iPortNumArg, char cCharIn)
     pCommData1 = stCommData;
     pCommData2 = stCommData + 1;
     pCommData3 = stCommData + 2;
+<<<<<<< HEAD
 
 #ifdef COMPORT6
     pCommData4 = stCommData + 3;
     pCommData5 = stCommData + 4;
     pCommData6 = stCommData + 5;
 #endif
+=======
+
+#ifdef COMPORT6
+    pCommData4 = stCommData + 3;
+    pCommData5 = stCommData + 4;
+    pCommData6 = stCommData + 5;
+#endif
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     FD_SET(pCommData1->m_iFD, &fdsOutput);
     FD_SET(pCommData2->m_iFD, &fdsOutput);
     FD_SET(pCommData3->m_iFD, &fdsOutput);
 
 #ifdef COMPORT6
+<<<<<<< HEAD
     FD_SET(pCommData4->m_iFD, &fdsOutput);
     FD_SET(pCommData5->m_iFD, &fdsOutput);
     FD_SET(pCommData6->m_iFD, &fdsOutput);
 #endif
+=======
+    FD_SET(pCommData4->m_iFD, &fdsOutput);
+    FD_SET(pCommData5->m_iFD, &fdsOutput);
+    FD_SET(pCommData6->m_iFD, &fdsOutput);
+#endif
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // Check if any char in port to read
     iRet = select(giMaxFD+1, NULL, &fdsOutput, NULL, &stTimeout);
@@ -1046,7 +1319,11 @@ int SERWriteChar(int iPortNumArg, char cCharIn)
 	    giTXCommBufIndex[iPortNumArg-1] = 0;
 	    return A_OK;
 	}
+<<<<<<< HEAD
     }
+=======
+    }
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 #ifdef COMPORT6
     if (FD_ISSET(pCommData4->m_iFD, &fdsOutput))
@@ -1064,13 +1341,22 @@ int SERWriteChar(int iPortNumArg, char cCharIn)
 	    }
 	    write(pCommData->m_iFD, &cCharIn, 1);
 	    giTXNumCharLeft[iPortNumArg-1] = 0;
+<<<<<<< HEAD
 	    giTXCommBufIndex[iPortNumArg-1] = 0;
+=======
+	    giTXCommBufIndex[iPortNumArg-1] = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("com4 write char=%d, charleft=%d\n",cCharIn, giTXNumCharLeft[iPortNumArg-1]);
 	    return A_OK;
 	}
     }
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (FD_ISSET(pCommData5->m_iFD, &fdsOutput))
     {
         if (pCommData5 == pCommData)
@@ -1086,13 +1372,22 @@ int SERWriteChar(int iPortNumArg, char cCharIn)
 	    }
 	    write(pCommData->m_iFD, &cCharIn, 1);
 	    giTXNumCharLeft[iPortNumArg-1] = 0;
+<<<<<<< HEAD
 	    giTXCommBufIndex[iPortNumArg-1] = 0;
+=======
+	    giTXCommBufIndex[iPortNumArg-1] = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("com4 write char=%d, charleft=%d\n",cCharIn, giTXNumCharLeft[iPortNumArg-1]);
 	    return A_OK;
 	}
     }
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (FD_ISSET(pCommData6->m_iFD, &fdsOutput))
     {
         if (pCommData6 == pCommData)
@@ -1108,12 +1403,21 @@ int SERWriteChar(int iPortNumArg, char cCharIn)
 	    }
 	    write(pCommData->m_iFD, &cCharIn, 1);
 	    giTXNumCharLeft[iPortNumArg-1] = 0;
+<<<<<<< HEAD
 	    giTXCommBufIndex[iPortNumArg-1] = 0;
 //printf("com4 write char=%d, charleft=%d\n",cCharIn, giTXNumCharLeft[iPortNumArg-1]);
 	    return A_OK;
 	}
     }
 #endif
+=======
+	    giTXCommBufIndex[iPortNumArg-1] = 0;
+//printf("com4 write char=%d, charleft=%d\n",cCharIn, giTXNumCharLeft[iPortNumArg-1]);
+	    return A_OK;
+	}
+    }
+#endif
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return A_OK;
 
@@ -1260,10 +1564,17 @@ int SERRxBuffAvail(int iPortNumArg)
                         caStrBuf[1] = 0;
                         SERPutsTxBuff(iPortNumArg, caStrBuf);
                     }
+<<<<<<< HEAD
     		    if (iPortNumArg == SERGetTTPort())
     		    	if (SERFlushTxBuff(iPortNumArg) == FAILURE) break;
                 }
 
+=======
+    		    if (iPortNumArg == SERGetTTPort())
+    		    	if (SERFlushTxBuff(iPortNumArg) == FAILURE) break;
+                }
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
                 /* Do nothing on the internal buffer for an ignorable character */
                 if (cCharIn == cIGNOREChar) break;
@@ -1280,7 +1591,11 @@ int SERRxBuffAvail(int iPortNumArg)
                 if (cCharIn == cEOTChar) iRxDone = TRUE;
                 /* store char */
                 if (SERStoreRxCh(pCommData, cCharIn) == FAILURE) iRxDone = TRUE;
+<<<<<<< HEAD
 //printf("cCharIn=%d numLeft=%d RxDone=%d\n",cCharIn, iNumCharsLeft,iRxDone);
+=======
+//printf("cCharIn=%d numLeft=%d RxDone=%d\n",cCharIn, iNumCharsLeft,iRxDone);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                 break;
 
             /* Nothing available from ASYNCH */
@@ -1298,9 +1613,15 @@ exit_point:
      * if an end-of-transmission character (typically a carriage return)
      * is encountered in the unread portion of the internal buffer. */
     if (SERCheckForEOT(pCommData) == SUCCESS)
+<<<<<<< HEAD
     {
 
 //printf("EOT: put#=%d get#=%d\n",pCommData->m_cpRxPut, pCommData->m_cpRxGet);
+=======
+    {
+
+//printf("EOT: put#=%d get#=%d\n",pCommData->m_cpRxPut, pCommData->m_cpRxGet);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
         /* Calculate the number of bytes available incorporating
          * input buffer wraparound. */
@@ -2816,6 +3137,7 @@ int SERGetSECSMsg(int iPortNumArg)
     unsigned long ulTimeOut;
     char cCharIn;
     char *fpcaMsgBlock;
+<<<<<<< HEAD
     int i, iLen;
     int iTotRead, iNumRead;
     char caMsgRest[256];
@@ -2829,13 +3151,32 @@ int SERGetSECSMsg(int iPortNumArg)
         case IDLE:          /* Idle, check for ENQ. */
 	    uiEOTretries = 0;
             if ((iRet=SERGetRawChar(iPortNumArg, &cCharIn, &iNumCharsLeft)) == FAILURE)
+=======
+    int i, iLen;
+    int iTotRead, iNumRead;
+    char caMsgRest[256];
+
+    if (S2GetSecsStructureMember(COM, iPortNumArg, &uiCurrActivity, WTCURR_ACTIVITY) == FAILURE) return FAILURE;
+
+
+    switch (uiCurrActivity)
+    {
+
+        case IDLE:          /* Idle, check for ENQ. */
+	    uiEOTretries = 0;
+            if ((iRet=SERGetRawChar(iPortNumArg, &cCharIn, &iNumCharsLeft)) == FAILURE)
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		return FAILURE;
             if (iRet == A_OK)
             {
                 if (iNumCharsLeft)
                 {           // Got something, NOT ENQ. 
                     S2SetSecsStructureMember(COM, iPortNumArg, INVALID_ENQ, LAST_ERROR);
+<<<<<<< HEAD
 		    SERFlushRxBuff(iPortNumArg);
+=======
+		    SERFlushRxBuff(iPortNumArg);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 printf("SERGetSECSMsg: IDLE, got not ENQ.\n");
                     return FAILURE;
                 }
@@ -2848,6 +3189,7 @@ printf("SERGetSECSMsg: IDLE, got not ENQ.\n");
 			SERWriteChar(iPortNumArg, NAK);
 printf("SERGetSECSMsg: IDLE, received ENQ, write EOT error.\n");
                         return FAILURE;
+<<<<<<< HEAD
                     }
                     /* Sending EOT, ready to receive data. */
                     S2SetSecsStructureMember(COM, iPortNumArg, SEND_EOT, WTCURR_ACTIVITY);
@@ -2863,6 +3205,23 @@ printf("SERGetSECSMsg: IDLE, received ENQ, write EOT, set SEND_EOT.\n");
             break;
 
   	case AWAIT_EOT:	// ENQ sent look for EOT
+=======
+                    }
+                    /* Sending EOT, ready to receive data. */
+                    S2SetSecsStructureMember(COM, iPortNumArg, SEND_EOT, WTCURR_ACTIVITY);
+                    S2SetTimeOut(COM, iPortNumArg, 0L);
+
+printf("SERGetSECSMsg: IDLE, received ENQ, write EOT, set SEND_EOT.\n");
+
+		    TIDelay(50);
+
+
+                }
+            }
+            break;
+
+  	case AWAIT_EOT:	// ENQ sent look for EOT
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             S2GetTimeOut(COM, iPortNumArg, &ulTimeOut);
             if (!ulTimeOut)
             {
@@ -2870,8 +3229,13 @@ printf("SERGetSECSMsg: IDLE, received ENQ, write EOT, set SEND_EOT.\n");
             	if (cCharIn == EOT)
             	{
                     S2SetSecsStructureMember(COM, iPortNumArg, SEND_MESSAGE, WTCURR_ACTIVITY);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg3 cur activity=%d --> 14\n", uiCurrActivity);
 iNeed = 1;
+=======
+//printf("SERGetSECSMsg3 cur activity=%d --> 14\n", uiCurrActivity);
+iNeed = 1;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                     S2GetTMsgBlock(COM, iPortNumArg, &fpcaMsgBlock);
                     iStatus = (int)(fpcaMsgBlock[0]) + 3;
 //                  iRet =  wrtst_a1(iPortNumArg, iStatus, fpcaMsgBlock, &iRet);
@@ -2879,15 +3243,24 @@ iNeed = 1;
                     if (iRet != A_OK)
                     {
                         SERSetSECSStatus(iPortNumArg, IDLE, INTERNAL_WRITE, NAK, FALSE);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg23 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
                         return FAILURE;
                     }
             	}
 		else
+=======
+//printf("SERGetSECSMsg23 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+                        return FAILURE;
+                    }
+            	}
+		else
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                 {
                     SERSetSECSStatus(iPortNumArg, IDLE, INTERNAL_WRITE, NAK, FALSE);
 
 //                    SERSetSECSStatus(iPortNumArg, AWAIT_EOT, OK, ENQ, TRUE);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg24 cur activity=%d --> 11 invalidEOT=%x\n", uiCurrActivity, cCharIn);
 		    SERFlushRxBuff(iPortNumArg);
 		    SERFlushTxBuff(iPortNumArg);
@@ -2899,18 +3272,36 @@ iNeed = 1;
 	    {
                 if (ulTimeOut < TIRSTime())
 		{
+=======
+//printf("SERGetSECSMsg24 cur activity=%d --> 11 invalidEOT=%x\n", uiCurrActivity, cCharIn);
+		    SERFlushRxBuff(iPortNumArg);
+		    SERFlushTxBuff(iPortNumArg);
+                    return FAILURE;
+                }
+
+            }
+	    else
+	    {
+                if (ulTimeOut < TIRSTime())
+		{
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                     S2GetSecsStructureMember(COM, iPortNumArg, &uiNumRetries, NUM_OF_RETRIES);
                     S2SetSecsStructureMember(COM, iPortNumArg, ++uiNumRetries, NUM_OF_RETRIES);
                     S2GetSecsStructureMember(COM, iPortNumArg, &uiMaxNumRetries, MAX_RETRIES);
                     if (uiNumRetries > uiMaxNumRetries)
                     {
                     	SERSetSECSStatus(iPortNumArg, IDLE, RETRY_ERROR, NAK, FALSE);
+<<<<<<< HEAD
 printf("SERGetSECSMsg: await_eot timeout over max NumRtys=%d\n", uiCurrActivity, uiNumRetries);
+=======
+printf("SERGetSECSMsg: await_eot timeout over max NumRtys=%d\n", uiCurrActivity, uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		    	SERFlushRxBuff(iPortNumArg);
 		    	SERFlushTxBuff(iPortNumArg);
                     	return FAILURE;
                     }
                     else
+<<<<<<< HEAD
                     {           /* Retry. */
 printf("SERGetSECSMsg: await_eot timeout retry=%d\n",uiNumRetries); 
                     	SERSetSECSStatus(iPortNumArg, MSG_TO_SEND, OK, NAK, FALSE);
@@ -2921,22 +3312,43 @@ printf("SERGetSECSMsg: await_eot timeout retry=%d\n",uiNumRetries);
 	     	}
 		else
 		{
+=======
+                    {           /* Retry. */
+printf("SERGetSECSMsg: await_eot timeout retry=%d\n",uiNumRetries); 
+                    	SERSetSECSStatus(iPortNumArg, MSG_TO_SEND, OK, NAK, FALSE);
+//printf("SERGetSECSMsg33 cur activity=%d --> 19 retry=%d\n", uiCurrActivity, uiNumRetries);
+		    	SERFlushRxBuff(iPortNumArg);
+		    	SERFlushTxBuff(iPortNumArg);
+                    }
+	     	}
+		else
+		{
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             	    if ((iRet=SERGetRawChar(iPortNumArg, &cCharIn, &iNumCharsLeft)) == FAILURE) return FAILURE;
             	    if (cCharIn == EOT)
             	    {
                     	S2SetSecsStructureMember(COM, iPortNumArg, SEND_MESSAGE, WTCURR_ACTIVITY);
+<<<<<<< HEAD
 printf("SERGetSECSMsg await_eot EOT received, set SEND_MESSAGE\n");
+=======
+printf("SERGetSECSMsg await_eot EOT received, set SEND_MESSAGE\n");
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                     	S2GetTMsgBlock(COM, iPortNumArg, &fpcaMsgBlock);
                     	iStatus = (int)(fpcaMsgBlock[0]) + 3;
 		    	iRet = SERWriteString(iPortNumArg, iStatus, fpcaMsgBlock, &iRet);
                     	if (iRet != A_OK)
                     	{
                             SERSetSECSStatus(iPortNumArg, IDLE, INTERNAL_WRITE, NAK, FALSE);
+<<<<<<< HEAD
 printf("SERGetSECSMsg await_eot write msg error nRtry=%d\n", uiNumRetries);
+=======
+printf("SERGetSECSMsg await_eot write msg error nRtry=%d\n", uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		    	    SERFlushRxBuff(iPortNumArg);
 		    	    SERFlushTxBuff(iPortNumArg);
                             return FAILURE;
                     	}
+<<<<<<< HEAD
             	    }
                     else
                     {
@@ -2955,6 +3367,26 @@ printf("SERGetSECSMsg: await_eot invalid eot read, send ENQ again\n");
 			}
                     }
 		}
+=======
+            	    }
+                    else
+                    {
+			uiEOTretries++;
+			if (uiEOTretries > 50)
+			{
+                    	    S2SetSecsStructureMember(COM, iPortNumArg, SEND_MESSAGE, WTCURR_ACTIVITY);
+                            SERSetSECSStatus(iPortNumArg, AWAIT_EOT, OK, ENQ, TRUE);
+printf("SERGetSECSMsg: await_eot invalid eot read, send ENQ again\n");
+		    	    SERFlushRxBuff(iPortNumArg);
+		    	    SERFlushTxBuff(iPortNumArg);
+			    uiEOTretries = 0;
+//if(iNeed)
+//printf("SERGetSECSMsg25 cur activity=%d retry=%d\n", uiCurrActivity, uiEOTretries);
+//iNeed=0;
+			}
+                    }
+		}
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    }
 	    break;
 
@@ -2969,7 +3401,11 @@ printf("SERGetSECSMsg: await_eot invalid eot read, send ENQ again\n");
                 {
                     S2SetSecsStructureMember(COM, iPortNumArg, IDLE, WTCURR_ACTIVITY);
                     S2SetSecsStructureMember(COM, iPortNumArg, INTERNAL_WRITE, LAST_ERROR);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg4 cur activity=%d --> 0\n", uiCurrActivity);
+=======
+//printf("SERGetSECSMsg4 cur activity=%d --> 0\n", uiCurrActivity);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                     return FAILURE;
                 }
                 else if (!iNumCharsLeft)
@@ -2991,6 +3427,7 @@ printf("SERGetSECSMsg: await_eot invalid eot read, send ENQ again\n");
                             ulTimeOut = (unsigned long)(cCharIn)*(unsigned long)(uiTimeOutInterval) + TIRSTime();
                             S2SetTimeOut(COM, iPortNumArg, ulTimeOut);
                             S2SetSecsStructureMember(COM, iPortNumArg, REC_MESSAGE, WTCURR_ACTIVITY);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg5 cur activity=%d --> 3\n", uiCurrActivity);
 			    TIDelay(100);
                         }
@@ -2998,13 +3435,26 @@ printf("SERGetSECSMsg: await_eot invalid eot read, send ENQ again\n");
                         {
                             SERSetSECSStatus(iPortNumArg, IDLE, INV_LEN_BYTE, NAK, TRUE);
 //printf("SERGetSECSMsg22 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+=======
+//printf("SERGetSECSMsg5 cur activity=%d --> 3\n", uiCurrActivity);
+			    TIDelay(100);
+                        }
+                        else
+                        {
+                            SERSetSECSStatus(iPortNumArg, IDLE, INV_LEN_BYTE, NAK, TRUE);
+//printf("SERGetSECSMsg22 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                             return FAILURE;
                         }
                     }
                     else
                     {       /* ERROR reading. */
                         SERSetSECSStatus(iPortNumArg, IDLE, INTERNAL_READ, NAK, TRUE);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg21 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+=======
+//printf("SERGetSECSMsg21 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                         return FAILURE;
                     }
                 }
@@ -3015,7 +3465,11 @@ printf("SERGetSECSMsg: await_eot invalid eot read, send ENQ again\n");
                 if (ulTimeOut < TIRSTime())
                 {           /* Time-out. */
                     SERSetSECSStatus(iPortNumArg, IDLE, S_TIMEOUT, NAK, TRUE);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg20 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+=======
+//printf("SERGetSECSMsg20 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                     return FAILURE;
                 }
                 if ((iRet=SERGetRawChar(iPortNumArg, &cCharIn, &iNumCharsLeft)) == FAILURE) return FAILURE;
@@ -3027,8 +3481,13 @@ printf("SERGetSECSMsg: await_eot invalid eot read, send ENQ again\n");
                     ulTimeOut = (unsigned long)(cCharIn)*(unsigned long)(uiTimeOutInterval) + TIRSTime();
                     S2SetTimeOut(COM, iPortNumArg, ulTimeOut);
                     S2SetSecsStructureMember(COM, iPortNumArg, REC_MESSAGE, WTCURR_ACTIVITY);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg7 cur activity=%d --> 3\n", uiCurrActivity);
 		    TIDelay(50);
+=======
+//printf("SERGetSECSMsg7 cur activity=%d --> 3\n", uiCurrActivity);
+		    TIDelay(50);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                 }
             }
             break;
@@ -3036,6 +3495,7 @@ printf("SERGetSECSMsg: await_eot invalid eot read, send ENQ again\n");
         case REC_MESSAGE:
 //            iRet = qsize_a1(iPortNumArg, &iNumCharsLeft, &iStatus);
             S2GetTimeOut(COM, iPortNumArg, &ulTimeOut);
+<<<<<<< HEAD
             if (ulTimeOut < TIRSTime())
 	    {
                     SERSetSECSStatus(iPortNumArg, IDLE, S_TIMEOUT, NAK, TRUE);
@@ -3044,6 +3504,16 @@ printf("SERGetSECSMsg rec_message timeOut\n");
 	    }
 
  	    iRet = SERBufRXLeft(iPortNumArg, &iNumCharsLeft, &iStatus);
+=======
+            if (ulTimeOut < TIRSTime())
+	    {
+                    SERSetSECSStatus(iPortNumArg, IDLE, S_TIMEOUT, NAK, TRUE);
+printf("SERGetSECSMsg rec_message timeOut\n");
+                    return FAILURE;
+	    }
+
+ 	    iRet = SERBufRXLeft(iPortNumArg, &iNumCharsLeft, &iStatus);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 
             if (iRet == A_OK)
@@ -3053,6 +3523,7 @@ printf("SERGetSECSMsg rec_message timeOut\n");
 //                {
 //                    S2GetMsgBlock(COM, iPortNumArg, &fpcaMsgBlock);
 //                    iRet = rdst_a1(iPortNumArg, iNumCharsLeft, fpcaMsgBlock+1, &iRet, &iNumCharsLeftAfterRead, &iStatus );
+<<<<<<< HEAD
 //		    iRet = COReadString(iPortNumArg, iNumCharsLeft, fpcaMsgBlock+1, &iNumCharsLeftAfterRead, &iStatus);
 
 		    TIDelay(50);
@@ -3157,11 +3628,121 @@ printf("SERGetSECSMsg rec_message timeOut\n");
 
 			}
 		    }
+=======
+//		    iRet = COReadString(iPortNumArg, iNumCharsLeft, fpcaMsgBlock+1, &iNumCharsLeftAfterRead, &iStatus);
+
+		    TIDelay(50);
+
+		    iRet = COReadString(iPortNumArg, iNumCharsLeft, fpcaMsgBlock, &iNumCharsLeftAfterRead, &iStatus);
+
+
+		    iLen = (unsigned int)fpcaMsgBlock[0] + 1;
+
+//printf("SERGetSECSMsg53  iNumRead=%d msglen=%d\n", iNumCharsLeftAfterRead, iLen);
+
+		    if (iNumCharsLeftAfterRead == (iLen+1))
+		    {
+                    	if (S2CheckSumOK(fpcaMsgBlock))
+                    	{
+			    giChkSum = 0;
+//printf("SERGetSECSMsg8 REC_MESSAGE chksumOK iNumCharsLeft=%d iStatus=%d msglen=%d\n", iNumCharsLeftAfterRead, iStatus, iLen);
+                            SERSetSECSStatus(iPortNumArg, IDLE, OK, ACK, TRUE);
+//printf("SERGetSECSMsg19 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+//for(i=0; i<=iNumCharsLeftAfterRead; ++i)
+//printf(" %d: %x\n",i, fpcaMsgBlock[i]);
+                            S2InterpretSecsMsg(iPortNumArg);
+                        }
+                        else
+                        {
+			    if(++giChkSum > 2)
+			    {
+//printf("SERGetSECSMsg88 REC_MESSAGE chksumNK iNumCharsLeft=%d iStatus=%d msglen=%d\n", iNumCharsLeftAfterRead, iStatus, iLen);
+                                SERSetSECSStatus(iPortNumArg, IDLE, OK, ACK, TRUE);
+//printf("SERGetSECSMsg99 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+//for(i=0; i<=iNumCharsLeftAfterRead; ++i)
+//printf(" %d: %x\n",i, fpcaMsgBlock[i]);
+                                S2InterpretSecsMsg(iPortNumArg);
+				giChkSum = 0;
+			    }
+			    else
+			    {
+                            	SERSetSECSStatus(iPortNumArg, IDLE, CHECK_SUM_ERR, NAK, TRUE);
+//printf("SERGetSECSMsg18 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+				TIDelay(100);
+                            	return FAILURE;
+			    }
+                    	}
+		    }
+		    else	// must read the rest message in
+		    {	
+			TIDelay(50);
+	            	if ((iRet=SERGetRawChar(iPortNumArg, &cCharIn, &iNumCharsLeft)) == FAILURE) return FAILURE;
+         	   	if (iRet == A_OK)
+         	   	{
+			    iRet = COReadString(iPortNumArg, iNumCharsLeft, caMsgRest, &iNumRead, &iStatus);
+			    iTotRead = iNumCharsLeftAfterRead + iNumRead + 1;
+
+//for(i=0;i<=iNumCharsLeftAfterRead;++i)
+//printf("SERGetSECSMsg55 frst %d = %x\n",i,fpcaMsgBlock[i]);
+//printf("SERGetSECSMsg55 frst %d = %x\n",i,cCharIn);
+
+			    if (iTotRead == (iLen+1))
+			    {
+//				fpcaMsgBlock[iNumCharsLeftAfterRead+1] = cCharIn;
+				for(i=0; i<=iNumRead; ++i)
+				{
+				    fpcaMsgBlock[iNumCharsLeftAfterRead+i+1] = caMsgRest[i]; 
+//printf("SERGetSECSMsg56 rest %d = %x\n",i+iNumCharsLeftAfterRead+1,caMsgRest[i]);
+				}
+				if (S2CheckSumOK(fpcaMsgBlock))
+                    		{
+                                    SERSetSECSStatus(iPortNumArg, IDLE, OK, ACK, TRUE);
+//printf("SERGetSECSMsg56 chksum OK\n");
+				}
+				else
+                    		{
+                                    SERSetSECSStatus(iPortNumArg, IDLE, OK, ACK, TRUE);
+//printf("SERGetSECSMsg56 chksum Not OK\n");
+				}
+                                S2InterpretSecsMsg(iPortNumArg);
+				giChkSum = 0;
+
+
+			    }
+			    else
+			    {
+//				fpcaMsgBlock[iNumCharsLeftAfterRead+1] = cCharIn;
+				for(i=0; i<=iNumRead; ++i)
+				{
+				    fpcaMsgBlock[iNumCharsLeftAfterRead+i+1] = caMsgRest[i]; 
+//printf("SERGetSECSMsg57 rest %d = %x\n",i+iNumCharsLeftAfterRead+1,caMsgRest[i]);
+				}
+				if (S2CheckSumOK(fpcaMsgBlock))
+                    		{
+                                    SERSetSECSStatus(iPortNumArg, IDLE, OK, ACK, TRUE);
+//printf("SERGetSECSMsg57 chksum OK\n");
+				}
+				else
+                    		{
+                                    SERSetSECSStatus(iPortNumArg, IDLE, OK, ACK, TRUE);
+//printf("SERGetSECSMsg57 chksum Not OK\n");
+				}
+                                S2InterpretSecsMsg(iPortNumArg);
+				giChkSum = 0;
+			    }
+
+			}
+		    }
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             }
             else
             {
                 SERSetSECSStatus(iPortNumArg, IDLE, INTERNAL_READ, NAK, TRUE);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg15 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+=======
+//printf("SERGetSECSMsg15 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                 return FAILURE;
             }
             break;
@@ -3169,7 +3750,11 @@ printf("SERGetSECSMsg rec_message timeOut\n");
         case AWAIT_ACK_NAK:
             S2GetTimeOut(COM, iPortNumArg, &ulTimeOut);
             if (!ulTimeOut)
+<<<<<<< HEAD
             {
+=======
+            {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 printf("SERGetSECSMsg: await_ack_nak, no TimeOut set\n");
             	if ((iRet=SERGetRawChar(iPortNumArg, &cCharIn, &iNumCharsLeft)) == FAILURE) return FAILURE;
             	if (iRet == A_OK)
@@ -3180,18 +3765,30 @@ printf("SERGetSECSMsg: await_ack_nak, no TimeOut set\n");
                     	S2SetSecsStructureMember(COM, iPortNumArg, OK, LAST_ERROR);
                     	S2SetSecsStructureMember(COM, iPortNumArg, TRUE, MESSAGE_SENT);
                     	S2SetSecsStructureMember(COM, iPortNumArg, 0, NUM_OF_RETRIES);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg59 cur activity=%d --> 0\n", uiCurrActivity);
+=======
+//printf("SERGetSECSMsg59 cur activity=%d --> 0\n", uiCurrActivity);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                     }
                     else
                     {
                     	S2GetSecsStructureMember(COM, iPortNumArg, &uiNumRetries, NUM_OF_RETRIES);
                     	S2SetSecsStructureMember(COM, iPortNumArg, ++uiNumRetries, NUM_OF_RETRIES);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg69 cur activity=%d --> 0 retry=%d charIn=%x\n", uiCurrActivity, uiNumRetries, cCharIn);
+=======
+//printf("SERGetSECSMsg69 cur activity=%d --> 0 retry=%d charIn=%x\n", uiCurrActivity, uiNumRetries, cCharIn);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                     	S2GetSecsStructureMember(COM, iPortNumArg, &uiMaxNumRetries, MAX_RETRIES);
                     	if (uiNumRetries > uiMaxNumRetries)
                       	{
                             SERSetSECSStatus(iPortNumArg, IDLE, RETRY_ERROR, NAK, FALSE);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg10 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+=======
+//printf("SERGetSECSMsg10 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			    SERFlushRxBuff(iPortNumArg);
 			    SERFlushTxBuff(iPortNumArg);
                             return FAILURE;
@@ -3200,7 +3797,11 @@ printf("SERGetSECSMsg: await_ack_nak, no TimeOut set\n");
                     	{           /* Retry. */
 //                            SERSetSECSStatus(iPortNumArg, MSG_TO_SEND, OK, NAK, FALSE);
                             SERSetSECSStatus(iPortNumArg, REC_MESSAGE, OK, NAK, FALSE);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg11 cur activity=%d --> 19 retry=%d\n", uiCurrActivity, uiNumRetries);
+=======
+//printf("SERGetSECSMsg11 cur activity=%d --> 19 retry=%d\n", uiCurrActivity, uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			    SERFlushRxBuff(iPortNumArg);
 			    SERFlushTxBuff(iPortNumArg);
                     	}
@@ -3218,13 +3819,21 @@ printf("SERGetSECSMsg: await_ack_nak, no TimeOut set\n");
                     	if (uiNumRetries > uiMaxNumRetries)
                     	{
                             SERSetSECSStatus(iPortNumArg, IDLE, RETRY_ERROR, NAK, FALSE);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg12 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+=======
+//printf("SERGetSECSMsg12 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                             return FAILURE;
                     	}
                     	else
                     	{           /* Retry. */
                             SERSetSECSStatus(iPortNumArg, MSG_TO_SEND, OK, NAK, FALSE);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg13 cur activity=%d --> 19 retry=%d\n", uiCurrActivity, uiNumRetries);
+=======
+//printf("SERGetSECSMsg13 cur activity=%d --> 19 retry=%d\n", uiCurrActivity, uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			    SERFlushRxBuff(iPortNumArg);
 			    SERFlushTxBuff(iPortNumArg);
                     	}
@@ -3233,6 +3842,7 @@ printf("SERGetSECSMsg: await_ack_nak, no TimeOut set\n");
             	else
             	{                   /* Problem. */
                     SERSetSECSStatus(iPortNumArg, IDLE, INTERNAL_WRITE, NAK, FALSE);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg14 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
                     return FAILURE;
             	}
@@ -3241,13 +3851,27 @@ printf("SERGetSECSMsg: await_ack_nak, no TimeOut set\n");
 	    {
                 if (ulTimeOut < TIRSTime())
 		{
+=======
+//printf("SERGetSECSMsg14 cur activity=%d --> 0 retry=%d\n", uiCurrActivity, uiNumRetries);
+                    return FAILURE;
+            	}
+            }
+    	    else
+	    {
+                if (ulTimeOut < TIRSTime())
+		{
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                     S2GetSecsStructureMember(COM, iPortNumArg, &uiNumRetries, NUM_OF_RETRIES);
                     S2SetSecsStructureMember(COM, iPortNumArg, ++uiNumRetries, NUM_OF_RETRIES);
                     S2GetSecsStructureMember(COM, iPortNumArg, &uiMaxNumRetries, MAX_RETRIES);
                     if (uiNumRetries > uiMaxNumRetries)
                     {
                     	SERSetSECSStatus(iPortNumArg, IDLE, RETRY_ERROR, NAK, FALSE);
+<<<<<<< HEAD
 printf("SERGetSECSMsg: await_ack_nak, timeout retry over max, nRty=%d\n", uiNumRetries);
+=======
+printf("SERGetSECSMsg: await_ack_nak, timeout retry over max, nRty=%d\n", uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		    	SERFlushRxBuff(iPortNumArg);
 		    	SERFlushTxBuff(iPortNumArg);
                     	return FAILURE;
@@ -3255,6 +3879,7 @@ printf("SERGetSECSMsg: await_ack_nak, timeout retry over max, nRty=%d\n", uiNumR
                     else
                     {           /* Retry. */
                     	SERSetSECSStatus(iPortNumArg, MSG_TO_SEND, OK, NAK, FALSE);
+<<<<<<< HEAD
 printf("SERGetSECSMsg: await_ack_nak, timeout retrying MSG_TO_SEND, nRtry=%d\n", uiNumRetries);
 		    	SERFlushRxBuff(iPortNumArg);
 		    	SERFlushTxBuff(iPortNumArg);
@@ -3262,6 +3887,15 @@ printf("SERGetSECSMsg: await_ack_nak, timeout retrying MSG_TO_SEND, nRtry=%d\n",
 	    	}
 		else
 		{
+=======
+printf("SERGetSECSMsg: await_ack_nak, timeout retrying MSG_TO_SEND, nRtry=%d\n", uiNumRetries);
+		    	SERFlushRxBuff(iPortNumArg);
+		    	SERFlushTxBuff(iPortNumArg);
+                    }
+	    	}
+		else
+		{
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             	    if ((iRet=SERGetRawChar(iPortNumArg, &cCharIn, &iNumCharsLeft)) == FAILURE) return FAILURE;
             	    if (iRet == A_OK)
             	    {
@@ -3271,18 +3905,30 @@ printf("SERGetSECSMsg: await_ack_nak, timeout retrying MSG_TO_SEND, nRtry=%d\n",
                     	    S2SetSecsStructureMember(COM, iPortNumArg, OK, LAST_ERROR);
                     	    S2SetSecsStructureMember(COM, iPortNumArg, TRUE, MESSAGE_SENT);
                     	    S2SetSecsStructureMember(COM, iPortNumArg, 0, NUM_OF_RETRIES);
+<<<<<<< HEAD
 printf("SERGetSECSMsg: await_ack_nak, ACK received\n");
+=======
+printf("SERGetSECSMsg: await_ack_nak, ACK received\n");
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                     	}
                     	else
                     	{
                     	    S2GetSecsStructureMember(COM, iPortNumArg, &uiNumRetries, NUM_OF_RETRIES);
                     	    S2SetSecsStructureMember(COM, iPortNumArg, ++uiNumRetries, NUM_OF_RETRIES);
+<<<<<<< HEAD
 //printf("SERGetSECSMsg99 cur activity=%d --> 0 retry=%d charIn=%x\n", uiCurrActivity, uiNumRetries, cCharIn);
+=======
+//printf("SERGetSECSMsg99 cur activity=%d --> 0 retry=%d charIn=%x\n", uiCurrActivity, uiNumRetries, cCharIn);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                     	    S2GetSecsStructureMember(COM, iPortNumArg, &uiMaxNumRetries, MAX_RETRIES);
                     	    if (uiNumRetries > uiMaxNumRetries)
                       	    {
                             	SERSetSECSStatus(iPortNumArg, IDLE, RETRY_ERROR, NAK, FALSE);
+<<<<<<< HEAD
 printf("SERGetSECSMsg: await_ack_nak no ACK received, retry over max, nRtry=%d\n", uiNumRetries);
+=======
+printf("SERGetSECSMsg: await_ack_nak no ACK received, retry over max, nRtry=%d\n", uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			    	SERFlushRxBuff(iPortNumArg);
 			    	SERFlushTxBuff(iPortNumArg);
                             	return FAILURE;
@@ -3291,7 +3937,11 @@ printf("SERGetSECSMsg: await_ack_nak no ACK received, retry over max, nRtry=%d\n
                     	    {           /* Retry. */
                             	SERSetSECSStatus(iPortNumArg, MSG_TO_SEND, OK, NAK, FALSE);
 //                            	SERSetSECSStatus(iPortNumArg, AWAIT_EOT, OK, ENQ, TRUE);
+<<<<<<< HEAD
 printf("SERGetSECSMsg: await_ack_nak no ACK received, retry MSG_TO_SEND, nRty=%d\n", uiNumRetries);
+=======
+printf("SERGetSECSMsg: await_ack_nak no ACK received, retry MSG_TO_SEND, nRty=%d\n", uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			    	SERFlushRxBuff(iPortNumArg);
 			    	SERFlushTxBuff(iPortNumArg);
                     	    }
@@ -3309,13 +3959,21 @@ printf("SERGetSECSMsg: await_ack_nak no ACK received, retry MSG_TO_SEND, nRty=%d
                     	    if (uiNumRetries > uiMaxNumRetries)
                     	    {
                             	SERSetSECSStatus(iPortNumArg, IDLE, RETRY_ERROR, NAK, FALSE);
+<<<<<<< HEAD
 printf("SERGetSECSMsg: await_ack_nak Q_Empty, timeOut over max, nRty=%d\n", uiNumRetries);
+=======
+printf("SERGetSECSMsg: await_ack_nak Q_Empty, timeOut over max, nRty=%d\n", uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                             	return FAILURE;
                     	    }
                     	    else
                     	    {           /* Retry. */
                             	SERSetSECSStatus(iPortNumArg, MSG_TO_SEND, OK, NAK, FALSE);
+<<<<<<< HEAD
 printf("SERGetSECSMsg: await_ack_nak Q_Empty, timeOut, retrying MSG_TO_SEND, nRtry=%d\n", uiNumRetries);
+=======
+printf("SERGetSECSMsg: await_ack_nak Q_Empty, timeOut, retrying MSG_TO_SEND, nRtry=%d\n", uiNumRetries);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			    	SERFlushRxBuff(iPortNumArg);
 			    	SERFlushTxBuff(iPortNumArg);
                     	    }
@@ -3324,6 +3982,7 @@ printf("SERGetSECSMsg: await_ack_nak Q_Empty, timeOut, retrying MSG_TO_SEND, nRt
             	    else
             	    {                   /* Problem. */
                     	SERSetSECSStatus(iPortNumArg, IDLE, INTERNAL_WRITE, NAK, FALSE);
+<<<<<<< HEAD
 printf("SERGetSECSMsg: await_ack_nak, RX_buffer error\n");
                     	return FAILURE;
             	    }
@@ -3332,6 +3991,16 @@ printf("SERGetSECSMsg: await_ack_nak, RX_buffer error\n");
 
             break;
 
+=======
+printf("SERGetSECSMsg: await_ack_nak, RX_buffer error\n");
+                    	return FAILURE;
+            	    }
+		}
+	    }
+
+            break;
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         default:
             return FAILURE;
     }
@@ -3358,6 +4027,7 @@ int SERSendSECSMsg(int iPortNumArg)
     char cCharIn;
     unsigned char *fpcaMsgBlock;
 
+<<<<<<< HEAD
     if (S2GetSecsStructureMember(COM, iPortNumArg, &uiCurrActivity, WTCURR_ACTIVITY) == FAILURE) return FAILURE;
 
 if(uiCurrActivity != uiPrevAct)
@@ -3373,6 +4043,23 @@ goto exit_out;
         case MSG_TO_SEND:     /* There is message to send. */
 
 giSECSComplete = 0;
+=======
+    if (S2GetSecsStructureMember(COM, iPortNumArg, &uiCurrActivity, WTCURR_ACTIVITY) == FAILURE) return FAILURE;
+
+if(uiCurrActivity != uiPrevAct)
+{
+//printf("SERSendSECSMsg port=%d activity=%d prev=%d\n",iPortNumArg, uiCurrActivity, uiPrevAct);
+uiPrevAct = uiCurrActivity;
+}
+else
+goto exit_out;
+
+    switch (uiCurrActivity)
+    {
+        case MSG_TO_SEND:     /* There is message to send. */
+
+giSECSComplete = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
             S2SetSecsStructureMember(COM, iPortNumArg, OK, LAST_ERROR);
 	    iRet = SERWriteChar(iPortNumArg, ENQ);
@@ -3383,14 +4070,22 @@ giSECSComplete = 0;
                 return FAILURE;
             }
             S2SetSecsStructureMember(COM, iPortNumArg, AWAIT_EOT, WTCURR_ACTIVITY);
+<<<<<<< HEAD
 //printf("SERSendSECSMsg cur activity=%d --> 11\n", uiCurrActivity);
+=======
+//printf("SERSendSECSMsg cur activity=%d --> 11\n", uiCurrActivity);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             S2GetSecsStructureMember(COM, iPortNumArg, &uiTimeOutInterval, T2);
             ulTimeOut = (unsigned long)(uiTimeOutInterval) + TIRSTime();
             S2SetTimeOut(COM, iPortNumArg, ulTimeOut);
             break;
 
         case SEND_ENQ:       /* Sending ENQ. */
+<<<<<<< HEAD
 //printf("SERSendSECSMsg SEND_ENQ port=%d activity=%d\n",iPortNumArg, uiCurrActivity);
+=======
+//printf("SERSendSECSMsg SEND_ENQ port=%d activity=%d\n",iPortNumArg, uiCurrActivity);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    iRet = SERBufRXLeft(iPortNumArg, &iNumCharsLeft, &iStatus);
             if (iRet == A_OK)
             {
@@ -3400,7 +4095,11 @@ giSECSComplete = 0;
                     if (cCharIn == EOT)
                     {
                         S2SetSecsStructureMember(COM, iPortNumArg, SEND_MESSAGE, WTCURR_ACTIVITY);
+<<<<<<< HEAD
 //printf("SERSendSECSMsg cur activity=%d --> 14\n", uiCurrActivity);
+=======
+//printf("SERSendSECSMsg cur activity=%d --> 14\n", uiCurrActivity);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                         S2GetTMsgBlock(COM, iPortNumArg, &fpcaMsgBlock);
                         iStatus = (int)(fpcaMsgBlock[0]) + 3;
 			iRet = SERWriteString(iPortNumArg, iStatus, fpcaMsgBlock, &iRet);
@@ -3415,7 +4114,11 @@ giSECSComplete = 0;
 			iRet = SERWriteChar(iPortNumArg, EOT);
                         /* Sending EOT, ready to receive data. */
                         S2SetSecsStructureMember(COM, iPortNumArg, SEND_EOT, WTCURR_ACTIVITY);
+<<<<<<< HEAD
 //printf("SERSendSECSMsg cur activity=%d --> 2\n", uiCurrActivity);
+=======
+//printf("SERSendSECSMsg cur activity=%d --> 2\n", uiCurrActivity);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                         S2SetSecsStructureMember(COM, iPortNumArg, OK, LAST_ERROR);
                         do
                         {
@@ -3424,7 +4127,11 @@ giSECSComplete = 0;
                             S2GetSecsStructureMember(COM, iPortNumArg, &uiCurrActivity, WTCURR_ACTIVITY);
                         } while((uiCurrActivity != IDLE) && (uiLastErr == OK));
                         S2SetSecsStructureMember(COM, iPortNumArg, MSG_TO_SEND, WTCURR_ACTIVITY);
+<<<<<<< HEAD
 //printf("SERSendSECSMsg cur activity=%d --> 19\n", uiCurrActivity);
+=======
+//printf("SERSendSECSMsg cur activity=%d --> 19\n", uiCurrActivity);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                         break;
                     }
                 }
@@ -3470,7 +4177,11 @@ giSECSComplete = 0;
                 if (!iNumCharsLeft)
                 {           /* All sent. */
                     S2SetSecsStructureMember(COM, iPortNumArg, AWAIT_ACK_NAK, WTCURR_ACTIVITY);
+<<<<<<< HEAD
 printf("SERSendSECSMsg: send_message, no char left, set to await_ack_nak\n");
+=======
+printf("SERSendSECSMsg: send_message, no char left, set to await_ack_nak\n");
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                     S2GetSecsStructureMember(COM, iPortNumArg, &uiTimeOutInterval, T2);
                     ulTimeOut = (unsigned long)(uiTimeOutInterval) + TIRSTime();
                     S2SetTimeOut(COM, iPortNumArg, ulTimeOut);
@@ -3485,8 +4196,13 @@ printf("SERSendSECSMsg: send_message, no char left, set to await_ack_nak\n");
         default:
             return FAILURE;
     }
+<<<<<<< HEAD
 
 exit_out:
+=======
+
+exit_out:
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return SUCCESS;
 }
@@ -3517,27 +4233,45 @@ int SERSetSECSStatus(int iPortNumArg, int iCurrActivityStatArg, int iLastErrorSt
 //        iflsh_a1(iPortNumArg);
 //        wrtch_a1(iPortNumArg, cAckNakStatArg);
 	SERFlushRxBuff(iPortNumArg);
+<<<<<<< HEAD
 	SERWriteChar(iPortNumArg, cAckNakStatArg);
     }
 
     if(iCurrActivityStatArg == IDLE)
     {
 	giSECSComplete = 1;
+=======
+	SERWriteChar(iPortNumArg, cAckNakStatArg);
+    }
+
+    if(iCurrActivityStatArg == IDLE)
+    {
+	giSECSComplete = 1;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 
     return SUCCESS;
 }
+<<<<<<< HEAD
 int SERDumpSECSStatus(int iPortNumArg)
 {
     unsigned int ulTimeOut, uiTimeOutInertval;
     int iLastError, iCurrActivity, uiMaxNumRetries, uiNumRetries;
 
+=======
+int SERDumpSECSStatus(int iPortNumArg)
+{
+    unsigned int ulTimeOut, uiTimeOutInertval;
+    int iLastError, iCurrActivity, uiMaxNumRetries, uiNumRetries;
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     S2GetTimeOut(COM, iPortNumArg, &ulTimeOut);
     S2GetSecsStructureMember(COM, iPortNumArg, &uiTimeOutInertval, T2);
     S2GetSecsStructureMember(COM, iPortNumArg, &iLastError, LAST_ERROR);
     S2GetSecsStructureMember(COM, iPortNumArg, &iCurrActivity, WTCURR_ACTIVITY);
     S2GetSecsStructureMember(COM, iPortNumArg, &uiMaxNumRetries, MAX_RETRIES);
     S2GetSecsStructureMember(COM, iPortNumArg, &uiNumRetries, NUM_OF_RETRIES);
+<<<<<<< HEAD
     printf("curAct=%d prevAct=%d \r\n timeout=%d timeInterv=%d \r\n maxRetry=%d retried=%d err=%d\n",iCurrActivity,uiPrevAct,ulTimeOut, uiTimeOutInertval, uiMaxNumRetries, uiNumRetries, iLastError);
     
     return SUCCESS;
@@ -3548,6 +4282,18 @@ int SERGetSecsActivity(int iPortNumArg)
     S2GetSecsStructureMember(COM, iPortNumArg, &uAct, WTCURR_ACTIVITY);
     return uAct;
 }
+=======
+    printf("curAct=%d prevAct=%d \r\n timeout=%d timeInterv=%d \r\n maxRetry=%d retried=%d err=%d\n",iCurrActivity,uiPrevAct,ulTimeOut, uiTimeOutInertval, uiMaxNumRetries, uiNumRetries, iLastError);
+    
+    return SUCCESS;
+}
+int SERGetSecsActivity(int iPortNumArg)
+{
+    unsigned int uAct;
+    S2GetSecsStructureMember(COM, iPortNumArg, &uAct, WTCURR_ACTIVITY);
+    return uAct;
+}
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /****************************************************************
  *
@@ -3585,4 +4331,8 @@ int SERPutsRxBuff(int iPortNumArg, char *cpRxStrArg)
     return SUCCESS;
 }
 //#endif
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)

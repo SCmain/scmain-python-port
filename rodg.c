@@ -1,7 +1,35 @@
 /***************************************************************\
  *
+<<<<<<< HEAD
  * Program:     Controller Firmware
  * File:        MEDiag.h
+=======
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ * Program:     Controller Firmware
+ * File:        rodg.c
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   ROTestHome
  *              ROAdjustRAtHome
  *              ROAdjustRAtIndex
@@ -22,7 +50,11 @@
 \***************************************************************/
 
 #include <sys/io.h>
+<<<<<<< HEAD
 #include <stdlib.h>
+=======
+#include <stdlib.h>
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <ctype.h>
 #include <math.h>
 #include <string.h>
@@ -38,6 +70,7 @@
 #include "scttr.h"
 #include "scio.h"
 #include "scintr.h"
+<<<<<<< HEAD
 #include "sctim.h"
 
 extern int giNumOfAxes;
@@ -45,6 +78,15 @@ extern int giNumOfAxes;
 void GAGalilWriteIO(int, int);
 int  GAGalilReadIO(int);
 int  GAGalilReadOut(int);
+=======
+#include "sctim.h"
+
+extern int giNumOfAxes;
+
+void GAGalilWriteIO(int, int);
+int  GAGalilReadIO(int);
+int  GAGalilReadOut(int);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 char cpNull[8];
 /****************************************************************
@@ -86,10 +128,17 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
                              * is on the robot Galil card, command returns will
                              * be parsed to 4 numbers. Just a robot parses to 3 only. */
     int  iVacIndex;
+<<<<<<< HEAD
     char cBuf[MAXGASTR], *pChar, cButtonPressed; //, *pRDistanceTemp;
 
     char caTP[20];
 
+=======
+    char cBuf[MAXGASTR], *pChar, cButtonPressed; //, *pRDistanceTemp;
+
+    char caTP[20];
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     long lTP, lLowDist, lHighDist;  /* Used to determine if a belt correction is needed. */
     unsigned long ulAuxAxis = 0;    /* Axis designation if an auxilliary axis exists. */
     /* The remaining variables are used to get/set or save/restore
@@ -114,9 +163,15 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
      * card number, setup an auxilliary axis if one exists, and initialize the amps.
      * Card number (iCardNoArg) : 0=robot, 1=prealigner. */
     TTPrintsAt( 4, 1, "Init. AMP. board" );
+<<<<<<< HEAD
     iTempCardNum = iCardNoArg ? GA_CARD_1 : GA_CARD_0;
 
 	if (iTempCardNum == GA_CARD_1) goto preTest;
+=======
+    iTempCardNum = iCardNoArg ? GA_CARD_1 : GA_CARD_0;
+
+	if (iTempCardNum == GA_CARD_1) goto preTest;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Check to see if a dual arm exists in the system. */
     if (ROGetSpecialAxis(RO_DUAL_ARM))
@@ -147,7 +202,11 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
 
     /* Read INPUT G port, and check the status. */
     iTint = inb(iPortBase+3);
+<<<<<<< HEAD
 	iTint = 0;
+=======
+	iTint = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if( iTint )
     {
@@ -186,7 +245,11 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
     /* Set new robot torque limits. */
     lTempVal[0] = lTempVal[1] = lTempVal[2] = lTempVal[3] = 9999;
     ROSetParameter(FALSE, ulAxisALLRbt, lTempVal, TORQUE_LIMIT);
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (ulAuxAxis)
     {
         /* Save old auxilliary axes values if appropriate. */
@@ -217,8 +280,13 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
 //    ROEnableSCurveProfile( ulAxisALLRbt, lTAFlagOff );  /* set the S-curve motion profile flag (enable/disable) */
 
     do
+<<<<<<< HEAD
     {
 	ROUpdateTS(FALSE);
+=======
+    {
+	ROUpdateTS(FALSE);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
         SERGetcRxBuff(SERGetTTPort(), &cButtonPressed, FALSE);
 
@@ -230,20 +298,34 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
         FIOGetParamVals(iWhichParm, ENCODER_RESOLUTION, lEncRes);
 
         if (ulAuxAxis)
+<<<<<<< HEAD
         {
 	    if(giNumOfAxes <= 4)
 	    {
+=======
+        {
+	    if(giNumOfAxes <= 4)
+	    {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         	/* Get the same info for the auxilliary axis if appropriate. */
         	FIOGetParamVals(PREALIGNFILE, HOME_SPEED, lAuxHomeSpeed);
         	ROArrangeGetArrayForW(ulAuxAxis, lAuxHomeSpeed);
         	FIOGetParamVals(PREALIGNFILE, HOME_ACCEL, lAuxHomeAccel);
         	ROArrangeGetArrayForW(ulAuxAxis, lAuxHomeAccel);
         	FIOGetParamVals(PREALIGNFILE, ENCODER_RESOLUTION, lAuxEncRes);
+<<<<<<< HEAD
         	ROArrangeGetArrayForW(ulAuxAxis, lAuxEncRes);
 //printf("AuxEncRes: %d %d %d\n",lAuxEncRes[0], lAuxEncRes[1], lAuxEncRes[2]);
 //lAuxEncRes[0]=500;
 	    }
 	    else
+=======
+        	ROArrangeGetArrayForW(ulAuxAxis, lAuxEncRes);
+//printf("AuxEncRes: %d %d %d\n",lAuxEncRes[0], lAuxEncRes[1], lAuxEncRes[2]);
+//lAuxEncRes[0]=500;
+	    }
+	    else
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    {
 		/* Get the same info for the auxilliary axis if appropriate. */
         	FIOGetParamVals(AUXFILE, HOME_SPEED, lAuxHomeSpeed);
@@ -251,7 +333,11 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
         	FIOGetParamVals(AUXFILE, HOME_ACCEL, lAuxHomeAccel);
         	ROArrangeGetArrayForW(ulAuxAxis, lAuxHomeAccel);
         	FIOGetParamVals(AUXFILE, ENCODER_RESOLUTION, lAuxEncRes);
+<<<<<<< HEAD
         	ROArrangeGetArrayForW(ulAuxAxis, lAuxEncRes);
+=======
+        	ROArrangeGetArrayForW(ulAuxAxis, lAuxEncRes);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    }
         }
 
@@ -281,8 +367,13 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
                 /* Turn servo ON for robot or pre-aligner. */
                 GASendReceiveGalil(iTempCardNum, (char *)"SHXYZ\r" , cpNull);
 //                GASendReceiveGalil(iTempCardNum, (char *)"EI 255,255\r" , cpNull);
+<<<<<<< HEAD
                 /* If a Z brake releasing is required... */
 		ROServiceBrake(ROBOTFILE, TRUE);
+=======
+                /* If a Z brake releasing is required... */
+		ROServiceBrake(ROBOTFILE, TRUE);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 //                if ((lZAxisBrake[0] > 0))
 //                {
@@ -312,7 +403,11 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
                 GASendReceiveGalil(iTempCardNum, (char *)"BGXYZ\r" , cpNull);
                 ulAMFlag &= ~ulAxisALLRbt;
                 iTS = (int)(ulAxisALLRbt);
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                 /* If a dual arm exists, home it. */
                 if (iDualArmCardNum)
                     iCardToUse = iDualArmCardNum;
@@ -442,7 +537,11 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
 //                GASendReceiveGalil(iTempCardNum, (char *)"EI 255,255\r" , cpNull);
                     ulERFlag &= ~RO_AXIS_Z;
                 /* If a Z brake releasing is required... */
+<<<<<<< HEAD
 		ROServiceBrake(ROBOTFILE, TRUE);
+=======
+		ROServiceBrake(ROBOTFILE, TRUE);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //                if (lZAxisBrake[0] > 0)
 //                {
                     /* ...activate the Z brake. */
@@ -526,7 +625,11 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
                     if( cButtonPressed == 'E' )
                     {
                         lLowDist = lAuxEncRes[3];
+<<<<<<< HEAD
                         lHighDist = 3*lAuxEncRes[3];
+=======
+                        lHighDist = 3*lAuxEncRes[3];
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("W: low=%d high=%d\n",lLowDist,lHighDist);
                     }
                 }
@@ -537,7 +640,11 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
             case CR:    /* If an enter is pressed, ignore it. */
                 /* If any axis is in motion, start an internal loop until motion completes. */
                 while( (ulAMFlag & ulAllAMFlag) != ulAllAMFlag )
+<<<<<<< HEAD
                 {
+=======
+                {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		    ROUpdateTS(FALSE);
                     SERGetcRxBuff(SERGetTTPort(), &cButtonPressed, FALSE);
                     /* Only an ESCape key press will exit the loop manually and also the test. */
@@ -649,7 +756,11 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
                 {
                     /* Motion complete for all axes, proceed to find distance to index. */
                     if( (ulAMFlag & ulAllAMFlag) != ulAllAMFlag )
+<<<<<<< HEAD
                     {
+=======
+                    {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			ROUpdateTS(FALSE);
                         break;
                     }
@@ -666,7 +777,11 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
 //                            if( iTS & (1<<(iReturnValue+((iTempCardNum==GA_CARD_1) ? 4 : 0))) )
                             if( iTS & (1<<iReturnValue) )
                             {
+<<<<<<< HEAD
                             	lTP = labs( atol( pChar ) );
+=======
+                            	lTP = labs( atol( pChar ) );
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			    	sprintf(caTP, "%d", lTP);
                                 /* W or w axis. */
                                 if (iReturnValue == 3)
@@ -751,7 +866,11 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
 
     /* HOME TEST COMPLETED!!! */
     /* If a Z brake activation is required... */
+<<<<<<< HEAD
     ROServiceBrake(ROBOTFILE, FALSE);
+=======
+    ROServiceBrake(ROBOTFILE, FALSE);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    if (lZAxisBrake[0] > 0)
 //    {
         /* ...activate the Z brake. */
@@ -799,9 +918,15 @@ int ROTestHome(int iCardNoArg, int iVacExistsArg)
     /* Restore the S-curve motion profile flag (enable/disable) */
 //    ROEnableSCurveProfile( ulAxisALLRbt, lTAFlags );  
 
+<<<<<<< HEAD
     return SUCCESS;
 
 preTest:
+=======
+    return SUCCESS;
+
+preTest:
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Check to see if a track exists in the system. */
     if (ROGetSpecialAxis(RO_TRACK))
     {
@@ -825,15 +950,25 @@ preTest:
         iTrackCardNum = 0;
     }
     iPortBase = IO_PRE_INPUT_K;
+<<<<<<< HEAD
     iWhichParm = PREALIGNFILE;
+=======
+    iWhichParm = PREALIGNFILE;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     GAAmpInit();
     TIDelay( 1500 );
 
     /* Read INPUT G port, and check the status. */
     iTint = inb(iPortBase+3);
+<<<<<<< HEAD
 	iTint = 0;
     iTint &= 0xFC;
 
+=======
+	iTint = 0;
+    iTint &= 0xFC;
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if( iTint )
     {
@@ -850,7 +985,11 @@ preTest:
     TTPrintsAt( 1, 1, "t:" );
     TTPrintsAt( 2, 1, "r:" );
     TTPrintsAt( 3, 1, "z:" );
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if ((iTrackCardNum) || (iDualArmCardNum))
     {
         TTPrintsAt( 3, 10, "w:" );
@@ -878,7 +1017,11 @@ preTest:
     /* Set new pre-aligner torque limits. */
     lTempVal[4] = lTempVal[5] = lTempVal[6] = lTempVal[7] = 9999;
     ROSetParameter(FALSE, ulAxisallPre, lTempVal, TORQUE_LIMIT);
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (ulAuxAxis)
     {
         /* Save old auxilliary axes values if appropriate. */
@@ -910,8 +1053,13 @@ preTest:
 
 
     do
+<<<<<<< HEAD
     {
 	ROUpdateTS(FALSE);
+=======
+    {
+	ROUpdateTS(FALSE);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
         SERGetcRxBuff(SERGetTTPort(), &cButtonPressed, FALSE);
 
@@ -979,7 +1127,11 @@ preTest:
                 GASendReceiveGalil(iTempCardNum, (char *)"BGFG\r" , cpNull);
                 ulAMFlag &= ~(RO_AXIS_r|RO_AXIS_z);
                 iTS = (int)(ulAxisallPre);
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                 /* If a track exists, home it. */
                 if (iTrackCardNum)
                     iCardToUse = iTrackCardNum;
@@ -1007,7 +1159,11 @@ preTest:
                 /* The pre-aligner t axis doesn't have a home switch. */
                 TTPrintsAt( 4, 1, "Theta homed...      " );
                 iTS = 0;
+<<<<<<< HEAD
 				break;
+=======
+				break;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
                 /* Set home speeds for pre-aligner t axis. */
                 ROSetParameter(FALSE, RO_AXIS_t, lHomeSpeed, OPERATIONAL_SPEED);
@@ -1020,7 +1176,11 @@ preTest:
                 ulERFlag &= ~RO_AXIS_t;
                 GASendReceiveGalil(iTempCardNum, (char *)"EI 255,255\r" , cpNull);
                 TIDelay( 500 );
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                 /* Initiate home operation for R or r axis... */
                 GASendReceiveGalil(iTempCardNum, (char *)"HME\r" , cpNull);
                 GASendReceiveGalil(iTempCardNum, (char *)"BGE\r" , cpNull);
@@ -1202,7 +1362,11 @@ preTest:
             case CR:    /* If an enter is pressed, ignore it. */
                 /* If any axis is in motion, start an internal loop until motion completes. */
                 while( (ulAMFlag & ulAllAMFlag) != ulAllAMFlag )
+<<<<<<< HEAD
                 {
+=======
+                {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		    ROUpdateTS(FALSE);
                     SERGetcRxBuff(SERGetTTPort(), &cButtonPressed, FALSE);
                     /* Only an ESCape key press will exit the loop manually and also the test. */
@@ -1308,7 +1472,11 @@ preTest:
                     /* Motion complete for all axes, proceed to find distance to index. */
                     if( (ulAMFlag & ulAllAMFlag) != ulAllAMFlag )
                     {
+<<<<<<< HEAD
 			ROUpdateTS(FALSE);
+=======
+			ROUpdateTS(FALSE);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                         break;
                     }
                     /* Turn off motor for requested axis and prompt a belt correction if needed. */
@@ -1334,7 +1502,11 @@ preTest:
                             TTBeepTP( LONGBELL );
                             TTPrintsAt( 4, 1, "Waiting for corr.   " );
                             TIDelay( 2500 );
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                             /* Otherwise prompt the user to make a belt correction. */
                             ROCorrectDistance( iTempCardNum, lTP, (unsigned)(iTS) );
 
@@ -1377,7 +1549,11 @@ preTest:
     ROSetParameter(FALSE, ulAxisallPre, lSaveAccel, OPERATIONAL_ACCEL);
     ROSetParameter(FALSE, ulAxisallPre, lSaveDecel, OPERATIONAL_DECEL);
     ROSetParameter(FALSE, ulAxisallPre, lSaveTorqueLimit, TORQUE_LIMIT);
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (ulAuxAxis)
     {
         lTempVal[4] = lTempVal[5] = lTempVal[6] = 0;
@@ -1549,7 +1725,11 @@ int ROAdjustRAtHome(unsigned long ulAxisArg)
 
                 /* Wait until motion complete or aborted by user. */
                 while( (ulAMFlag & ulAxisArg) != ulAxisArg )
+<<<<<<< HEAD
                 {
+=======
+                {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		    ROUpdateTS(0);
                     SERGetcRxBuff(SERGetTTPort(), &cKeyPressed, FALSE);
 
@@ -1918,8 +2098,13 @@ int ROSetHomeR(void)
 
     /* Get internal power supply status from INPUT G port. */
     iTint = inb( IO_ROBOT_INPUT_G );
+<<<<<<< HEAD
 
 	iTint = 0;
+=======
+
+	iTint = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* If any of the bits are set, it's a problem. */
     if( iTint )
@@ -2029,8 +2214,13 @@ int ROSetHomeR(void)
     /* Wait until motion complete or aborted by user. */
     while( (ulAMFlag & ulAxis) != ulAxis )
     {
+<<<<<<< HEAD
 	ROUpdateTS(FALSE);
 
+=======
+	ROUpdateTS(FALSE);
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         SERGetcRxBuff(SERGetTTPort(), &cButtonPressed, FALSE);
 
         /* Key ESC aborts the homing operation. */
@@ -2090,8 +2280,13 @@ int ROSetHomeR(void)
     /* Wait until motion complete or aborted by user. */
     while( (ulAMFlag & ulAxis) != ulAxis )
     {
+<<<<<<< HEAD
 	ROUpdateTS(FALSE);
 
+=======
+	ROUpdateTS(FALSE);
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         SERGetcRxBuff(SERGetTTPort(), &cButtonPressed, FALSE);
 
         /* Key ESC aborts the homing operation. */
@@ -2259,8 +2454,13 @@ int ROSetTestScaling(int iCardNoArg, int iVacExistsArg)
     long laPosition[8]={0,0,0,0,0,0,0,0};
     long laAuxPosition[8]={0,0,0,0,0,0,0,0};
     unsigned long ulAuxAxis = 0;
+<<<<<<< HEAD
 
 	if (iCardNoArg == 1) goto preTest;
+=======
+
+	if (iCardNoArg == 1) goto preTest;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Check to see if a dual arm exists in the system. */
     if (ROGetSpecialAxis(RO_DUAL_ARM))
@@ -2308,7 +2508,11 @@ int ROSetTestScaling(int iCardNoArg, int iVacExistsArg)
         ulAuxAxis = ROGetSpecialAxis(RO_SINGLE_PRE);
     if (iTrackCardNum)
         ulAuxAxis = ROGetSpecialAxis(RO_TRACK);
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	// turn on brake 
 	//    ROServiceBrake(ROBOTFILE, TRUE);
     ROServiceBrake(ROBOTFILE, FALSE);
@@ -2342,9 +2546,15 @@ int ROSetTestScaling(int iCardNoArg, int iVacExistsArg)
 
     ROServiceBrake(ROBOTFILE, FALSE);
     return SUCCESS;
+<<<<<<< HEAD
 
 preTest:
 
+=======
+
+preTest:
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Check to see if a track exists in the system. */
     if (ROGetSpecialAxis(RO_TRACK))
     {
@@ -2483,7 +2693,11 @@ int RODoROffset(void)
 
         /* Wait until R motion complete or aborted by user. */
         while( (ulAMFlag & RO_AXIS_r) != RO_AXIS_r )
+<<<<<<< HEAD
         {
+=======
+        {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    ROUpdateTS(FALSE);
             SERGetcRxBuff(SERGetTTPort(), &cButtonPressed, FALSE);
 
@@ -2523,7 +2737,11 @@ int RODoROffset(void)
 
     /* Wait until R motion complete or aborted by user. */
     while( (ulAMFlag & RO_AXIS_r) != RO_AXIS_r )
+<<<<<<< HEAD
     {
+=======
+    {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	ROUpdateTS(FALSE);
         SERGetcRxBuff(SERGetTTPort(), &cButtonPressed, FALSE);
 
@@ -2583,8 +2801,13 @@ int ROPresetHomeR(void)
 
     /* Get internal power supply status from INPUT G port. */
     iTint = inb( IO_PRE_INPUT_G ) & 0xFC;
+<<<<<<< HEAD
 
 	iTint = 0;
+=======
+
+	iTint = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* If any of the bits are set, it's a problem. */
     if( iTint )
@@ -2666,7 +2889,11 @@ int ROPresetHomeR(void)
 
     /* Wait until R or Z motion complete or aborted by user. */
     while( (ulAMFlag & ulMaskIndex) != ulMaskIndex )
+<<<<<<< HEAD
     {
+=======
+    {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	ROUpdateTS(FALSE);
         SERGetcRxBuff( SERGetTTPort(), &cButtonPressed, FALSE );
 
@@ -2718,7 +2945,11 @@ int ROPresetHomeR(void)
 
     /* Wait until R or Z motion complete or aborted by user. */
     while( (ulAMFlag & ulMaskIndex) != ulMaskIndex )
+<<<<<<< HEAD
     {
+=======
+    {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	ROUpdateTS(FALSE);
         SERGetcRxBuff( SERGetTTPort(), &cButtonPressed, FALSE );
 
@@ -2856,9 +3087,15 @@ end_R_home:
  ***************************************************************/
 int ROTestVacuum(int iPreArg)
 {
+<<<<<<< HEAD
     unsigned char iValue;
     int iOutPortID;
 //	int iInputNum, iOutputNum;
+=======
+    unsigned char iValue;
+    int iOutPortID;
+//	int iInputNum, iOutputNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     char cKey;
 
     TTPrintsAt( 1, 1, "           #1   #2" );
@@ -2867,6 +3104,7 @@ int ROTestVacuum(int iPreArg)
     TTPrintsAt( 4, 1, "Press '1' or '2'" );
 
     /* Get the right IO port addresses depending on the card number. */
+<<<<<<< HEAD
     iOutPortID = iPreArg ? IO_PRE_OUTPUT_L : IO_ROBOT_OUTPUT_A;
 
     iValue = inb(iOutPortID);
@@ -2881,6 +3119,22 @@ int ROTestVacuum(int iPreArg)
 	TTPrintsAt( 3, 12, "OFF");
     else
 	TTPrintsAt( 3, 12, "ON ");
+=======
+    iOutPortID = iPreArg ? IO_PRE_OUTPUT_L : IO_ROBOT_OUTPUT_A;
+
+    iValue = inb(iOutPortID);
+    if(iPreArg)
+	iValue = ~iValue;
+    if(iValue & 2)
+	TTPrintsAt( 3, 17, "OFF");
+    else
+	TTPrintsAt( 3, 17, "ON ");
+
+    if(iValue & 1)
+	TTPrintsAt( 3, 12, "OFF");
+    else
+	TTPrintsAt( 3, 12, "ON ");
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Allow user to turn ON/OFF Vac Valve, and
      * display the Vac Sensor status. If Vac Valve is ON, Vac Sensor should
@@ -2890,6 +3144,7 @@ int ROTestVacuum(int iPreArg)
         SERGetcRxBuff(SERGetTTPort(), &cKey, FALSE);
         switch (cKey)
         {
+<<<<<<< HEAD
             case '1':
 		iValue = inb(iOutPortID);
 		// just toggle bit 0
@@ -2946,11 +3201,73 @@ int ROTestVacuum(int iPreArg)
 	else
 	    TTPrintsAt(2, 12, "ON ");
 
+=======
+            case '1':
+		iValue = inb(iOutPortID);
+		// just toggle bit 0
+		if(iValue & 1)
+		    iValue = iValue & 0xFE;   	// off bit 0
+		else
+		    iValue = iValue | 1;  	// on bit 0
+		IOWriteIO(-1, iValue, iOutPortID);
+	    	if(iPreArg)
+		    iValue = ~iValue;
+	    	if(iValue & 2)
+		    TTPrintsAt( 3, 17, "OFF");
+	    	else
+		    TTPrintsAt( 3, 17, "ON ");
+
+		if(iValue & 1)
+		    TTPrintsAt( 3, 12, "OFF");
+		else
+		    TTPrintsAt( 3, 12, "ON ");
+		break;
+	    case '2':
+		iValue = inb(iOutPortID);
+		if(iValue & 2)
+		    iValue = iValue & 0xFD;	// off bit 1
+		else
+		    iValue = iValue | 2;	// on bit 1
+		IOWriteIO(-1, iValue, iOutPortID);
+	    	if(iPreArg)
+		    iValue = ~iValue;
+	    	if(iValue & 2)
+		    TTPrintsAt( 3, 17, "OFF");
+	    	else
+		    TTPrintsAt( 3, 17, "ON ");
+	
+		if(iValue & 1)
+		    TTPrintsAt( 3, 12, "OFF");
+		else
+		    TTPrintsAt( 3, 12, "ON ");
+		break;
+	}
+
+        /* check the vacuum sensor, and display the status change. */
+    	if (iPreArg)
+		iValue = inb(IO_PRE_INPUT_K);
+	else
+		iValue = inb(IO_ROBOT_INPUT_F);
+
+	if(iValue & 2)
+	    TTPrintsAt(2, 17, "OFF");
+	else
+	    TTPrintsAt(2, 17, "ON ");
+	if(iValue & 1)
+	    TTPrintsAt(2, 12, "OFF");
+	else
+	    TTPrintsAt(2, 12, "ON ");
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     } while ( (cKey != CR) && (cKey != ESC) && (cKey != 'Z') );
 
     return SUCCESS;
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 
 /****************************************************************
@@ -2981,6 +3298,7 @@ int ROCorrectDistance(int iCardNoArg, long lHomeIndexArg, unsigned uAxisIndexArg
     long lParms[8];
 
     /* Display the user interface message. */
+<<<<<<< HEAD
     TTClearScreen( );
 
 	if (iCardNoArg > 1) goto preTest;
@@ -2995,6 +3313,22 @@ int ROCorrectDistance(int iCardNoArg, long lHomeIndexArg, unsigned uAxisIndexArg
     else if (uAxisIndexArg == RO_AXIS_W)
         cAxisName[0] = 'W';
 
+=======
+    TTClearScreen( );
+
+	if (iCardNoArg > 1) goto preTest;
+
+    cAxisName[1] = 0;
+    if (uAxisIndexArg == RO_AXIS_T)
+        cAxisName[0] = 'T';
+    else if (uAxisIndexArg == RO_AXIS_R)
+        cAxisName[0] = 'R';
+    else if (uAxisIndexArg == RO_AXIS_Z)
+        cAxisName[0] = 'Z';
+    else if (uAxisIndexArg == RO_AXIS_W)
+        cAxisName[0] = 'W';
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     sprintf(sTestStr, "Move %s Axis         ", cAxisName);
     TTPrintsAt( 1, 1, sTestStr);
     TTPrintsAt( 2, 1, "to GOOD position    " );
@@ -3022,7 +3356,11 @@ int ROCorrectDistance(int iCardNoArg, long lHomeIndexArg, unsigned uAxisIndexArg
     else if (uAxisIndexArg == RO_AXIS_W)
         strcpy(sTestStr, "SHW\r");
     GASendReceiveGalil( iCardNoArg, sTestStr, cpNull);
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     ROServiceBrake(ROBOTFILE, TRUE);
 
 	/* if there is track : m.z.*/
@@ -3062,7 +3400,11 @@ int ROCorrectDistance(int iCardNoArg, long lHomeIndexArg, unsigned uAxisIndexArg
     /* User replaced the belt; make correction by relative move of home index. */
     ROGetParameter(TRUE, (unsigned long)(uAxisIndexArg), lParms, ENCODER_RESOLUTION);
     TTPrintsAt( 4, 1, "\n\rMaking correction..." );
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if( uAxisIndexArg == RO_AXIS_T)
         sprintf( sTestStr, "PR%ld\r", lHomeIndexArg - 2 * lParms[0] );
     else if( uAxisIndexArg == RO_AXIS_R)
@@ -3086,7 +3428,11 @@ int ROCorrectDistance(int iCardNoArg, long lHomeIndexArg, unsigned uAxisIndexArg
 
     /* Wait until motion complete, or user aborts. */
     while( (ulAMFlag & (unsigned long)(uAxisIndexArg)) != (unsigned long)(uAxisIndexArg))
+<<<<<<< HEAD
     {
+=======
+    {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	ROUpdateTS(FALSE);
         SERGetcRxBuff(SERGetTTPort(), &cButtonPressed, FALSE);
         if ( (cButtonPressed == ESC) || (cButtonPressed == 'Z') )
@@ -3128,9 +3474,15 @@ cd_exit:
     GASendReceiveGalil( iCardNoArg, (char *)"MOXYZW\r", cpNull );
 
     return SUCCESS;
+<<<<<<< HEAD
 
 preTest:
 
+=======
+
+preTest:
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     cAxisName[1] = 0;
     if (uAxisIndexArg == RO_AXIS_t)
         cAxisName[0] = 't';
@@ -3140,7 +3492,11 @@ preTest:
         cAxisName[0] = 'z';
     else if (uAxisIndexArg == RO_AXIS_w)
         cAxisName[0] = 'w';
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     sprintf(sTestStr, "Move %s Axis         ", cAxisName);
     TTPrintsAt( 1, 1, sTestStr);
     TTPrintsAt( 2, 1, "to GOOD position    " );
@@ -3159,7 +3515,11 @@ preTest:
 
     /* Proceed to Lock the axis so that user can release the belt.
      * Just turn on the servo. */
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (uAxisIndexArg == RO_AXIS_t)
         strcpy(sTestStr, "SHE\r");
     else if (uAxisIndexArg == RO_AXIS_r)
@@ -3169,7 +3529,11 @@ preTest:
     else if (uAxisIndexArg == RO_AXIS_w)
         strcpy(sTestStr, "SHH\r");
     GASendReceiveGalil( iCardNoArg, sTestStr, cpNull);
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    ROServiceBrake(PREALIGNFILE, TRUE);
 
 	/* if there is track : m.z.*/
@@ -3209,7 +3573,11 @@ preTest:
     /* User replaced the belt; make correction by relative move of home index. */
     ROGetParameter(TRUE, (unsigned long)(uAxisIndexArg), lParms, ENCODER_RESOLUTION);
     TTPrintsAt( 4, 1, "\n\rMaking correction..." );
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if( uAxisIndexArg == RO_AXIS_t )
         sprintf( sTestStr, "PR,,,,%ld\r", lHomeIndexArg - 2 * lParms[4] );
     else if( uAxisIndexArg == RO_AXIS_r )
@@ -3233,7 +3601,11 @@ preTest:
 
     /* Wait until motion complete, or user aborts. */
     while( (ulAMFlag & (unsigned long)(uAxisIndexArg)) != (unsigned long)(uAxisIndexArg))
+<<<<<<< HEAD
     {
+=======
+    {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	ROUpdateTS(FALSE);
         SERGetcRxBuff(SERGetTTPort(), &cButtonPressed, FALSE);
         if ( (cButtonPressed == ESC) || (cButtonPressed == 'Z') )
@@ -3275,7 +3647,11 @@ pcd_exit:
     GASendReceiveGalil( iCardNoArg, (char *)"MOEFGH\r", cpNull );
 
     return SUCCESS;
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 
 
@@ -3307,14 +3683,24 @@ int ROTestRobotIO(int iDevModeArg)
     TTPrintsAt( 4, 1, "IN: " );
 
     /* Get the IO port address depending on card number. */
+<<<<<<< HEAD
     iPortBase = iDevModeArg ? 9: 1;
 
+=======
+    iPortBase = iDevModeArg ? 9: 1;
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Read a byte from the galil port. */
     /* Read a byte from the IO port. */
     /* Display the bit image of the bytes read. */
     for( iCount = 0; iCount < 8; iCount++ )
+<<<<<<< HEAD
     {
 		iByteImage = GAGalilReadOut(iPortBase+iCount);
+=======
+    {
+		iByteImage = GAGalilReadOut(iPortBase+iCount);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		if (!iDevModeArg) iByteImage = iByteImage ? 0 : 1;
         if( iByteImage )
             TTPrintcAt( 3, 9+iCount, '1' );
@@ -3334,10 +3720,17 @@ int ROTestRobotIO(int iDevModeArg)
         if ( (cKeyPressed >= '0') && (cKeyPressed <= '7') )
         {
             iCount = (int)(cKeyPressed - '0');
+<<<<<<< HEAD
 			iByteImage = GAGalilReadOut(iPortBase+iCount);
 			iByteImage = iByteImage ? 0 : 1;
 			GAGalilWriteIO(iPortBase+iCount, iByteImage);
 			iByteImage = GAGalilReadOut(iPortBase+iCount);
+=======
+			iByteImage = GAGalilReadOut(iPortBase+iCount);
+			iByteImage = iByteImage ? 0 : 1;
+			GAGalilWriteIO(iPortBase+iCount, iByteImage);
+			iByteImage = GAGalilReadOut(iPortBase+iCount);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			if (!iDevModeArg) iByteImage = iByteImage ? 0 : 1;
             TTPrintcAt( 3, 9+iCount, (iByteImage ? '1':'0'));
             TTPrintcAt( 4, 9+iCount, (iByteImage ? '1':'0'));

@@ -1,8 +1,40 @@
 /***************************************************************\
  *
+<<<<<<< HEAD
  * Program:    low-level command, command interpreter and Opcode table.
  *
  * File:        CMDcommands.c
+=======
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * File Name            : cmdfns.c
+ * Description          : Functions which act as an interface for the LowLevel
+ *              commands. These functions are local to the low-level command module.
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+
+ *
+ * Program:    low-level command, command interpreter and Opcode table.
+ *
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Functions:   CMDopcodeUpdateIndxTbl
  *              CMDFirstMacro
@@ -51,7 +83,11 @@
 #include "cmdro.h"
 #include "cmdmap.h"
 #include "cmdstn.h"
+<<<<<<< HEAD
 #include "cmdsp.h"
+=======
+#include "cmdsp.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 #include "sctag.h"
 #include "ser.h"
@@ -61,8 +97,13 @@
 #include "fiog.h"
 #include "gag.h"
 #include "scmem.h"
+<<<<<<< HEAD
 
 #include "pdio.h"
+=======
+
+#include "pdio.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  
 int macroEmulatorA = FALSE;
 int num_table_entries=0;                /* number of entry currently in the oc table. */
@@ -99,8 +140,13 @@ int RTPMO = DRTPMO;
 int CDIS = DCDIS;
 
 /* table contains the string name of Brook special keyword commands */
+<<<<<<< HEAD
 par_table_t   PAR_TABLE[] = 
 {   
+=======
+par_table_t   PAR_TABLE[] = 
+{   
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     "STN",	peSTN,		// 2nd level
     "POS",	pePOS,
     "ARM",	peARM,
@@ -330,7 +376,11 @@ int CMDinitCommands(int initFlags, int emulFlags )
     if( CMDputOpcode("RSCS",RSCS,vld_StnRead,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_RSCS)!=SUCCESS )
         return FAILURE;
     if( CMDputOpcode("GLST",GLST,vld_Ro,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_GLST)!=SUCCESS )
+<<<<<<< HEAD
         return FAILURE;
+=======
+        return FAILURE;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* get the feature active/deactive value */
 //    if (FIOGetCfgFeatureFlags(SCANNER, &iOnOffFlagMapper) == FAILURE)
@@ -507,7 +557,11 @@ int CMDinitCommands(int initFlags, int emulFlags )
         return FAILURE;
     if( CMDputOpcode("SPSC",NOIDX,vld_StnWrite3,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_SPSC)!=SUCCESS )
         return FAILURE;
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if( CMDputOpcode("PSCAN",NOIDX,vld_Stn_Np,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_PSCAN)!=SUCCESS )
             return FAILURE;
         if( CMDputOpcode("QSCAN",NOIDX,vld_no_args,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_QSCAN)!=SUCCESS )
@@ -526,7 +580,11 @@ int CMDinitCommands(int initFlags, int emulFlags )
             return FAILURE;
         if( CMDputOpcode("SLUX",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_SLUX)!=SUCCESS )
             return FAILURE;
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if( CMDputOpcode("POTF",NOIDX,vld_Ro,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_POTF)!=SUCCESS )
             return FAILURE;
         if( CMDputOpcode("QOTF",NOIDX,vld_Ro,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_QOTF)!=SUCCESS )
@@ -816,8 +874,13 @@ int CMDinitCommands(int initFlags, int emulFlags )
         return FAILURE;
     if( CMDputOpcode("DUMPW",NOIDX,vld_no_args,(CMD_VALID_CMDLINE|CMD_DEFINE_CMD),ex_DUMPW)!=SUCCESS )
         return FAILURE;
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if( CMDputOpcode("BCOR",NOIDX,vld_align,(CMD_VALID_IN_MACRO|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_BCOR)!=SUCCESS )
         return FAILURE;
     /* get the feature active/deactive value */
@@ -989,15 +1052,22 @@ int CMDinitCommands(int initFlags, int emulFlags )
     if( CMDputOpcode("SCVAC",NOIDX,vld_WaferParm,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_SCVAC)!=SUCCESS )
         return FAILURE;
     if( CMDputOpcode("RNFA",NOIDX,vld_Ro,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_RNFA)!=SUCCESS )
+<<<<<<< HEAD
         return FAILURE;
     // Add New Commands for SCMAIN controller
     if( CMDputOpcode("XQFN",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XQFN)!=SUCCESS )
+=======
+        return FAILURE;
+    // Add New Commands for SCMAIN controller
+    if( CMDputOpcode("XQFN",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XQFN)!=SUCCESS )
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	return FAILURE;
     if( CMDputOpcode("XQGT",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XQGT)!=SUCCESS )
         return FAILURE;
     if( CMDputOpcode("IT",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_DEFINE_CMD),ex_IT)!=SUCCESS )
         return FAILURE;
     if( CMDputOpcode("RIT",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_RIT)!=SUCCESS )
+<<<<<<< HEAD
         return FAILURE;
     if( CMDputOpcode("RPDA",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_RPDA)!=SUCCESS )
         return FAILURE;
@@ -1037,10 +1107,52 @@ int CMDinitCommands(int initFlags, int emulFlags )
         return FAILURE;
     if( CMDputOpcode("RARM",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_RARM)!=SUCCESS )
         return FAILURE;
+=======
+        return FAILURE;
+    if( CMDputOpcode("RPDA",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_RPDA)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("SPDA",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_SPDA)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("RPCTE",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_RPCTE)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("RPCT",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_RPCT)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("SPCT",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_SPCT)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("RLPT",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_RLPT)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("SLPT",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_SLPT)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XQU",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XQU)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XRC",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XRC)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XDM",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XDM)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("SEDF",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_SEDF)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("REDF",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_REDF)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("WRCT",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_WRCT)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("LDCT",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_LDCT)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("WRPD",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_WRPD)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("LDPD",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_LDPD)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("WXRC",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_WXRC)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("RXRC",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_RXRC)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("RARM",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_RARM)!=SUCCESS )
+        return FAILURE;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if( CMDputOpcode("SCSR",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_SCSR)!=SUCCESS )
             return FAILURE;
     if( CMDputOpcode("SRES",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_SRES)!=SUCCESS )
             return FAILURE;
+<<<<<<< HEAD
 
     if( CMDputOpcode("SDUMP",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_SDUMP)!=SUCCESS )
         return FAILURE;
@@ -1133,6 +1245,100 @@ int CMDinitCommands(int initFlags, int emulFlags )
         return FAILURE;
     if( CMDputOpcode("DSEC",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_DSEC)!=SUCCESS )
         return FAILURE;
+=======
+
+    if( CMDputOpcode("SDUMP",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_SDUMP)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XCL",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XCL)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XENL",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XENL)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XREL",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XREL)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("RDEU",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_RDEU)!=SUCCESS )
+        return FAILURE;
+
+    if( CMDputOpcode("XETH",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XETH)!=SUCCESS )
+        return FAILURE;
+
+    if( CMDputOpcode("XCLR",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XCLR)!=SUCCESS )
+        return FAILURE;
+
+    if( CMDputOpcode("XWCI",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XWCI)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XRWC",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XRWC)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XSWC",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XSWC)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XITM",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XITM)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XRTM",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XRTM)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XSMX",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XSMX)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XRMX",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XRMX)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XRFA",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XRFA)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XSFT",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XSFT)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XRMR",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XRMR)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XMPA",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XMPA)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XFDC",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XFDC)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("RSTMR",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_RSTMR)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XOSN",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XOSN)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XROS",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XROS)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XRSI",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XRSI)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XWIO",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XWIO)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XRIO",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XRIO)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XROC",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XROC)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XMVC",NOIDX,vld_AxisParms,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XMVC)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XSEE",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XSEE)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XREE",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XREE)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XSVS",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XSVS)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XRVS",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XRVS)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XRVA",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XRVA)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XSVA",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XSVA)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XRVD",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XRVD)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XSVD",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XSVD)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XSAV",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XSAV)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XSRF",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XSRF)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XRRF",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XRRF)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XR2W",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XR2W)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XW2R",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XW2R)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XW2E",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XW2E)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XE2W",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XE2W)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("XMCD",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_XMCD)!=SUCCESS )
+        return FAILURE;
+    if( CMDputOpcode("DSEC",NOIDX,vld_always,(CMD_VALID_IN_MACRO|CMD_VALID_CMDLINE|CMD_VALID_IN_MOTION|CMD_DEFINE_CMD),ex_DSEC)!=SUCCESS )
+        return FAILURE;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //#endif
     return CMDcommands(CMDINIT,0,0);         /* sort and update the table index */
 }
@@ -1597,7 +1803,11 @@ char *CMDget_opcode( char *cmdline, OC_TABLE *oc_entry, int *reg, int genLMCR )
         }
         strncpy( oc_entry->OC_str, start, numchars );
         oc_entry->OC_str[numchars] = '\0';
+<<<<<<< HEAD
 //        strupr( oc_entry->OC_str );
+=======
+//        strupr( oc_entry->OC_str );
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	for (i = 0; i<strlen(oc_entry->OC_str); ++i) oc_entry->OC_str[i] = toupper(oc_entry->OC_str[i]);
         if( CMDcommands(CMDGET,NOIDX,oc_entry) == SUCCESS )
         {
@@ -1658,7 +1868,11 @@ char *CMDget_opcode( char *cmdline, OC_TABLE *oc_entry, int *reg, int genLMCR )
                 p2[i] = '\0';
                 *reg = atoi(p2);
                 if( mode!=-2 && RGIsRegisterIndexValid(*reg)==FAILURE )
+<<<<<<< HEAD
                 {
+=======
+                {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                     iRegFlag = FALSE;
                 }
                 /* The same check as above. */

@@ -1,8 +1,36 @@
 /***************************************************************\
  *
+<<<<<<< HEAD
  * Program:     low-level command, command interpreter and Opcode table.
  *
  * File:        LLexinfo.c
+=======
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Program:     low-level command, command interpreter and Opcode table.
+ *
+ * File:        cmdinf.c
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Functions:
  *
@@ -39,7 +67,11 @@
 #include "scmem.h"
 #include "ro.h"
 #include "rofio.h"
+<<<<<<< HEAD
 #include "gaintr.h"
+=======
+#include "gaintr.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "gafn.h"
 #include "sctch.h"
 #include "dg.h"
@@ -53,6 +85,7 @@
 
 long lCurrTimerTicks;   /* This is the time stamp used by the password decoding functions */
 
+<<<<<<< HEAD
 extern int giNumOfAxes;
 extern int iDefineFlag, iEmulatorMode, iaDiagParms[3];
 
@@ -60,6 +93,16 @@ extern char gaIPAddress[14];
 extern int giPortno;
 
 char gsVersionString[20] = LIBVERSTRING;
+=======
+extern int giNumOfAxes;
+extern int iDefineFlag, iEmulatorMode, iaDiagParms[3];
+
+extern char gaIPAddress[14];
+extern int giPortno;
+
+
+char gsVersionString[20] = LIBVERSTRING;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /***************************************************************************
  * Function Name:   ex_GLST
@@ -176,12 +219,21 @@ int ex_VER(instr_ptr instr)
         else
             return FAILURE;
     }
+<<<<<<< HEAD
     else if (lOperand == 4)
     {
 	sprintf(sBuf1,"Software Revision: %s", gsVersionString);
 	if(CMDShowDescription(iCmdPort, sBuf1) == FAILURE)
 	    return FAILURE;
     }
+=======
+    else if (lOperand == 4)
+    {
+	sprintf(sBuf1,"Software Revision: %s", gsVersionString);
+	if(CMDShowDescription(iCmdPort, sBuf1) == FAILURE)
+	    return FAILURE;
+    }
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     else
         return FAILURE;
 
@@ -289,7 +341,11 @@ int ex_RSRN(instr_ptr instr)
     int iReturn=FAILURE;
     long lOp=0;
     int iCmdPort;
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iReturn = FAILURE;
     iCmdPort = SERGetCmdPort();
 
@@ -381,10 +437,17 @@ int ex_RKEY(instr_ptr instr)
         return FAILURE;
 
     return SUCCESS;
+<<<<<<< HEAD
 }
 
 
 
+=======
+}
+
+
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /****************************************************************
  * Function:        ex_RSTIM
@@ -400,7 +463,11 @@ int ex_RSTIM(instr_ptr instr)
     char sBuf[MAXLINE];
 
 //    ulTimerCounts = TIGetTimerVals(SYS_TIMER);
+<<<<<<< HEAD
     ulTimerCounts = TIRSTime();
+=======
+    ulTimerCounts = TIRSTime();
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     Optr = instr->opr_ptr;
     if(Optr)
     {
@@ -416,7 +483,11 @@ int ex_RSTIM(instr_ptr instr)
 
     return SUCCESS;
 }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 /****************************************************************
  * Function:        ex_RSTMR
  * Description:     Gets the current timer counts
@@ -431,7 +502,11 @@ int ex_RSTMR(instr_ptr instr)
     char sBuf[MAXLINE];
 
 //    ulTimerCounts = TIGetTimerVals(SYS_TIMER);
+<<<<<<< HEAD
     ulTimerCounts = TIRSTimeTMR();
+=======
+    ulTimerCounts = TIRSTimeTMR();
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     Optr = instr->opr_ptr;
     if(Optr)
     {
@@ -463,18 +538,30 @@ int ex_SCFG(instr_ptr instr)
     double dDecryptedPassword;
     long lPassword, lDecryptedPassword;
     char caSysCfgString[15];
+<<<<<<< HEAD
 
     int iNumAxes;
     int iaEquipeAxis[8], iaGalilAxis[8], iaMechType[8], iaSpecialAxis[8];
 
+=======
+
+    int iNumAxes;
+    int iaEquipeAxis[8], iaGalilAxis[8], iaMechType[8], iaSpecialAxis[8];
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr = instr->opr_ptr;              /* get the first parameter */
     if( !Optr )
         return FAILURE;
     if( Optr->type != LONG_CONST )      /* it can only be a constant; registers aren't allowed */
         return FAILURE;
+<<<<<<< HEAD
     iFeatureNum = Optr->opr.i;
     if (iFeatureNum != 313) return FAILURE;
+=======
+    iFeatureNum = Optr->opr.i;
+    if (iFeatureNum != 313) return FAILURE;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 //    if (iFeatureNum >= SYSCFG && iFeatureNum != 99)
 //        return FAILURE;
@@ -487,11 +574,19 @@ int ex_SCFG(instr_ptr instr)
 //    if( Optr->type == LONG_CONST )      /* it can only be a constant; registers aren't allowed */
 //        iOnOffFlag = Optr->opr.i;
 //    else if( Optr->type == STRING_CONST )
+<<<<<<< HEAD
 
     if( Optr->type == STRING_CONST )
     {
         strcpy(caSysCfgString,Optr->opr.s);
 //        strupr(caSysCfgString);
+=======
+
+    if( Optr->type == STRING_CONST )
+    {
+        strcpy(caSysCfgString,Optr->opr.s);
+//        strupr(caSysCfgString);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	for (i = 0; i < strlen(caSysCfgString); ++i) caSysCfgString[i] = toupper(caSysCfgString[i]);
     }
     else
@@ -501,7 +596,11 @@ int ex_SCFG(instr_ptr instr)
         return FAILURE;
     if( FIOSetCfgSysCfgString(caSysCfgString) == FAILURE )
         return FAILURE;
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    Optr = Optr->next;             /* get the third parameter */
 //    if( !Optr )
 //        return FAILURE;
@@ -532,13 +631,20 @@ int ex_SCFG(instr_ptr instr)
 //    }
     if( FIOWriteConfig() == FAILURE )
         return FAILURE;
+<<<<<<< HEAD
 
 // continue on initializing the system with new configuration
 
+=======
+
+// continue on initializing the system with new configuration
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     FIOReadConfig();
 
     /* Initialize the firmware version. */
     FIOGetCfgSysCfgString(caSysCfgString);
+<<<<<<< HEAD
     InitVersionString(caSysCfgString, __FILE__);
 //printf("Config file done...\n");
 
@@ -546,6 +652,15 @@ int ex_SCFG(instr_ptr instr)
     giNumOfAxes = iNumAxes;
 
 //printf("InitMechArrays done...Axes#=%d\n",giNumOfAxes);
+=======
+    InitVersionString(caSysCfgString, __FILE__);
+//printf("Config file done...\n");
+
+    InitMechArrays(&iNumAxes, &iDefineFlag, &iEmulatorMode, iaEquipeAxis, iaGalilAxis, iaMechType, iaSpecialAxis, iaDiagParms);
+    giNumOfAxes = iNumAxes;
+
+//printf("InitMechArrays done...Axes#=%d\n",giNumOfAxes);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Tell the Status module which emulation to use. */
 //    if (SSInitStatus(iDefineFlag, iEmulatorMode) == FAILURE)
@@ -553,7 +668,11 @@ int ex_SCFG(instr_ptr instr)
  //       FailureExit("SSInitStatus has failed");
  //       SSSetModulesInitializationsStatus(STATUS_MODULE, TRUE);
  //   }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Initialize the Mechanism module which in turn initializes the Parameter
      * and Motion modules. */
 //    if (ROInit(iNumAxes, iaMechType, iaEquipeAxis, iaGalilAxis, iaSpecialAxis, iDefineFlag, iEmulatorMode) == FAILURE)
@@ -563,11 +682,19 @@ int ex_SCFG(instr_ptr instr)
 //    }
 //printf("ROInit done...\n");
 
+<<<<<<< HEAD
 
 
 
 
 
+=======
+
+
+
+
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return SUCCESS;
 }
@@ -587,9 +714,15 @@ int ex_RCFG(instr_ptr instr)
 
     Optr = instr->opr_ptr;              /* get the first parameter */
     if(CMDgetValue(Optr, &lFeatureNum)==FAILURE)
+<<<<<<< HEAD
         return FAILURE;
     if(lFeatureNum != 313) return FAILURE;
 
+=======
+        return FAILURE;
+    if(lFeatureNum != 313) return FAILURE;
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if( FIOGetCfgSysCfgString(sBuf) == FAILURE )
         return FAILURE;
 
@@ -672,14 +805,22 @@ int ex_RDBG(instr_ptr instr)
     SERPutsTxBuff(SERGetCmdPort(), cBuf);
     return SUCCESS;
 }
+<<<<<<< HEAD
 
 //
 // XETH is a new XSC command to print IP address and Port number for Ethernet comm
 //
+=======
+
+//
+// XETH is a new XSC command to print IP address and Port number for Ethernet comm
+//
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int ex_XETH(instr_ptr instr)
 {
     char saIPAddress[80];
     int iCmdPort;
+<<<<<<< HEAD
 
     iCmdPort = SERGetCmdPort();
 
@@ -688,4 +829,14 @@ int ex_XETH(instr_ptr instr)
         return FAILURE;
 
     return SUCCESS;
+=======
+
+    iCmdPort = SERGetCmdPort();
+
+    sprintf(saIPAddress, "%s %d", gaIPAddress, giPortno);
+    if(CMDShowDescription(iCmdPort, saIPAddress)==FAILURE)
+        return FAILURE;
+
+    return SUCCESS;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }

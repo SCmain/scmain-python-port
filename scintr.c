@@ -1,8 +1,39 @@
+<<<<<<< HEAD
 /****************************************************************
  *
  * Program:     Controller firmware
  * File:        isr.c
  * Functions:   
+=======
+/***************************************************************\
+ *
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ * Program:     Controller firmware
+ * File:        scintr.c
+ * Functions:   
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *              ISGetJmpBufMarkPtr
  *              ISSetJmpBufMark
  *              ISGetJmpBufMainMarkPtr
@@ -12,13 +43,21 @@
  * Description: General use defines mainly for direct hardware
  *      interfacing. Used mostly for scanner, I/O, motion control,
  *      and timer. Functions used to return to the top of the main
+<<<<<<< HEAD
  *      loop in the case of a catastrophic failure.
+=======
+ *      loop in the case of a catastrophic failure.
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Modification history:
  * Rev      ECO#    Date    Author      Brief Description
  *
  ****************************************************************/
+<<<<<<< HEAD
 #include <sys/io.h>
+=======
+#include <sys/io.h>
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <signal.h>
 #include <float.h>
 #include "sck.h"
@@ -76,8 +115,13 @@ int *ISGetJmpBufMarkPtr()
  *
  ***************************************************************/
 int ISSetJmpBufMark(unsigned uMarkIndex, int iNewVal)
+<<<<<<< HEAD
 {
     unsigned _JBLEN = 10;
+=======
+{
+    unsigned _JBLEN = 10;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (uMarkIndex >= _JBLEN)
         return FAILURE;
@@ -118,8 +162,13 @@ int *ISGetJmpBufMainMarkPtr()
  *
  ***************************************************************/
 int ISGetJmpBufMainMark(unsigned uMarkIndex)
+<<<<<<< HEAD
 {
     unsigned  _JBLEN = 10;
+=======
+{
+    unsigned  _JBLEN = 10;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (uMarkIndex >= _JBLEN)
         return FAILURE;

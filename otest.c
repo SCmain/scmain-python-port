@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /***************************************************************\
  *
  * Program:     Motion Control Main Routines
@@ -89,6 +90,122 @@ int GAInit(int i, int j)
 
     return 0;
  }
+=======
+/***************************************************************\
+ *
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ * Program:     Motion Control Main Routines
+ * File:        otest.c
+ * Functions:   GAInit
+ *              GAGetMaxNumberOfAxisSupported
+ *              GAInitTimerCounters
+ *              GAInitStatusWord
+ *              GATurnOnGalilInt
+ *              GATurnOffGalilInt
+ *              GASetUpInterruptVector
+ *
+ * Description: Provide routines for initializing the Motion
+ *      Control module and getting initization realted information.
+ *
+ * Modification history:
+ * Rev      ECO#    Date    Author          Brief Description
+ *
+\***************************************************************/
+#include <sys/io.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "sck.h"
+#include "gamn.h"
+#include "dmclnx.h"
+
+/*********************************************\
+ * GLOBAL VARIABLES DECLARATION
+\*********************************************/
+HANDLEDMC      	ghDMC = -1;         // Handle to controller
+CONTROLLERINFO 	gControllerInfo;    // Controller information structure	
+
+
+/****************************************************************\
+ *
+ * Function:    GAInit
+ *
+ * Abstract:    Initialize the Motion Control Module Timer and Galil Interrupt
+ *
+ * Returns:     SUCCESS or FAILURE
+ *
+\*****************************************************************/
+int GAInit(int i, int j)
+{
+    long rc = 0;
+    char buffer[80];
+
+
+    memset(&gControllerInfo, '\0', sizeof(gControllerInfo));
+
+/////////////////////////////////////////////////////////////////////////////////////
+//  MODEL 2100 ETHERNET INTERFACE
+    gControllerInfo.cbSize = sizeof(gControllerInfo);
+    gControllerInfo.usModelID = MODEL_2100; 
+    gControllerInfo.fControllerType = ControllerTypeEthernet;
+    gControllerInfo.ulTimeout = 1000;
+    gControllerInfo.ulDelay = 5;
+//    gControllerInfo.ulDelay = 0;
+//    strcpy(gControllerInfo.hardwareinfo.socketinfo.szIPAddress, "169.254.82.100");
+    strcpy(gControllerInfo.hardwareinfo.socketinfo.szIPAddress, "10.10.1.11");
+    gControllerInfo.hardwareinfo.socketinfo.fProtocol = EthernetProtocolTCP;
+/////////////////////////////////////////////////////////////////////////////////////
+//  MODEL 1800 PCI INTERFACE
+//    gControllerInfo.cbSize = sizeof(gControllerInfo);
+//    gControllerInfo.usModelID = MODEL_1800; 
+//    gControllerInfo.fControllerType = ControllerTypePCIBus;
+//    gControllerInfo.ulTimeout = 1000;
+//    gControllerInfo.hardwareinfo.businfo.fDataRecordAccess = DataRecordAccessFIFO;
+//    gControllerInfo.ulSerialNumber = 0;  //use relative number
+//    gControllerInfo.ulRelativeNumber = 0; //(argc == 2 ? atoi(argv[1]) : 0); //0 is for /
+//////////////////////////////////////////////////////////////////////////////////////
+
+    DMCInitLibrary();
+	
+    // Open the connection
+    rc = DMCOpen( &gControllerInfo, &ghDMC );
+    if (rc)
+    {
+	printf("DMCOpen Error: %ld\n", rc);
+        return rc;  
+    }
+
+    // Init The Galil Timer Counters
+    rc = DMCCommand(ghDMC, "\x12\x16", buffer, sizeof(buffer));
+    printf("Connected to %s", buffer);
+    rc = DMCCommand(ghDMC, "MG _BN", buffer, sizeof(buffer));
+    printf("The serial number is %s", buffer);
+
+    return 0;
+ }
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 void OTFDelay(int iCountArg)
 {
@@ -97,14 +214,22 @@ void OTFDelay(int iCountArg)
     for (i=0;i<iCountArg; ++i)
 	for(j=0;j<iCountArg;++j)
 		k=0;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 /****/
 int main()
 {
     int iDone = 0, i, j=0, k=0;
     int iAMflag;
     long rc;
+<<<<<<< HEAD
     char buffer[80];
+=======
+    char buffer[80];
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     long lVPSdata[10];
     char c;
 
@@ -191,4 +316,8 @@ end_exit:
 
     return 0;
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)

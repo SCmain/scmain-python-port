@@ -1,7 +1,35 @@
 /***************************************************************\
  *
+<<<<<<< HEAD
  * Program:     Motion Control Main Routines
  * File:        MCMain.C
+=======
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ * Program:     Motion Control Main Routines
+ * File:        gamn.c
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   GAInit
  *              GAGetMaxNumberOfAxisSupported
  *              GAInitTimerCounters
@@ -19,7 +47,11 @@
 \***************************************************************/
 #include <sys/io.h>
 #include <string.h>
+<<<<<<< HEAD
 #include <pthread.h>
+=======
+#include <pthread.h>
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "sck.h"
 #include "gafn.h"
 #include "gamn.h"
@@ -43,8 +75,13 @@ unsigned MCuGalilError = 0;
 int GAiDefaultIRQ7 = 0;
 int GAiNumberOfGalilCards = 1;
 int GAiPreOnly;
+<<<<<<< HEAD
 
 extern int giXYZRobot;
+=======
+
+extern int giXYZRobot;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 // The Index 0 is not being used
 // The fisrt Galil card is 0x01 (GA_CARD_0)
@@ -67,6 +104,7 @@ int GL_NUM_AXIS[3] = { 0x0F, 0xF0, 0xFF};
 // Note the index 0 has not been used
 stGACommandStr stGAQueueCmdString[3];
 
+<<<<<<< HEAD
 pthread_t thread1;
 void *procGalilPCIInterrupt(void *ptr);
 pthread_t thread2;
@@ -75,6 +113,16 @@ extern glSN;
 
 long glSN3;
 char gaSN3[20];
+=======
+pthread_t thread1;
+void *procGalilPCIInterrupt(void *ptr);
+pthread_t thread2;
+
+extern glSN;
+
+long glSN3;
+char gaSN3[20];
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /****************************************************************\
  *
@@ -93,18 +141,31 @@ int GAInit(int iNumberOfGalilCards, int iPreOnly)
     long rc = 0, lSN;
     char buffer[MAXGASTR];
     USHORT         	usStatus;          //the interrupt status byte retreived from the controller after a UI 
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     // Initialize Motion local variables
     GAiUseGalil = iNumberOfGalilCards + 1;
     MCuGalilError = 0;
     GAiUseInts = 1;
     GAiPreOnly = iPreOnly;
+<<<<<<< HEAD
 
 //    ioperm(GALIL_RW[2], 16, 1);
 
     memset(&gControllerInfo, '\0', sizeof(gControllerInfo));
 
 /////////////////////////////////////////////////////////////////////////////////////
+=======
+
+//    ioperm(GALIL_RW[2], 16, 1);
+
+    memset(&gControllerInfo, '\0', sizeof(gControllerInfo));
+
+/////////////////////////////////////////////////////////////////////////////////////
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //  MODEL 2100 ETHERNET INTERFACE
     gControllerInfo.cbSize = sizeof(gControllerInfo);
     gControllerInfo.usModelID = MODEL_2100; 
@@ -114,8 +175,13 @@ int GAInit(int iNumberOfGalilCards, int iPreOnly)
 //    gControllerInfo.ulDelay = 0;
 //    strcpy(gControllerInfo.hardwareinfo.socketinfo.szIPAddress, "169.254.82.100");
     strcpy(gControllerInfo.hardwareinfo.socketinfo.szIPAddress, "10.10.1.11");
+<<<<<<< HEAD
     gControllerInfo.hardwareinfo.socketinfo.fProtocol = EthernetProtocolTCP;
 /////////////////////////////////////////////////////////////////////////////////////
+=======
+    gControllerInfo.hardwareinfo.socketinfo.fProtocol = EthernetProtocolTCP;
+/////////////////////////////////////////////////////////////////////////////////////
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //  MODEL 1800 PCI INTERFACE
 //    gControllerInfo.cbSize = sizeof(gControllerInfo);
 //    gControllerInfo.usModelID = MODEL_1800; 
@@ -123,9 +189,15 @@ int GAInit(int iNumberOfGalilCards, int iPreOnly)
 //    gControllerInfo.ulTimeout = 1000;
 //    gControllerInfo.hardwareinfo.businfo.fDataRecordAccess = DataRecordAccessFIFO;
 //    gControllerInfo.ulSerialNumber = 0;  //use relative number
+<<<<<<< HEAD
 //    gControllerInfo.ulRelativeNumber = 0; //(argc == 2 ? atoi(argv[1]) : 0); //0 is for /
 //////////////////////////////////////////////////////////////////////////////////////
 
+=======
+//    gControllerInfo.ulRelativeNumber = 0; //(argc == 2 ? atoi(argv[1]) : 0); //0 is for /
+//////////////////////////////////////////////////////////////////////////////////////
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     DMCInitLibrary();
 	
     // Open the connection
@@ -135,13 +207,18 @@ int GAInit(int iNumberOfGalilCards, int iPreOnly)
 	printf("DMCOpen Error: %d\n", rc);
         return rc;  
     }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     // Init The Galil Timer Counters
     if (GAInitTimerCounters() == SUCCESS)
     {
 	rc = DMCCommand(ghDMC, "\x12\x16", buffer, sizeof(buffer));
 	printf("Connected to %s", buffer);
 	rc = DMCCommand(ghDMC, "MG _BN", buffer, sizeof(buffer));
+<<<<<<< HEAD
 	printf("The serial number is %s", buffer);
 	lSN = atol(buffer);
 	if (lSN != glSN)
@@ -157,6 +234,23 @@ int GAInit(int iNumberOfGalilCards, int iPreOnly)
         if(rc)
             printf("XQ#AUTO not success. %ld\n", rc);
 
+=======
+	printf("The serial number is %s", buffer);
+	lSN = atol(buffer);
+	if (lSN != glSN)
+	{
+	    printf("galil SN not match!\n");
+	    return FAILURE;
+        }
+	glSN3 = 3 * glSN;
+	sprintf(gaSN3, "%d", glSN3);
+
+
+	rc = DMCCommand(ghDMC, "XQ#AUTO", buffer, sizeof(buffer));
+        if(rc)
+            printf("XQ#AUTO not success. %ld\n", rc);
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
         // Initialize Galil Interrupt
         if ( (iNumberOfGalilCards > MAX_GALIL_CARDS) ||
@@ -192,17 +286,27 @@ int GAInit(int iNumberOfGalilCards, int iPreOnly)
             if (GAInitCmdString(GA_CARD_1) == FAILURE)
                 return FAILURE;
         }
+<<<<<<< HEAD
     }
 
 //    usStatus = 1;
 //    rc = DMCGetInterruptStatus(ghDMC, &usStatus); //clear the interrupt queue
 
 //    rc = pthread_create( &thread1, NULL, procGalilPCIInterrupt, (void*) NULL);
+=======
+    }
+
+//    usStatus = 1;
+//    rc = DMCGetInterruptStatus(ghDMC, &usStatus); //clear the interrupt queue
+
+//    rc = pthread_create( &thread1, NULL, procGalilPCIInterrupt, (void*) NULL);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    if (rc)
 //    {
 //	printf("Thread procGalilPCIInterrupt create error: %d\n", rc);
 //        return rc;  
 //    }
+<<<<<<< HEAD
 
     // Set some galil variables according to the robot type XYZ
     TIDelay(100);
@@ -212,6 +316,17 @@ int GAInit(int iNumberOfGalilCards, int iPreOnly)
 //	rc = DMCCommand(ghDMC, "VSFI=150", buffer, sizeof(buffer));
 //	rc = DMCCommand(ghDMC, "VSPA=80000", buffer, sizeof(buffer));
 //    }
+=======
+
+    // Set some galil variables according to the robot type XYZ
+    TIDelay(100);
+//    if(giXYZRobot)
+//    {
+//	rc = DMCCommand(ghDMC, "VSFE=600", buffer, sizeof(buffer));
+//	rc = DMCCommand(ghDMC, "VSFI=150", buffer, sizeof(buffer));
+//	rc = DMCCommand(ghDMC, "VSPA=80000", buffer, sizeof(buffer));
+//    }
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     GAInitStatusWord();
     return SUCCESS;
@@ -347,7 +462,11 @@ int GAInitTimerCounters(void)
 int GATurnOnGalilInt(int iCardNoArg)
 {
     int iCardNum;
+<<<<<<< HEAD
     char cpBuf[8];
+=======
+    char cpBuf[8];
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     iCardNum = iCardNoArg;
     if ( GAValidateInterrupt(&iCardNum) == FAILURE)
@@ -369,7 +488,11 @@ int GATurnOnGalilInt(int iCardNoArg)
     // Send Command to Galil Card 0
     //if (GASendReceiveGalil( GA_CARD_0, (char *)"EI 255,255\xD", cpBuf ) == FAILURE)
     //    return FAILURE;
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return SUCCESS;
 }
 

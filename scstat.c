@@ -1,8 +1,37 @@
 /***************************************************************\
  *
+<<<<<<< HEAD
  *
  * Program:     Status
  * File:        status.c
+=======
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ *
+ * Program:     Status
+ * File:        scstat.c
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   SSSetStatusWord
  *              SSReadStatusBits
  *              SSGetVacuumBits
@@ -49,7 +78,11 @@ unsigned SSuEmulatorType;
 int iSystemInitializationStatus = 0;    /* keeps the record of failures during
                                          * main initialization of modules */
 unsigned int SSuDebugBit = 0;   /* general purpose debug on/off bit */
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 /****************************************************************\
  *
  * Function:    SSSetStatusWord
@@ -138,7 +171,11 @@ int SSGetVacuumBits(void)
     int iStatus = 0;
     int iEnd, iVac, iCurrentStation, iOnOffFlag;
 
+<<<<<<< HEAD
     /* Find out which end effector we're using */
+=======
+    /* Find out which end effector we're using */
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iEnd = 0;
     iCurrentStation = FIOGetCurrentStationInt();
     if ((iCurrentStation>=0) && (iCurrentStation<=51))
@@ -154,7 +191,11 @@ int SSGetVacuumBits(void)
     }
 
     /* Get the state of the vacuum sensor. */
+<<<<<<< HEAD
 //    GAReadGalilInputOutputPort(GA_CARD_0, &iVac);
+=======
+//    GAReadGalilInputOutputPort(GA_CARD_0, &iVac);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iVac = inb(IO_ROBOT_INPUT_F);
     /* Adjust it to get the vacuum sensor bit for the selected end effector. */
     iVac = (iVac >> iEnd) & 0x01;
@@ -167,7 +208,11 @@ int SSGetVacuumBits(void)
     iVac = inb(IO_ROBOT_OUTPUT_A);
     iVac = (iVac >> iEnd) & 0x01;
     /* Set the temporary status word, which is used by the system status word.
+<<<<<<< HEAD
      * Switch is ACTIVE LOW!!! */
+=======
+     * Switch is ACTIVE LOW!!! */
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (!iVac)
         iStatus |= VACUUM_SW;
 
@@ -197,8 +242,13 @@ int SSGetSystemStatus(void)
 {
     int iStatus, iAligning;
     unsigned long ulAllEquipeAxes;
+<<<<<<< HEAD
 
     ROUpdateTS(FALSE);
+=======
+
+    ROUpdateTS(FALSE);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (!MPIsNotScanning())
     {
@@ -212,7 +262,11 @@ int SSGetSystemStatus(void)
         iStatus = SSuSystemStatus & 0xE883;
 
     }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Add in the Vacuum Sensor Bits */
     iStatus |= SSGetVacuumBits();
 

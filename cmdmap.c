@@ -1,5 +1,31 @@
 /***************************************************************\
  *
+<<<<<<< HEAD
+=======
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Program:     low-level command, command interpreter and Opcode table.
  *
  * File:        cmdmap.c
@@ -31,7 +57,11 @@
 #include "gag.h"
 #include "scstat.h"
 #include "ser.h"
+<<<<<<< HEAD
 #include "fiog.h"
+=======
+#include "fiog.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "fiol.h"
 #include "sctag.h"
 #include "scver.h"
@@ -96,7 +126,11 @@ int ex_RLUX(instr_ptr instr)
     }
     else
     {
+<<<<<<< HEAD
 //        ltoa(lParameter, caString, 10);
+=======
+//        ltoa(lParameter, caString, 10);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	sprintf(caString, "%ld", lParameter);
         if( SERPutsTxBuff(iCmdPortNumber, caString) == FAILURE )
             return FAILURE;
@@ -337,6 +371,7 @@ int ex_FILTR(instr_ptr instr )
                 return MPFilterPass3( iStation, (int)lMaxTH, (int)lIter, (int)lNewScheme );
             case 4L :                   /* filters 4 and 5 are for OTF aligning */
             case 5L :
+<<<<<<< HEAD
                 iRet = MPFilterPass4( iStation, (int)lMaxTH, lIter, cCalStation, (int)(lPassNumber - 4)*3 );
                 Optr = Optr->next;
 		if (Optr)
@@ -344,6 +379,15 @@ int ex_FILTR(instr_ptr instr )
 		    RGSetRegister(Optr->opr.i, iRet);
 		    return SUCCESS;
 		}
+=======
+                iRet = MPFilterPass4( iStation, (int)lMaxTH, lIter, cCalStation, (int)(lPassNumber - 4)*3 );
+                Optr = Optr->next;
+		if (Optr)
+		{
+		    RGSetRegister(Optr->opr.i, iRet);
+		    return SUCCESS;
+		}
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		return iRet;
         }
     }
@@ -664,7 +708,11 @@ int ex_ROTFI(instr_ptr instr)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
+<<<<<<< HEAD
 extern int 	giOTFCounter;
+=======
+extern int 	giOTFCounter;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int ex_ROTFD(instr_ptr instr)
 {
     CMDoperand_ptr Optr;

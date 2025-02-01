@@ -1,5 +1,31 @@
 /***************************************************************\
  *
+<<<<<<< HEAD
+=======
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Program:     smart controller macro
  * File:        scmac.c
  * Functions:   MAInit
@@ -69,7 +95,11 @@
 #include <malloc.h>
 #include <string.h>
 #include <fcntl.h>
+<<<<<<< HEAD
 #include <unistd.h>
+=======
+#include <unistd.h>
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <time.h>
 
 #include "sck.h"
@@ -82,14 +112,22 @@
 #include "scver.h"
 #include "cmdfns.h"
 #include "cmdval.h"
+<<<<<<< HEAD
 #include "cmdex.h"
+=======
+#include "cmdex.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "cmdmac.h"
 #include "cmdsp.h"
 #include "sctim.h"
 #include "mapio.h"
 #include "fiog.h"
 #include "scintr.h"
+<<<<<<< HEAD
 #include "scmem.h"
+=======
+#include "scmem.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "secsg.h"
 
 int iDefineFlag, iEmulatorFlag;         /* flag for system configuration  */
@@ -151,7 +189,11 @@ unsigned uMacroStatus;                  /* macro status */
 int iERRInterrupt;              /* (ERR)Error interrupt flag*/
 int iIIMInterrupt;              /* (IIM)I/O interrupt flag */
 int iLMMInterrupt;              /* (LMM) Limit switch interrupt flag */
+<<<<<<< HEAD
 int iDERInterrupt;		// (DER) Drift Error interrupt
+=======
+int iDERInterrupt;		// (DER) Drift Error interrupt
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int iSECSInterrupt;             /* SECS interrupt flag */
 int iSECSInterrupt2;            /* SECS interrupt2 flag */
 int iSECSInterrupt3;            /* SECS interrupt3 flag */
@@ -160,7 +202,11 @@ int iIIM7Interrupt;
 int iCMERInterrupt;             /* (CMER) Command error interrupt flag */
 int iINTLKInterrupt;            /* (INTLK) Emergency motion off interrupt flag */
 int iSSTOPInterrupt;            /* (SSTOP) Signal stop interrupt flag */
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int iIIM7Enabled;
 int iIIMEnabled;    /* (IIM) flag to disable/enable the I/O interrupt*/
 int iERREnabled;    /* (ERR) flag to disable/enable error interrupt*/
@@ -177,11 +223,19 @@ int iTraceMode;     /* Mode for tracing macro at real time */
 int iTracePort;     /* Port id to print out line in the macro when tracing mode is on */
 int iMacroTracing;  /* Macro is on the tracing mode while macro is executing. By the time
                                          * the macro finished executing the flag is off. */
+<<<<<<< HEAD
 int iCMEFlag = 0;   /* CMER returns "?" if set true */
 
 extern int giMeasurementInProgress;	// To kill aligner thread.
 extern int giMapTest;
 extern int giMapIORunning;
+=======
+int iCMEFlag = 0;   /* CMER returns "?" if set true */
+
+extern int giMeasurementInProgress;	// To kill aligner thread.
+extern int giMapTest;
+extern int giMapIORunning;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /*******************************************************
  * Function Name:   MAClearMacroNestLevel
@@ -247,7 +301,11 @@ int MASetMacroIntegerVars(int iFlagArg, int iValueArg)
             iLMMInterrupt = iValueArg;
             break;
         case MR_DER_INTERRUPT :
+<<<<<<< HEAD
             iDERInterrupt = iValueArg;
+=======
+            iDERInterrupt = iValueArg;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 printf("iDERInterrrupt=%d\n",iDERInterrupt);
             break;
         case MR_SECS_INTERRUPT :
@@ -623,7 +681,11 @@ int MAInitMacros()
     iCOM3Enabled = FALSE;
     iCMEREnabled = TRUE;
     iINTLKEnabled = TRUE;
+<<<<<<< HEAD
     iSSTOPEnabled = TRUE;
+=======
+    iSSTOPEnabled = TRUE;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iDEREnabled = TRUE;
 
     iimPC = NULL;
@@ -636,7 +698,11 @@ int MAInitMacros()
     secsPC3 = NULL;
     secsPC4 = NULL;
     INTLKPC = NULL;
+<<<<<<< HEAD
     sstopPC = NULL;
+=======
+    sstopPC = NULL;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     derPC = NULL;
 
     iLevelOfNestingForIntMacros = 0;
@@ -994,10 +1060,17 @@ int MAInsertMacro(char *pcNameArg, instr_ptr instrArg, int iOpcodeArg, int iNVSr
         iim7PC = instrArg;
     if (!strcmp(pcNameArg, "LMM"))      /* Limit switch interrupt macro */
         lmmPC = instrArg;
+<<<<<<< HEAD
     if (!strcmp(pcNameArg, "DER"))      /* Drift Error interrupt macro */
 {
         derPC = instrArg;
 printf("derPC=%x\n",derPC);
+=======
+    if (!strcmp(pcNameArg, "DER"))      /* Drift Error interrupt macro */
+{
+        derPC = instrArg;
+printf("derPC=%x\n",derPC);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
     if (!strcmp(pcNameArg, "COM2"))     /* COM2 interrupt macro */
         com2PC = instrArg;
@@ -1104,8 +1177,13 @@ int MRListMacro(int iOpcodeArg, int iNumFlagArg)
     instr_ptr instr;
     int first;
     char caBuf[55];
+<<<<<<< HEAD
     int iCmdPort;
     struct timespec tv;
+=======
+    int iCmdPort;
+    struct timespec tv;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     tv.tv_sec = 0;
 
     iCmdPort = SERGetCmdPort();
@@ -1151,9 +1229,15 @@ int MRListMacro(int iOpcodeArg, int iNumFlagArg)
             if (SERPutsTxBuff(SERGetCmdPort(), caBuf) == FAILURE) return FAILURE;
             if (SERFlushTxBuff(SERGetCmdPort()) == FAILURE) return FAILURE;
         }
+<<<<<<< HEAD
         MRListInstructions(instr,FALSE);
         tv.tv_nsec = 10000000;
 	nanosleep(&tv, NULL);
+=======
+        MRListInstructions(instr,FALSE);
+        tv.tv_nsec = 10000000;
+	nanosleep(&tv, NULL);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	//usleep(10000);
         instr = instr->next_instr;
     }
@@ -1588,9 +1672,15 @@ int    MRWriteBytes(unsigned uNumBytesArg, void *ptrArg)
         uNumberOfBytes++;
         nCount++;
     }
+<<<<<<< HEAD
     nCount = 0;
     iReturn = SUCCESS;
     nCount = fwrite(ptrArg, sizeof(char), nBytes, iFilePointer);
+=======
+    nCount = 0;
+    iReturn = SUCCESS;
+    nCount = fwrite(ptrArg, sizeof(char), nBytes, iFilePointer);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* make sure if there is enough memory for writing */
     if(iReturn != SUCCESS || nCount < nBytes)
     {
@@ -1616,9 +1706,15 @@ int    MRWriteCheckSum()
     int iReturn;
 
     nBytes = sizeof(unsigned);
+<<<<<<< HEAD
     nCount = 0;
     iReturn = SUCCESS;
     nCount = fwrite((void *)&uMacroCheckSum, sizeof(unsigned), 1, iFilePointer);
+=======
+    nCount = 0;
+    iReturn = SUCCESS;
+    nCount = fwrite((void *)&uMacroCheckSum, sizeof(unsigned), 1, iFilePointer);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* make sure there is enough memory for writing */
     if(iReturn != SUCCESS || nCount < 1)
     {
@@ -1827,7 +1923,11 @@ err_exit:
 
 /**************************************************************************************************
  * Function Name:   MAReadBytes
+<<<<<<< HEAD
  * Description:     Read specific number of bytes from the file
+=======
+ * Description:     Read specific number of bytes from the file
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *		    Then make sure the function call read properly by checking number of
  *                  byte want to read is equal to number of bytes have read and number of bytes have read is
  *                  not zero and the return value is SUCCESS.
@@ -1838,9 +1938,15 @@ int    MAReadBytes(unsigned uNumBytesArg, void *ptrArg)
     int nCount;
     int iReturn;
 
+<<<<<<< HEAD
     nCount = 0;
     iReturn = SUCCESS;
     nCount = fread( ptrArg, sizeof(char), uNumBytesArg, iFilePointer);
+=======
+    nCount = 0;
+    iReturn = SUCCESS;
+    nCount = fread( ptrArg, sizeof(char), uNumBytesArg, iFilePointer);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* check to make sure the reading has no error */
     if(iReturn != SUCCESS || ((unsigned)nCount < uNumBytesArg && nCount != 0) )
     {
@@ -1869,9 +1975,15 @@ int     MAReadCheckSum(void)
     int iOpcode;
 
     nBytes = sizeof(unsigned);
+<<<<<<< HEAD
     nCount = 0;
     iReturn = SUCCESS;
     nCount = fread((void *)&uFileChkSum, sizeof (unsigned), 1, iFilePointer);
+=======
+    nCount = 0;
+    iReturn = SUCCESS;
+    nCount = fread((void *)&uFileChkSum, sizeof (unsigned), 1, iFilePointer);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* check to make sure the reading has no error */
     if(iReturn != SUCCESS || (nCount < 1))
     {
@@ -1929,8 +2041,13 @@ int     MASaveMacrotoNvsram(int iFileIdArg)
     }
 
     if( iFileIdArg > 999 )
+<<<<<<< HEAD
     {
 	return FAILURE;
+=======
+    {
+	return FAILURE;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 
     SSSetCheckSumStatus(MACR_FILE, FALSE);  /* the macro checksum status is good */
@@ -1955,7 +2072,11 @@ int     MASaveMacrotoNvsram(int iFileIdArg)
         if(iReturn == FAILURE)
             goto exit_point;
         iReturn = MRWriteCheckSum( );   /* write checksum */
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 exit_point:
         fclose(iFilePointer);           /* close file */
     return iReturn;
@@ -1982,7 +2103,11 @@ int     MRLoadMacroFromNvsram(int iFileIdArg)
     if( SSGetCheckSumStatus(BAD_NVSRAM) & BAD_NVSRAM )
     {
       SSSetCheckSumStatus( MACR_FILE, TRUE );
+<<<<<<< HEAD
       return FAILURE;
+=======
+      return FAILURE;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 
     if( iFileIdArg > 999 )
@@ -2005,7 +2130,11 @@ int     MRLoadMacroFromNvsram(int iFileIdArg)
         return FAILURE;
     }
     /* open the file */
+<<<<<<< HEAD
     iFilePointer = fopen(caFilename, "r");
+=======
+    iFilePointer = fopen(caFilename, "r");
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (iFilePointer == NULL)
     {
         SSSetCheckSumStatus( MACR_FILE, TRUE );
@@ -2298,7 +2427,11 @@ int MRExecuteInstructions(instr_ptr instrArg, int iCheckPCArg)
     {
         if ( TIGetTimerVals(LOCKED) == 123 )
         {
+<<<<<<< HEAD
 //printf("Not valid in motion: OC=%d line=%s\n",OCEntry.OC, OCEntry.OC_str);
+=======
+//printf("Not valid in motion: OC=%d line=%s\n",OCEntry.OC, OCEntry.OC_str);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             iRc = FAILURE;
             goto exit_exec;
         }
@@ -2337,11 +2470,19 @@ int MRExecuteInstructions(instr_ptr instrArg, int iCheckPCArg)
     }
 
 exit_exec:
+<<<<<<< HEAD
     if (iRc)
     {
 	SSSetStatusWord(CMD_NOT_EXED, TRUE);
 //printf("CMD_NOT_EXED: OC=%d line=%s\n",OCEntry.OC, OCEntry.OC_str);
     }
+=======
+    if (iRc)
+    {
+	SSSetStatusWord(CMD_NOT_EXED, TRUE);
+//printf("CMD_NOT_EXED: OC=%d line=%s\n",OCEntry.OC, OCEntry.OC_str);
+    }
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     else
     {
        if (instrArg->OC != STAT)
@@ -2353,10 +2494,17 @@ exit_exec:
 	iAbortLineNumber = instrArg->line_number;
 	/* If nobody else said why we're aborting, it must be OTHERS */
         /* (Note that uMacroStatus could be STACK_OVERFLOW here) */
+<<<<<<< HEAD
 	if (uMacroStatus == MACRO_RUNNING)
 {
 	    uMacroStatus = OTHERS;
 //printf("macroStat=%d\n",uMacroStatus);
+=======
+	if (uMacroStatus == MACRO_RUNNING)
+{
+	    uMacroStatus = OTHERS;
+//printf("macroStat=%d\n",uMacroStatus);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
         if(iMacroTracing) /* reset the flag if the executing of macro is fail */
             iMacroTracing = FALSE;
@@ -2639,11 +2787,19 @@ int MRAbortMacro()
 {
     int iReturn;
 
+<<<<<<< HEAD
     TKSetPCCriticalSection( 1 );
 
 	giMapTest = 0;		// mapping IO stopped
 	giMapIORunning = 0;
 
+=======
+    TKSetPCCriticalSection( 1 );
+
+	giMapTest = 0;		// mapping IO stopped
+	giMapIORunning = 0;
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (PC != NULL)
     	iAbortLineNumber = PC->line_number;
     iReturn = MAInitStack();                    /* initialize the stack */
@@ -2655,7 +2811,11 @@ int MRAbortMacro()
         goto Exit_point;
     MPSetNotScanning();
 Exit_point:
+<<<<<<< HEAD
     TKSetPCCriticalSection( -1 );
+=======
+    TKSetPCCriticalSection( -1 );
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     giMeasurementInProgress = 0;	// stop alignment if running, that kills the thread.
     iRunningCMERMacro = FALSE;                   /* CMER is not running */
     iRunningSSTOPMacro = FALSE;                  /* SSTOP is not running */
@@ -3168,7 +3328,11 @@ int MAReadMacroLineNumber()
      * Either there is no macro push or there is only the macro is currently running. If the PC is not NULL,
      * the macro is still running, so you get the local global OldPC instruction to get the currently line
      * number that is running. */
+<<<<<<< HEAD
 	if( PC )
+=======
+	if( PC )
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    sprintf(caBuf+strlen(caBuf), "%d", oldPC->line_number);
 //          itoa(oldPC->line_number, caBuf+strlen(caBuf), 10);
    /* if the PC is NULL, that mean the macro finished running or
@@ -3309,8 +3473,13 @@ void MAFindPath(pstProgStatus pstkStatusStackArg, pstProgStatus pstkStatusStackT
 {
     while (pstkStatusStackArg < pstkStatusStackTopArg)
     {
+<<<<<<< HEAD
 //        itoa(pstkStatusStackArg->m_OldPC->line_number, caBufferArg + strlen(caBufferArg), 10);
         sprintf(caBufferArg+strlen(caBufferArg), "%d", pstkStatusStackArg->m_OldPC->line_number);
+=======
+//        itoa(pstkStatusStackArg->m_OldPC->line_number, caBufferArg + strlen(caBufferArg), 10);
+        sprintf(caBufferArg+strlen(caBufferArg), "%d", pstkStatusStackArg->m_OldPC->line_number);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
         strcat(caBufferArg, ".");
         ++pstkStatusStackArg;

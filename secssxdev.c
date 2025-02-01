@@ -1,8 +1,39 @@
+<<<<<<< HEAD
 /************************************************************************************************
 *
 * Program:      File contains those of functions needed for SECS-II com when our controller is a
 *               device
 * File:         S2SecsDe.c
+=======
+/***************************************************************\
+ *
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+*
+* Program:      File contains those of functions needed for SECS-II com when our controller is a
+*               device
+* File:         secssxdev.c
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 * Functions:
 *
 * Description:
@@ -16,7 +47,11 @@
 #include <stdlib.h>
 #include "sck.h"
 #include "secsl.h"
+<<<<<<< HEAD
 #include "secsg.h"
+=======
+#include "secsg.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "scregg.h"
 
 // For ToolS2F67

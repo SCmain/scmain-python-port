@@ -1,7 +1,35 @@
 /***************************************************************\
  *
+<<<<<<< HEAD
  * Program:     Task module
  * File:        Task.c
+=======
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ * Program:     Task module
+ * File:        scta.c
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   TKGetTaskListArray
  *              TKInitTaskList
  *              TKSetPCCriticalSection
@@ -46,8 +74,13 @@
 #include "sctim.h"
 #include "scintr.h"
 #include "scmem.h"
+<<<<<<< HEAD
 
 extern int giDispTime;
+=======
+
+extern int giDispTime;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /***************************************************************
  * Function Name:   TKGetTaskListArray
@@ -266,7 +299,11 @@ void TKKillCurrentTask(int iFailureFlagArg)
             //search through the list of macro's nested statuses for the current line_numbers
             MAFindPath(pstkTempStatus, pstkTempTop, caLineNumbers);
             // store the particular fail message into the global variable so it can be later retrieved when needed
+<<<<<<< HEAD
 //            itoa(staTaskList[iCounter].m_NextPC->line_number, caLineNumbers + strlen(caLineNumbers), 10);
+=======
+//            itoa(staTaskList[iCounter].m_NextPC->line_number, caLineNumbers + strlen(caLineNumbers), 10);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    sprintf( caLineNumbers+strlen(caLineNumbers), "%d", staTaskList[iCounter].m_NextPC->line_number);
             sprintf( caTaskStatus[iCounter], "Task #%d failed at %s\r\n", iCounter, caLineNumbers );
         }
@@ -419,7 +456,11 @@ int TKListActiveTasks()
 
             // add the string with the path of all nested macros to the current line number string
             MAFindPath(pstkTempStatus, pstkTempTop, caLineNumbers);
+<<<<<<< HEAD
 //            itoa(staTaskList[icount].m_NextPC->line_number, caLineNumbers + strlen(caLineNumbers), 10);
+=======
+//            itoa(staTaskList[icount].m_NextPC->line_number, caLineNumbers + strlen(caLineNumbers), 10);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    sprintf( caLineNumbers+strlen(caLineNumbers), "%d", staTaskList[icount].m_NextPC->line_number);
             sprintf( caBuf, "Task #%d at %s:", icount, caLineNumbers );
             SERPutsTxBuff( SERGetCmdPort(), caBuf);
@@ -588,7 +629,11 @@ int TKWait(long lTimeArg, instr_ptr InstrArg)
      * the function.*/
     ptl = TKGetCurrentTask( );
     if( ptl )
+<<<<<<< HEAD
     {
+=======
+    {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("current task: ptl\n");
         if( ptl->m_iPCWaiting )
         {
@@ -621,6 +666,7 @@ int TKWait(long lTimeArg, instr_ptr InstrArg)
     /* if there is no current task and no multi-tasking, then check current PC is at waiting state or not.
      * if it's not at waiting state then set timer counter, set the state to be waiting state and re-run the
      * instruction again until the timer is up. Otherwise, it's at waiting state, then check for timer if the
+<<<<<<< HEAD
      * the time is up then set the waiting state to FALSE else re-run the instruction again.*/
 
 giDispTime = 0;
@@ -629,6 +675,16 @@ giDispTime = 0;
     {
         time = (unsigned long) (lTimeArg);
 if(giDispTime)
+=======
+     * the time is up then set the waiting state to FALSE else re-run the instruction again.*/
+
+giDispTime = 0;
+
+    if (!MRGetMacroIntegerVars(MR_PC_WAITING))
+    {
+        time = (unsigned long) (lTimeArg);
+if(giDispTime)
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 printf("wait time=%ld\n",time);
         if (time > UINT_MAX)
         {
@@ -636,13 +692,18 @@ printf("wait time=%ld\n",time);
 		goto exit_point;
         }
         // TISetCounter(iTimerForTKWait, (unsigned) time);
+<<<<<<< HEAD
 	MainTimerSet(iTimerForTKWait, (long)time);
+=======
+	MainTimerSet(iTimerForTKWait, (long)time);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         MASetMacroIntegerVars(MR_PC_WAITING, TRUE);
         MASetPC(InstrArg);     /* repeat this instruction */
     }
     else           /* at waiting state already */
     {
         //if (!TICountExpired(iTimerForTKWait))
+<<<<<<< HEAD
 	if(!MainTimerExpired(iTimerForTKWait))
             MASetPC(InstrArg);     /* repeat this instruction */
         else
@@ -655,6 +716,20 @@ printf("wait time=%ld Expired\n", lTimeArg);
 
 exit_point:
 giDispTime = 0;
+=======
+	if(!MainTimerExpired(iTimerForTKWait))
+            MASetPC(InstrArg);     /* repeat this instruction */
+        else
+	{
+            MASetMacroIntegerVars(MR_PC_WAITING, FALSE);      /* time up */
+if(giDispTime)
+printf("wait time=%ld Expired\n", lTimeArg);
+	}
+    }
+
+exit_point:
+giDispTime = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return iReturn;
 }

@@ -1,7 +1,35 @@
 /***************************************************************\
  *
+<<<<<<< HEAD
  * Program:     Motion Control local header
  * File:        MCLocal.h
+=======
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ * Program:     Motion Control local header
+ * File:        gafn.c
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   GAIsEndOfString
  *              GABuildAxesArgumentsCommand
  *              GABuildParameterArgumentsCommand
@@ -37,8 +65,13 @@
 #include "dmclnx.h"
 
 extern HANDLEDMC ghDMC;
+<<<<<<< HEAD
 
 unsigned int uGAAXES[8] = { GAXAXIS0, GAYAXIS0, GAZAXIS0, GAWAXIS0,
+=======
+
+unsigned int uGAAXES[8] = { GAXAXIS0, GAYAXIS0, GAZAXIS0, GAWAXIS0,
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 				GAEAXIS0, GAFAXIS0, GAGAXIS0, GAHAXIS0 }; 
 
 /****************************************************************\
@@ -90,7 +123,11 @@ int GAValidateCardNo(int iCardNoArg)
  *
 \*****************************************************************/
 int GAValidateAxis(int iCardNoArg, unsigned uGalilAxisNameArg, unsigned *uAxisName)
+<<<<<<< HEAD
 {
+=======
+{
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	*uAxisName = uGalilAxisNameArg & GAALLAXES;
 //    if ( (iCardNoArg < MIN_GALIL_CARDS) || (iCardNoArg > MAX_GALIL_CARDS))
 //        return FAILURE;
@@ -260,7 +297,11 @@ int GABuildParameterArgumentsCommand(int iCardNoArg,
                                     char *cpCommandString)
 {
     unsigned  uAxisName;
+<<<<<<< HEAD
     char      cValueInASCII[15];
+=======
+    char      cValueInASCII[15];
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	int		  i;	// index to axis bit, where to get lValue for the existing axis
 
     // Check if this configuration supports this axis name
@@ -269,7 +310,11 @@ int GABuildParameterArgumentsCommand(int iCardNoArg,
 
     // Initialze the command String
     memset(cpCommandString, 0, sizeof(char)*MAXGASTR);
+<<<<<<< HEAD
 	i = 0;
+=======
+	i = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // Get the Galil function opcode
     // No check on the type of Galil opcode for parameter argument
@@ -369,7 +414,11 @@ int GABuildDoubleParameterArgumentsCommand(int iCardNoArg,
 {
     unsigned  uAxisName;
     char      cValueInASCII[20];
+<<<<<<< HEAD
 	int 	  i;		// index to dValue for existing axis
+=======
+	int 	  i;		// index to dValue for existing axis
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // Check if this configuration supports this axis name
     if ( GAValidateAxis(iCardNoArg, uGalilAxisNameArg, &uAxisName) == FAILURE )
@@ -377,7 +426,11 @@ int GABuildDoubleParameterArgumentsCommand(int iCardNoArg,
 
     // Initialze the command String
     memset(cpCommandString, 0, sizeof(char)*MAXGASTR);
+<<<<<<< HEAD
 	i = 0;
+=======
+	i = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // Get the Galil function opcode
     // No check on the type of Galil opcode for parameter argument
@@ -544,6 +597,7 @@ int GABuildInterrogationCommand(int iCardNoArg, unsigned uGalilAxisNameArg, char
 int GAConvertAsciiToLong(unsigned uGalilAxesArg, char *cpReadStringArg, long *lpGalilParmArg)
 {
     long lTemp;
+<<<<<<< HEAD
     int  iRetValue = FAILURE; /* SUCCESS only if uGalilAxesArg is properly set */
 	int  i;		// index to lpGalilParmArg for existing axis
 	int  j;
@@ -563,13 +617,38 @@ int GAConvertAsciiToLong(unsigned uGalilAxesArg, char *cpReadStringArg, long *lp
 				lTemp = atol( strtok(NULL, ","));
 		}
 	}
+=======
+    int  iRetValue = FAILURE; /* SUCCESS only if uGalilAxesArg is properly set */
+	int  i;		// index to lpGalilParmArg for existing axis
+	int  j;
+
+
+	i = 0;
+    // Initialize the lTemp pointer to the first entry
+    lTemp = atol( strtok(cpReadStringArg, ",") );
+
+	for (i=0; i<8; ++i)
+	{
+		if (uGalilAxesArg & uGAAXES[i])
+		{
+			lpGalilParmArg[i] = lTemp;
+        	iRetValue = SUCCESS;
+			if (i < 7 && uGalilAxesArg & uGAAXES[i+1])
+				lTemp = atol( strtok(NULL, ","));
+		}
+	}
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /*
     // Is the first axis exists?
     if (uGalilAxesArg & GAXAXIS0)
     {
         // yes, get the value & update the lTemp pointer to the next entry
+<<<<<<< HEAD
         lpGalilParmArg[i++] = lTemp;
+=======
+        lpGalilParmArg[i++] = lTemp;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		if (uGalilAxesArg & GAYAXIS0)
             lTemp = atol( strtok(NULL, ",") );
         iRetValue = SUCCESS;
@@ -650,7 +729,11 @@ int GAConvertAsciiToLong(unsigned uGalilAxesArg, char *cpReadStringArg, long *lp
         iRetValue = SUCCESS;
     }
 //    else lpGalilParmArg[7] = 0;
+<<<<<<< HEAD
 */
+=======
+*/
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     //if(iRetValue == FAILURE)
     //{
@@ -681,6 +764,7 @@ int GAConvertAsciiToDouble(unsigned uGalilAxesArg, char *cpReadStringArg, double
 {
     double dTemp;
     int iRetValue = FAILURE; /* SUCCESS only if uGalilAxesArg is set properly */
+<<<<<<< HEAD
 	int i;			// index to dpGalilParmArg for existing axes
 
 	i = 0;
@@ -696,11 +780,32 @@ int GAConvertAsciiToDouble(unsigned uGalilAxesArg, char *cpReadStringArg, double
 				dTemp = atof( strtok(NULL, ","));
 		}
 	}
+=======
+	int i;			// index to dpGalilParmArg for existing axes
+
+	i = 0;
+    dTemp = atof( strtok(cpReadStringArg, ",") );
+
+	for (i=0; i<8; ++i)
+	{
+		if (uGalilAxesArg & uGAAXES[i])
+		{
+			dpGalilParmArg[i] = dTemp;
+        	iRetValue = SUCCESS;
+			if (i < 7 && uGalilAxesArg & uGAAXES[i+1])
+				dTemp = atof( strtok(NULL, ","));
+		}
+	}
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /*
     if (uGalilAxesArg & GAXAXIS0)
     {
+<<<<<<< HEAD
         dpGalilParmArg[i++] = dTemp;
+=======
+        dpGalilParmArg[i++] = dTemp;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		if (uGalilAxesArg & GAYAXIS0)
 	        dTemp = atof( strtok(NULL, ",") );
         iRetValue = SUCCESS;
@@ -877,10 +982,17 @@ int GASetCommandString(int iParamDescArg, char *cpCommandStringArg)
         case FEED_FORWARD_ACCEL :
             strcpy(cpCommandStringArg, FEED_FORW_ACCEL_COMMAND);
             break;
+<<<<<<< HEAD
         case IT_SCURVE :
             strcpy(cpCommandStringArg, INDEP_TIME_COMMAND);
             break;
         case JERK :
+=======
+        case IT_SCURVE :
+            strcpy(cpCommandStringArg, INDEP_TIME_COMMAND);
+            break;
+        case JERK :
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             strcpy(cpCommandStringArg, INDEP_TIME_COMMAND);
             break;
 //        case JERK :

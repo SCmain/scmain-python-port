@@ -1,4 +1,31 @@
+<<<<<<< HEAD
 /******************************************************************************\
+=======
+/***************************************************************\
+ *
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Program:     Scan Mapper IO Module
  * File:        mapio.c
@@ -29,19 +56,32 @@
 #include <sys/io.h>
 #include <stdlib.h>
 #include <string.h>
+<<<<<<< HEAD
 #include <pthread.h>
+=======
+#include <pthread.h>
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 #include "sck.h"
 #include "ser.h"
 #include "scintr.h"
 #include "scio.h"
+<<<<<<< HEAD
 #include "gag.h"
 #include "gaintr.h"
+=======
+#include "gag.h"
+#include "gaintr.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "sctim.h"
 #include "mapfn.h"
 #include "mapio.h"
 #include "mapk.h"
+<<<<<<< HEAD
 #include "ro.h"
+=======
+#include "ro.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "rofio.h"
 #include "fiog.h"
 #include "scttr.h"
@@ -57,6 +97,7 @@ int         iTestAxisPos = 2;
 unsigned long   ulTestAxis = RO_AXIS_Z;
 unsigned long   ulMapAxis = RO_AXIS_Z;
 int         iGACardNum = GA_CARD_0;
+<<<<<<< HEAD
 
 int			giMapIORunning = 0;
 int			giMapTest = 0;
@@ -66,13 +107,29 @@ int 	giSOPToggle;
 
 //static int  iSOP;
 int	giSOPprev;
+=======
+
+int			giMapIORunning = 0;
+int			giMapTest = 0;
+int			giMapSensorStatus = 1;
+
+int 	giSOPToggle;
+
+//static int  iSOP;
+int	giSOPprev;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 long        lZMechRatio;
 int         iMapperAxis = MP_ON_ROBOT_VAL_0;
 
 int GAGalilReadOut(int);
+<<<<<<< HEAD
 int GAGalilReadIO(int);
 void GAGalilWriteIO(int, int);
+=======
+int GAGalilReadIO(int);
+void GAGalilWriteIO(int, int);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 // pointers only used in scan IO
 long *lpZPos;
@@ -80,6 +137,7 @@ int  *ipTrans;
 int  *ipHitcount;
 
 char cBuf[80];
+<<<<<<< HEAD
 char cpNull[8];
 
 pthread_t threadMP;
@@ -135,6 +193,63 @@ void MPUpdateIO(int iFlagArg)
         if (MPReadLatchedPosition( &lTestWESPos ) == FAILURE)
             lTestWESPos = -1L;
 
+=======
+char cpNull[8];
+
+pthread_t threadMP;
+
+void *procMP(void *ptr)
+{
+    unsigned char iC;
+    struct timespec ntv, mtv;
+
+    ntv.tv_sec = 0;
+    ntv.tv_nsec = 500000;
+    mtv.tv_sec = 0;
+    mtv.tv_nsec = 10000;
+
+    while (1)
+    {
+        if (giMapIORunning)
+	{
+	    MPUpdateIO(TRUE);
+	    nanosleep(&mtv, NULL);
+	}
+        nanosleep(&ntv, NULL);
+    }
+    // will not reach here!
+    pthread_exit(ptr);
+}
+
+
+void MPUpdateIO(int iFlagArg)
+{
+    int iStatus, iSOP;
+//    char caTPcommand[5] = "TPY\xD";
+//    char caResp[MAXGASTR];
+//    int rc;
+//    long lTP;
+
+    if (iFlagArg & giMapIORunning)
+    {
+//	iStatus = inb(SCANNERPORT) & 0x04;
+	iSOP = inb(SCANNERPORT) & 0x04;
+//	iSOP = iStatus ? 2 : 0;
+
+        if ( iSOP == giSOPprev ) // wafer signal not changed
+	    return;
+
+	// Yes, wafer detected signal changed
+	giSOPprev = iSOP;
+
+        // Get Z axis position
+//	rc = DMCCommand(ghDMC, caTBcommand, caResp, MAXGASTR);
+//	lTP = atol(caResp);
+
+        if (MPReadLatchedPosition( &lTestWESPos ) == FAILURE)
+            lTestWESPos = -1L;
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         // now store the data in buffer
         // Make sure pointer does not go beyond the buffer size
         if (*ipHitcount < SCAN_ARRAY_SIZE)
@@ -143,9 +258,15 @@ void MPUpdateIO(int iFlagArg)
             ipTrans[*ipHitcount] = iSOP;
             ++(*ipHitcount);
         }
+<<<<<<< HEAD
     }
 }
 
+=======
+    }
+}
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /****************************************************************
  *
@@ -158,6 +279,7 @@ void MPUpdateIO(int iFlagArg)
  *
  ***************************************************************/
 int MPInitScanIO( void )
+<<<<<<< HEAD
 {
     int iReadData;
     long lMechRatio[8];
@@ -165,11 +287,21 @@ int MPInitScanIO( void )
 //	int rc;
 //	pthread_t threadMap;
     giSOPToggle = 0;
+=======
+{
+    int iReadData;
+    long lMechRatio[8];
+    unsigned long ulAxis;
+//	int rc;
+//	pthread_t threadMap;
+    giSOPToggle = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     giSOPprev = 0;
     iTestWESFlag = 0;
     lTestWESPos = 0L;
     lTestWESPos1 = 0L;
     uScanBitValue = NOTSCANNING;
+<<<<<<< HEAD
     giMapIORunning = 0;
     giMapTest = 0;
     giMapSensorStatus = inb(SCANNERPORT);
@@ -185,6 +317,23 @@ int MPInitScanIO( void )
     uScanBitValue = 0;
 
     return SUCCESS;
+=======
+    giMapIORunning = 0;
+    giMapTest = 0;
+    giMapSensorStatus = inb(SCANNERPORT);
+
+    iGACardNum = GA_CARD_0;
+
+    if(FIOGetParamVals(ROBOTFILE, MECHANICAL_RATIO, lMechRatio) != SUCCESS)
+	return FAILURE;
+
+    lZMechRatio = lMechRatio[2];
+    ulMapAxis = RO_AXIS_Z;
+
+    uScanBitValue = 0;
+
+    return SUCCESS;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 /*
     // Store the current scanner axis Mech Ratio,
     // to be used in converting encoder reading into position value
@@ -235,7 +384,11 @@ int MPInitScanIO( void )
     uScanBitValue = 0;
 
     return SUCCESS;
+<<<<<<< HEAD
 */
+=======
+*/
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 
 
@@ -289,8 +442,13 @@ void MPInitScanDataBuffer( void )
  ***************************************************************/
 int MPEnableWES( void )
 {
+<<<<<<< HEAD
 	giMapTest = 0;
 	giMapIORunning = 1;
+=======
+	giMapTest = 0;
+	giMapIORunning = 1;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	giMapSensorStatus = 1;
 
     return SUCCESS;
@@ -307,8 +465,13 @@ int MPEnableWES( void )
  ***************************************************************/
 void MPDisableWES( void )
 {
+<<<<<<< HEAD
 	giMapTest = 0;
 	giMapIORunning = 0;
+=======
+	giMapTest = 0;
+	giMapIORunning = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return;
 }
 
@@ -324,8 +487,13 @@ void MPDisableWES( void )
  ***************************************************************/
 int  MPEnableTestWES( void )
 {
+<<<<<<< HEAD
 	giMapTest = 1;
 	giMapIORunning = 1;
+=======
+	giMapTest = 1;
+	giMapIORunning = 1;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	giMapSensorStatus = 1;
     return SUCCESS;
 }
@@ -341,8 +509,13 @@ int  MPEnableTestWES( void )
  ***************************************************************/
 void MPDisableTestWES( void )
 {
+<<<<<<< HEAD
 	giMapTest = 0;
 	giMapIORunning = 0;
+=======
+	giMapTest = 0;
+	giMapIORunning = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return;
 }
 
@@ -396,7 +569,11 @@ int MPReadLatchedPosition(long *lValue)
     // Mapper mounted on robot
     if (GASendReceiveGalil(iGACardNum, "TPZ\r", cpPosBuf) == FAILURE)
         goto error_exit;
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 /*    if( (iMapperAxis == MP_ON_ROBOT_VAL_0) || (iMapperAxis == MP_ON_ROBOT_VAL_1) )
     {
         // Mapper mounted on robot
@@ -426,7 +603,11 @@ int MPReadLatchedPosition(long *lValue)
     }
     else
         goto error_exit;
+<<<<<<< HEAD
 */
+=======
+*/
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     lPos = atol(cpPosBuf);
     // Convert the encoder reading to ESC counts using double arithmatic.
@@ -479,8 +660,13 @@ int MPTestScanning( int iCardNoArg, int iVacExistsArg )
 
     // iCardNum is to be used only in axis related command.
     // This is implemented as a result of track mapping. Track can be on card 0 or 1.
+<<<<<<< HEAD
     iCardNum = iCardNoArg;
     iPortBase = 1;
+=======
+    iCardNum = iCardNoArg;
+    iPortBase = 1;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // Decide which axis to read position from
     ulTrackAxis = ROGetSpecialAxis(RO_TRACK);
@@ -539,7 +725,11 @@ int MPTestScanning( int iCardNoArg, int iVacExistsArg )
     /* Read a byte from the galil port. */
     /* Read a byte from the IO port. */
     //iGAOutByte = ROReadGalilPort( iCardNoArg );
+<<<<<<< HEAD
     iGAOutByte = inb(IO_ROBOT_OUTPUT_A);
+=======
+    iGAOutByte = inb(IO_ROBOT_OUTPUT_A);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     for (iCount=0; iCount<=7; iCount++)
     {
         if (iGAOutByte&(1<<iCount))
@@ -550,7 +740,11 @@ int MPTestScanning( int iCardNoArg, int iVacExistsArg )
     }
 
     MPEnableTestWES();
+<<<<<<< HEAD
     giMapSensorStatus = inb(IO_ROBOT_INPUT_F) & 0x04;
+=======
+    giMapSensorStatus = inb(IO_ROBOT_INPUT_F) & 0x04;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // Mapper test involves
     //  (1) toggling ON/OFF on ports 0 to 7 or 40 to 47
@@ -570,7 +764,11 @@ int MPTestScanning( int iCardNoArg, int iVacExistsArg )
                     ROStopMotion(ulTestAxis);
                 break;
             case EOF:
+<<<<<<< HEAD
                 /* Check if there was any error during motion. */
+=======
+                /* Check if there was any error during motion. */
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		ROUpdateTS(FALSE);
                 if( ROGetERFlag() & ulTestAxis )
                 {
@@ -638,8 +836,13 @@ int MPTestScanning( int iCardNoArg, int iVacExistsArg )
                 TTPrintsAt( 2, 10, cTscr );
                 if (cAxis == 'Z')
                 {   // only if Z-axis, update the port IO
+<<<<<<< HEAD
 		    iGAOutByte = inb(IO_ROBOT_INPUT_F);
 		    iGAOutByte &= 0x04;
+=======
+		    iGAOutByte = inb(IO_ROBOT_INPUT_F);
+		    iGAOutByte &= 0x04;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                     TTPrintcAt( 3, 10, (char) (iGAOutByte ? '1':'0'));
                 }
                 break;
@@ -647,6 +850,7 @@ int MPTestScanning( int iCardNoArg, int iVacExistsArg )
             default:
                 // For user input '0' to '7'
                 // Toggle the port ON/OFF, and display the message
+<<<<<<< HEAD
 		iGAOutByte = inb(IO_ROBOT_OUTPUT_A);
                 if ( cCount >= '0' && cCount <= '7' )
                 {
@@ -656,13 +860,28 @@ int MPTestScanning( int iCardNoArg, int iVacExistsArg )
 		    else
 			iGAOutByte |= 1<<iCount;
 		    outb(iGAOutByte, IO_ROBOT_OUTPUT_A);
+=======
+		iGAOutByte = inb(IO_ROBOT_OUTPUT_A);
+                if ( cCount >= '0' && cCount <= '7' )
+                {
+                    iCount = cCount - '0';
+		    if (iGAOutByte&(1<<iCount))
+			iGAOutByte &= ~(1<<iCount);
+		    else
+			iGAOutByte |= 1<<iCount;
+		    outb(iGAOutByte, IO_ROBOT_OUTPUT_A);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
                     if (iGAOutByte&(1<<iCount))
                         cCount = '1';
                     else
                         cCount = '0';
                     TTPrintcAt( 3, 6+iCount, cCount );
+<<<<<<< HEAD
                 }
+=======
+                }
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		break;
         }
 
@@ -670,6 +889,7 @@ int MPTestScanning( int iCardNoArg, int iVacExistsArg )
         // Check if interrupt is generated
         // If so, display the appropriate message depending on the
         // laser detection status
+<<<<<<< HEAD
 		iStatus = inb(IO_ROBOT_INPUT_F) & 0x04;
 		if (giMapSensorStatus != iStatus) 
 		{
@@ -681,13 +901,30 @@ int MPTestScanning( int iCardNoArg, int iVacExistsArg )
 		else
 			iTestWESFlag = 0;
 
+=======
+		iStatus = inb(IO_ROBOT_INPUT_F) & 0x04;
+		if (giMapSensorStatus != iStatus) 
+		{
+			MPReadLatchedPosition(&lTestWESPos);
+			if (iStatus) iTestWESFlag = 4;
+			else iTestWESFlag = 2;
+			giMapSensorStatus = iStatus;
+		}
+		else
+			iTestWESFlag = 0;
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if ( iTestWESFlag )
         {
             TTPrintsAt( 4, 5, "       " );
             TTBeepTP( CLICK );
             if ( iTestWESFlag & 2 )
             {
+<<<<<<< HEAD
 //                ltoa(lTestWESPos, cTscr, 10 );
+=======
+//                ltoa(lTestWESPos, cTscr, 10 );
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 				sprintf(cTscr, "%ld", lTestWESPos);
                 TTPrintsAt( 4, 12, "LO->HI" );
                 iTestWESFlag = 0;

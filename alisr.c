@@ -1,4 +1,34 @@
+<<<<<<< HEAD
 /****************************************************************
+=======
+/***************************************************************\
+ *
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * File Name            : alisr.c
+ * Description          : These are functions to control the interrupt
+ *              operation of the CCD array
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Program:     Aligner Module CCD interrupt functions
  * File:        alisr.c
@@ -12,20 +42,31 @@
  ****************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
+<<<<<<< HEAD
 #include <sys/io.h>
 #include <time.h>
 #include <pthread.h>
+=======
+#include <sys/io.h>
+#include <time.h>
+#include <pthread.h>
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <unistd.h>
 
 #include "sck.h"
 #include "alk.h"
 #include "alpre.h"
+<<<<<<< HEAD
 #include "alisr.h"
+=======
+#include "alisr.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "alstep.h"
 #include "sctim.h"
 #include "scintr.h"
 #include "ser.h"
 #include "scttr.h"
+<<<<<<< HEAD
 #include "fiol.h"
 #include "gag.h"
 #include "scio.h"
@@ -34,6 +75,16 @@
 void ALChuckVacuum(int iFlagArg);
 void ALPinVacuum(int iFlagArg);
 int ALWaferOnChuck(void);
+=======
+#include "fiol.h"
+#include "gag.h"
+#include "scio.h"
+#include "dmclnx.h"
+
+void ALChuckVacuum(int iFlagArg);
+void ALPinVacuum(int iFlagArg);
+int ALWaferOnChuck(void);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /********** Variables used globally within this file **********/
 unsigned short gusPortRead;          // portread - reading from ccd data port
@@ -58,6 +109,7 @@ long glReverseMode;
 // PIC to really get messed up, variable helps to track us the timeframe when we writing to PIC
 // and thus to identify whether this write causes the problem of surious interrupts
 int iWritingToPICFlag = FALSE;
+<<<<<<< HEAD
 int giThreadAlignerCreated = 0;
 
 pthread_t threadAL;
@@ -257,6 +309,207 @@ void *procAL(void *ptr)
 
 void takeAMeasurement(void)
 {
+=======
+int giThreadAlignerCreated = 0;
+
+pthread_t threadAL;
+void *procAL(void *ptr);
+void procTakeAMeasurement(void);
+void GetAlignerData(void);
+
+int giMeasurementTaken = 0;
+
+int tmBuf[3000];
+int tmIdx = 0;
+int tmIdx2 = 0;
+int giIdleCnt = 0;
+int tmIdle[3000];
+int lxBuf[1000];
+int lxIdx = 0;
+char cmCommandLATX[10] = "XQ#LATX";
+char cmRespLATX[MAXGASTR];
+extern HANDLEDMC ghDMC;
+void getLATXdata()
+{
+  int rc;
+    rc = GASendDMCCommand(ghDMC, cmCommandLATX, cmRespLATX, MAXGASTR);
+    if(lxIdx >=1000) lxIdx=0;
+    lxBuf[lxIdx++] = atoi(cmRespLATX);
+    printf("%d %d\n", lxIdx-1, lxBuf[lxIdx-1]);
+}
+void printLATXdata()
+{
+  int i;
+  for (i=0; i<1000; ++i)
+    printf("%d %d %d %d\n",i, lxBuf[i], lxBuf[i+1], lxBuf[i+1] - lxBuf[i]);
+}
+void usleepTimer(int iMsecArg)
+{
+//  struct timeval tv;
+  struct timespec tv;
+
+  int iSec, iMsec, iSecNow, iMsecNow;
+  int iWait;
+
+  iWait = 1;
+
+//  gettimeofday(&tv, NULL);
+  clock_gettime(CLOCK_MONOTONIC, &tv);
+
+  iSec = tv.tv_sec;
+  iMsec = tv.tv_nsec + 1000*iMsecArg;
+  if(iMsec > 1000000000)
+  {
+     iSec++;
+     iMsec -= 1000000000;
+  }
+  while (iWait)
+  {
+//    getLATXdata();    
+//    gettimeofday(&tv, NULL);
+    clock_gettime(CLOCK_MONOTONIC, &tv);
+    iSecNow = tv.tv_sec;
+    iMsecNow = tv.tv_nsec;
+    if (iSecNow == iSec)
+    {
+  	if (iMsecNow >= iMsec)
+		iWait = 0;
+    }
+    else if (iSecNow > iSec)
+	iWait = 0;
+  }
+}
+
+
+void takeAMeasurement();
+
+void takeAL(int iMSecArg)
+{
+//  struct timeval tv;
+  struct timespec tv;
+
+  int iSec, iMsec, iSecNow, iMsecNow;
+  int iWait, iC, iPrev=0;
+
+  iWait = 1;
+//  gettimeofday(&tv, NULL);
+  clock_gettime(CLOCK_MONOTONIC, &tv);
+
+  iSec = tv.tv_sec;
+  iMsec = tv.tv_nsec + iMSecArg*1000000;
+  tmIdx = 0;
+  giIdleCnt = 0;
+  giRndDataIdx = 0;
+  tmIdx2 = 0;
+  giMeasurementInProgress = 0;
+  if (iMsec > 1000000000)
+  {
+      	iSec++;
+      	iMsec -= 1000000000;
+  }
+  while (iWait)
+  {
+      	iC = inb (AL_CCD_PORTC);
+      	if (iC & 0x80)
+	{
+	    if(!iPrev)
+	    {
+		iPrev = 1;
+	    	takeAMeasurement();
+	    	tmIdx++;
+	    }
+	    tmIdx2++;
+	}
+	else
+	{
+   	    giIdleCnt++;
+	    iPrev=0;
+	}
+
+//        gettimeofday(&tv, NULL);
+  	clock_gettime(CLOCK_REALTIME, &tv);
+        iSecNow = tv.tv_sec;
+        iMsecNow = tv.tv_nsec;
+        if (iSecNow == iSec)
+        {
+  	    if (iMsecNow >= iMsec)
+		iWait = 0;
+        }
+        else if (iSecNow > iSec)
+	    iWait = 0;
+  }
+
+  printf("tmIdx:%d iRnd:%d idx2:%d idle:%d\n",tmIdx, giRndDataIdx, tmIdx2, giIdleCnt);
+
+}
+
+
+
+
+
+void *procAL(void *ptr)
+{
+    unsigned char iC;
+    struct timespec ntv, mtv, mtv2;
+    int iPrev;
+    iPrev = 0;
+    ntv.tv_sec = 0;
+    ntv.tv_nsec = 500000;
+    mtv.tv_sec = 0;
+    mtv.tv_nsec = 10;
+    mtv2.tv_sec = 0;
+    mtv2.tv_nsec = 15;
+
+    giMeasurementInProgress = 1;
+
+    ALSelectCCDType(AL_CCD_DATA_SEL_MASK, AL_CCD_DATA);
+
+    while (1)
+    {
+	    while (giMeasurementInProgress)
+	    {
+        	iC = inb (AL_CCD_PORTC);
+        	if (iC & 0x80)
+		{
+		    if (!iPrev)
+		    {
+		   	iPrev = 1;
+//			takeAMeasurement();
+			procTakeAMeasurement();
+//			nanosleep(&mtv, NULL);
+//			usleepTimer(8);
+		    }
+ 		    tmIdx++;
+		}
+//		nanosleep(&mtv2, NULL);
+//		usleepTimer(100);
+		else
+		{
+//		    usleepTimer(8);
+		    iPrev = 0;
+	   	    giIdleCnt++;
+		}
+	    }
+
+	    if(giMeasurementTaken == 1)
+	    {
+			giMeasurementTaken = 0;
+//int i;
+//		for (i=0; i<300; ++i)
+//printf("%d: data: %d idle:%d\n",i, glaAngle[i], guiaData[i]);
+//printf("tIdx:%d dIdx:%d dup:%ld bad:%ld idle:%d tIdx2:%d\n",tmIdx, giRndDataIdx,gulDuplicateCount,gulBadCount,giIdleCnt,tmIdx2);
+		tmIdx=0; giIdleCnt=0;
+
+	    }
+	    nanosleep(&ntv, NULL);
+    }
+    // will not reach here!
+    pthread_exit(ptr);
+}
+
+void takeAMeasurement(void)
+{
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     gusPortRead = inw( AL_CCD_DATA_ADR );
     ALSelectCCDType(AL_CCD_DATA_SEL_MASK, AL_CCD_CHUCK_DATA);
 
@@ -278,16 +531,28 @@ void takeAMeasurement(void)
     ALSelectCCDType(AL_CCD_DATA_SEL_MASK, AL_CCD_DATA);
 
     glCurrentAngle = (long)((gusPortRead & AL_CCD_CHUCK_MASK) | gusChuckBit15);
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     giChuckStatus = AL_DATA_STATUS_READ_OK;
     giaDataStat[giRndDataIdx] = giDataStatus;
     glaAngle[giRndDataIdx] = glCurrentAngle;
     guiaData[giRndDataIdx] = gusCurrentData;
+<<<<<<< HEAD
     giRndDataIdx++;
 
     if( giRndDataIdx >= giMaxNumMeasStored  )
 {
     giMeasurementTaken = 1;
+=======
+    giRndDataIdx++;
+
+    if( giRndDataIdx >= giMaxNumMeasStored  )
+{
+    giMeasurementTaken = 1;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if( giRndDataIdx <= AL_OFFCENTER_END_INDEX )
         giOffsetIndexEnd = giRndDataIdx - (int)AL_SKIP_END - 1;
     else
@@ -295,10 +560,17 @@ void takeAMeasurement(void)
     giMeasurementInProgress = FALSE;
 }
     return;
+<<<<<<< HEAD
 }
 
 void procTakeAMeasurement(void)
 {
+=======
+}
+
+void procTakeAMeasurement(void)
+{
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     gusPortRead = inw( AL_CCD_DATA_ADR );
     ALSelectCCDType(AL_CCD_DATA_SEL_MASK, AL_CCD_CHUCK_DATA);
 
@@ -321,7 +593,11 @@ void procTakeAMeasurement(void)
 
     glCurrentAngle = (long)((gusPortRead & AL_CCD_CHUCK_MASK) | gusChuckBit15);
     giMeasureUpdate = TRUE;
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if( !giXilinxMonitor )
     {
         giChuckStatus = AL_DATA_STATUS_READ_OK;
@@ -330,10 +606,17 @@ void procTakeAMeasurement(void)
             if( (giRndDataIdx > AL_BEGIN_DATA) && (!giStartDataIdx) )
             {
                 gulAngularDiff = (unsigned long)labs( glCurrentAngle - glaAngle[giRndDataIdx-1] );
+<<<<<<< HEAD
                 if( gulAngularDiff < glDistanceBetween2Meas)
 		{
 		    ++tmIdx2;
                     goto check_angle;
+=======
+                if( gulAngularDiff < glDistanceBetween2Meas)
+		{
+		    ++tmIdx2;
+                    goto check_angle;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		}
             }
 
@@ -364,21 +647,35 @@ void procTakeAMeasurement(void)
             giaDataStat[giRndDataIdx] = giDataStatus;
             glaAngle[giRndDataIdx] = glCurrentAngle;
             guiaData[giRndDataIdx] = gusCurrentData;
+<<<<<<< HEAD
             giRndDataIdx++;
 
 	    giMeasurementTaken = 1;
+=======
+            giRndDataIdx++;
+
+	    giMeasurementTaken = 1;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         }
         else
             goto terminate_meas;
 
 check_angle:
+<<<<<<< HEAD
 //        tmIdx++;
+=======
+//        tmIdx++;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if( giChuckStatus == AL_DATA_STATUS_READ_OK )
         {
             if( (glCurrentAngle > 65400L) ||
                 ((glCurrentAngle > glMaxAngleMeasured) && !giDataReadPosDir) ||
                 ((glCurrentAngle < glMaxAngleMeasured) && giDataReadPosDir) )
+<<<<<<< HEAD
                 goto continue_meas;
+=======
+                goto continue_meas;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("check angle: an=%ld gidx=%d max=%ld\n", glCurrentAngle, giRndDataIdx, glMaxAngleMeasured);
         }
         else
@@ -396,7 +693,11 @@ terminate_meas:
 
 continue_meas:
     return;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 
 
@@ -486,17 +787,30 @@ int ALResetChuck(void)
  *
  ***************************************************************/
 int ALStartMeasurement(void)
+<<<<<<< HEAD
 {
     long rc;
+=======
+{
+    long rc;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     giMeasurementInProgress = TRUE;
     giMeasureUpdate = FALSE;
     giXilinxMonitor = FALSE;
+<<<<<<< HEAD
 
 //    GetAlignerData();
 
 //    printLATXdata();
 
+=======
+
+//    GetAlignerData();
+
+//    printLATXdata();
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return SUCCESS;
 }
@@ -545,17 +859,26 @@ int ALStopMeasurement(void)
 int ALTakeMeasurement(long *lpAngleArg, long *lpDataArg)
 {
     int iUpdate;
+<<<<<<< HEAD
     long lWaferSize;
+=======
+    long lWaferSize;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     giMeasurementInProgress = TRUE;
     giXilinxMonitor = TRUE;
     giMeasureUpdate = FALSE;
     iUpdate = giMeasureUpdate;
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if( FIOGetParamWaferVals(WAFER_SIZE,&lWaferSize) == FAILURE )
         return FAILURE;
     if( ALSetWaferSize((int)lWaferSize) == FAILURE )
         return FAILURE;
+<<<<<<< HEAD
 //	ALResetChuck();
     ALSelectCCDType(AL_CCD_DATA_SEL_MASK, AL_CCD_CHUCK_DATA);
 
@@ -567,6 +890,19 @@ int ALTakeMeasurement(long *lpAngleArg, long *lpDataArg)
 //    ALStartMeasurement( );
 //    procTakeAMeasurement();
 
+=======
+//	ALResetChuck();
+    ALSelectCCDType(AL_CCD_DATA_SEL_MASK, AL_CCD_CHUCK_DATA);
+
+    ALSelectCCDType(AL_CCD_DATA_SEL_MASK, AL_CCD_DATA);
+    *lpDataArg = inw( AL_CCD_DATA_ADR ) & AL_CCD_DATA_MASK;
+    ALSelectCCDType(AL_CCD_DATA_SEL_MASK, AL_CCD_CHUCK_DATA);
+	*lpAngleArg = inw( AL_CCD_DATA_ADR )& AL_CCD_CHUCK_MASK;
+
+//    ALStartMeasurement( );
+//    procTakeAMeasurement();
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    *lpDataArg = (long)(gusCurrentData - giCCDFirstPixelPos);
 //    *lpDataArg = (long)(gusCurrentData);
 //    *lpAngleArg = glCurrentAngle;
@@ -672,7 +1008,11 @@ int ALTestChuckAndCCD(void)
     TTPrintsAt( 3, 1, "R-Reset             " );
     TTPrintsAt( 4, 1, "1, 2, or 3 CCD      " );
     ALStartMeasurement( );
+<<<<<<< HEAD
     procTakeAMeasurement();
+=======
+    procTakeAMeasurement();
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     do
     {
 	    procTakeAMeasurement();
@@ -754,6 +1094,7 @@ int ALReturnDebugVar()
 {
     return iWritingToPICFlag;
 }
+<<<<<<< HEAD
 
 void ALChuckVacuum(int iFlagArg)
 {
@@ -801,3 +1142,52 @@ int ALWaferOnChuck(void)
 
     return iRet;
 }
+=======
+
+void ALChuckVacuum(int iFlagArg)
+{
+    int iResult;
+
+    iResult = inb(IO_PRE_OUTPUT_L);
+
+    if (iFlagArg == 1)
+   	iResult |= 1;
+    else
+   	iResult &= 0xFE;
+
+    outb(iResult, IO_PRE_OUTPUT_L);
+//    IOWriteIO(iResult, -1, IO_PRE_OUTPUT_L);
+}
+
+void ALPinVacuum(int iFlagArg) 
+{
+    int iResult;
+
+    iResult = inb(IO_PRE_OUTPUT_L);
+
+    if (iFlagArg == 1)
+   	iResult |= 2;
+    else
+   	iResult &= 0xFD;
+
+    outb(iResult, IO_PRE_OUTPUT_L);
+
+//printf("pin vacuum = %d\n",iResult);
+}
+
+int ALWaferOnChuck(void)
+{
+    int iRet, iResult;
+    char cpBuf[16];
+
+    iRet = 0;
+    iResult = inb( IO_PRE_INPUT_K ) & 1;
+//printf("wafer on chuck: pre_input_k = %d\n",iResult);
+//    iResult = GASendReceiveGalil( GA_CARD_1, (char *)"MG @IN[13]\xD", cpBuf );
+//    iResult = atoi(cpBuf);  // if input = 0, wafer is on.
+    if (iResult == 0)
+	iRet = 1;
+
+    return iRet;
+}
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)

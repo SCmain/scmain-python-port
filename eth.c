@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /****************************************************************
  * Copyright
  * This software is the copyrighted property of XyZ Automation, Inc., A California Corporation.
@@ -27,6 +28,52 @@
 #include <termios.h>
 #include <malloc.h>
 #include <errno.h>
+=======
+/***************************************************************\
+ *
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ * Program:     Controller firmware
+ * File:        eth.c
+ *
+ * Description: Handles low-level RS-232 communications
+ *		Implements Ethernet communication commands & responses.
+ *
+ ****************************************************************/
+#include <sys/io.h>
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+#include <sys/signal.h>
+#include <sys/select.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <termios.h>
+#include <malloc.h>
+#include <errno.h>
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <string.h>
 #include <pthread.h>        /* for POSIX threads */
 #include <sys/socket.h> /* for socket(), bind(), and connect() */
@@ -34,6 +81,7 @@
 
 #include <netinet/in.h>
 #include <linux/if.h>
+<<<<<<< HEAD
 
 #include "sck.h"
 //#include "ser.h"
@@ -50,12 +98,31 @@
 #include "fiog.h"
 #include "fio.h"
 //#include "scmem.h"
+=======
+
+#include "sck.h"
+//#include "ser.h"
+//#include "serm.h"
+//#include "serl.h"
+//#include "sctim.h"
+#include "scstat.h"
+//#include "scmac.h"
+//#include "secsg.h"
+//#include "secsl.h"
+//#include "scttr.h"
+//#include "scproc.h"
+#include "scver.h"
+#include "fiog.h"
+#include "fio.h"
+//#include "scmem.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "roga.h"
 #include "ro.h"
 #include "scio.h"
 #include "otf.h"
 
 //#undef COMPORT6
+<<<<<<< HEAD
 //#define COMPORT6
 
 //int giMaxFD;
@@ -63,11 +130,21 @@
 //fd_set	fdsOutput;
 
 //struct timeval	stTimeout;
+=======
+//#define COMPORT6
+
+//int giMaxFD;
+//fd_set	fdsInput;
+//fd_set	fdsOutput;
+
+//struct timeval	stTimeout;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 //unsigned int uiEOTretries = 0;
 //unsigned int uiPrevAct = 99999;
 //int giSECSComplete = 1;
 //int giChkSum = 0;
+<<<<<<< HEAD
 
 //int giFlowDropCount = 1;
 //int SERFlushRxBuff(int iPortNumArg);
@@ -77,6 +154,17 @@ int giPortno = 11313;
 //char *gaIPAddress;
 char gaIPAddress[20];
 extern long glSN3;
+=======
+
+//int giFlowDropCount = 1;
+//int SERFlushRxBuff(int iPortNumArg);
+
+int giETHCount = 0;
+int giPortno = 11313;
+//char *gaIPAddress;
+char gaIPAddress[20];
+extern long glSN3;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 char gaIPAddPort[50];
 
 extern unsigned SSuSystemStatus;
@@ -301,7 +389,11 @@ extern double wDFT[TTARRAYSIZE];
 extern long glMotorResolution[8];
 extern long glEncoderResolution[8];
 
+<<<<<<< HEAD
 extern char caSysCfgString[15];
+=======
+extern char caSysCfgString[15];
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 extern char gaSN3[20];
 
@@ -309,17 +401,28 @@ extern long glTimeIO[10][4][100];
 extern int giTimeIOCounter[10][4];
 
 extern int iOTFAligning;
+<<<<<<< HEAD
 extern psOTFStation pstOTFCurrentStation;
 extern int aiPortsMap[12];
 extern long glOTFData[12];
 long   glOTFStruct[8];
+=======
+extern psOTFStation pstOTFCurrentStation;
+extern int aiPortsMap[12];
+extern long glOTFData[12];
+long   glOTFStruct[8];
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /* Structure of arguments to pass to client thread */
 struct ThreadArgs
 {
     int clntSock;                      /* Socket descriptor for client */
 };
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int giSockfd, giNewSockfd, giPortno, giClilen, giPid;
 
 struct sockaddr_in gsServAddr, gsCliAddr;
@@ -685,7 +788,11 @@ int ETHInitPort(void)
     int ok = 0;
     int iDone;
 
+<<<<<<< HEAD
     FILE *iFP;
+=======
+    FILE *iFP;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     char aStr[80];
     char *istr;
 
@@ -764,9 +871,15 @@ int ETHInitPort(void)
 printf("ETHInitPort: bind() OK Portno=%d\n",giPortno);
 
     iFP = fopen("/etc/sysconfig/network-scripts/ifcfg-enp1s8", "r");
+<<<<<<< HEAD
     if( iFP == (FILE *)0 )
     {
         /* On an unsuccessful configuration table file open... */
+=======
+    if( iFP == (FILE *)0 )
+    {
+        /* On an unsuccessful configuration table file open... */
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         printf( "Ethernet config file: /etc/sysconfig/network-scripts/ifcfg-enp1s8: Open Error\n" );
   	close(giSockfd);
         return FAILURE;
@@ -799,7 +912,11 @@ printf("gaIPAddPort: %s\n", gaIPAddPort);
 
     return SUCCESS;
 }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int ETHProcessing(void)
 {
     int i, nRead;
@@ -977,4 +1094,8 @@ exit_return:
 
     close(clntSocket);    /* Close client socket */
 }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)

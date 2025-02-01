@@ -1,5 +1,31 @@
 /***************************************************************\
  *
+<<<<<<< HEAD
+=======
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * File:        configgen.c
  *
  *
@@ -73,14 +99,22 @@ void FIOInitConfig()
      * This cannot be determined by checking the define flag because the
      * define flag hasn't been sent into this module yet. It gets set later
      * in FIOInitParamModule. */
+<<<<<<< HEAD
 
 //    strcpy(sCfgTbl.m_caSysCfgString, "I3A1");
     strcpy(sCfgTbl.m_caSysCfgString, "I2AXO");
 
+=======
+
+//    strcpy(sCfgTbl.m_caSysCfgString, "I3A1");
+    strcpy(sCfgTbl.m_caSysCfgString, "I2AXO");
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    for (iIndex=0; iIndex<MAXFEATURECONFIG; iIndex++)
 //    {
 //        sCfgTbl.m_iaFeatureFlags[iIndex] = 1;
 //    }
+<<<<<<< HEAD
 	sCfgTbl.m_iaFeatureFlags[SECS_HOST] = 1;
 	sCfgTbl.m_iaFeatureFlags[SECS_DEVICE] = 0;
 	sCfgTbl.m_iaFeatureFlags[TOT] = 1;
@@ -93,6 +127,20 @@ void FIOInitConfig()
 	sCfgTbl.m_iaFeatureFlags[EQUIPE_BUS] = 0;
 	sCfgTbl.m_iaFeatureFlags[FAST_ALIGN] = 0;
 	sCfgTbl.m_iaFeatureFlags[SYSCFG] = 0;
+=======
+	sCfgTbl.m_iaFeatureFlags[SECS_HOST] = 1;
+	sCfgTbl.m_iaFeatureFlags[SECS_DEVICE] = 0;
+	sCfgTbl.m_iaFeatureFlags[TOT] = 1;
+	sCfgTbl.m_iaFeatureFlags[OTF] = 1;
+	sCfgTbl.m_iaFeatureFlags[MULTI_CHIP_ALIGN] = 0;
+	sCfgTbl.m_iaFeatureFlags[COM3_SUPPORT] = 1;
+	sCfgTbl.m_iaFeatureFlags[INTELLIPICK] = 0;
+	sCfgTbl.m_iaFeatureFlags[SQUARE_WAFER_ALIGN] = 0;
+	sCfgTbl.m_iaFeatureFlags[SCANNER] = 1;
+	sCfgTbl.m_iaFeatureFlags[EQUIPE_BUS] = 0;
+	sCfgTbl.m_iaFeatureFlags[FAST_ALIGN] = 0;
+	sCfgTbl.m_iaFeatureFlags[SYSCFG] = 0;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return;
 }
@@ -143,9 +191,18 @@ int FIOWriteConfig()
 
     return SUCCESS;
 }
+<<<<<<< HEAD
 
 main()
 {
 	FIOInitConfig();
 	FIOWriteConfig();
 }
+=======
+
+main()
+{
+	FIOInitConfig();
+	FIOWriteConfig();
+}
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)

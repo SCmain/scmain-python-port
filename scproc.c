@@ -1,7 +1,35 @@
 /***************************************************************\
  *
+<<<<<<< HEAD
  * Program:     Controller firmware
  * File:        proces98.c
+=======
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ * Program:     Controller firmware
+ * File:        scproc.c
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   PCProcessCmdLine
  *              PCProcessMacroInstr
  *              PCProcessExecuteInstr
@@ -42,9 +70,15 @@ int iPromptMode = TRUE;
 //#ifdef SX
 instr_t secs_special_instr;
 //#endif
+<<<<<<< HEAD
 
 long glRobotIdleStart;
 
+=======
+
+long glRobotIdleStart;
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 /************************************************
  * Function Name:   PCGetWDPrompt
  *
@@ -146,11 +180,19 @@ void PCProcessCmdLine()
     iNumOfBytes = -1;                   /* initialize this to -1 to indicate that you will get everything from COM buffer. */
 
     /* get the command line from the COM */
+<<<<<<< HEAD
     SERGetsRxBuff( iPortNum, caCmdTemp, FALSE, &iNumOfBytes, FALSE );
     if (iNumOfBytes <= 0)
     {
 	iRc = 0;
 	goto exit;
+=======
+    SERGetsRxBuff( iPortNum, caCmdTemp, FALSE, &iNumOfBytes, FALSE );
+    if (iNumOfBytes <= 0)
+    {
+	iRc = 0;
+	goto exit;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 
     /* as you already intialize instr, then you can pass into this function, so
@@ -170,6 +212,7 @@ void PCProcessCmdLine()
         /* if parsing and validating are success then start to execute the command */
         case MACRO:
 	case SUCCESS:
+<<<<<<< HEAD
             iRc = MRExecuteInstructions(instr, FALSE);  /* executing instruction */
 
 	    // Check for System Idle Status if command processed is not STAT and GLST
@@ -179,6 +222,17 @@ void PCProcessCmdLine()
 	    {
             	glRobotIdleStart = TIRSTime();
 //printf("scproc macro idlestart=%ld\n",glRobotIdleStart);
+=======
+            iRc = MRExecuteInstructions(instr, FALSE);  /* executing instruction */
+
+	    // Check for System Idle Status if command processed is not STAT and GLST
+	    // Host may keep interrogating STAT or GLST, all others keep system alive
+	    //
+	    if (instr->OC != STAT && instr->OC != GLST)
+	    {
+            	glRobotIdleStart = TIRSTime();
+//printf("scproc macro idlestart=%ld\n",glRobotIdleStart);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    }
             /* if there is instruction in the current PC and there is current task
              * set the current PC to be next execution instruction in the current task */
@@ -263,7 +317,11 @@ void PCProcessCmdLine()
     {
         if (iRc)
             SERPutsTxBuff(iPortNum, "_ERR 0303\r" );
+<<<<<<< HEAD
     }
+=======
+    }
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     SERFlushTxBuff(iPortNum);
 exit:
     TKSetPCCriticalSection( -1 );
@@ -301,7 +359,11 @@ void PCProcessMacroInstr()
     int iDCMode;                        /* Daisy chain mdoe flag */
     instr_ptr instrTemp;
 	int iTime;
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* if there is no interrupt macro is running then come in to check for any interrupt.
      * Durring the interrupt macro is running, no interrupt can execute.
      * There is an interrupt but the enable flag is off, then
@@ -388,7 +450,11 @@ void PCProcessMacroInstr()
             {
                 MAClearMacroNestLevel(); /* Macro nest level is cleared when interrupt macro is incurred */
                 iInterruptType = DER_TYPE;
+<<<<<<< HEAD
 printf("DER interrupt = %d\n", MRGetMacroIntegerVars(MR_DER_INTERRUPT));
+=======
+printf("DER interrupt = %d\n", MRGetMacroIntegerVars(MR_DER_INTERRUPT));
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             }
             else
                 MASetMacroIntegerVars(MR_DER_INTERRUPT, FALSE);
@@ -480,6 +546,7 @@ printf("DER interrupt = %d\n", MRGetMacroIntegerVars(MR_DER_INTERRUPT));
     }
 
     /*No multi-task has been made, simply execute the next command in macro */
+<<<<<<< HEAD
     instrTemp = MRGetPC();
     if (instrTemp != NULL)
     {
@@ -489,6 +556,17 @@ printf("DER interrupt = %d\n", MRGetMacroIntegerVars(MR_DER_INTERRUPT));
     	glRobotIdleStart = TIRSTime();
 //printf("procInstr idlestart=%ld\n",glRobotIdleStart);
 
+=======
+    instrTemp = MRGetPC();
+    if (instrTemp != NULL)
+    {
+//#ifdef SX
+	// any macro instruction execution puts system alive
+    	// System Idle check starts over
+    	glRobotIdleStart = TIRSTime();
+//printf("procInstr idlestart=%ld\n",glRobotIdleStart);
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if ((instrTemp->OC == SECS) && S2GetSecsSpecial())
         {
             MRExecuteInstructions(instrTemp, TRUE);
@@ -501,7 +579,11 @@ printf("DER interrupt = %d\n", MRGetMacroIntegerVars(MR_DER_INTERRUPT));
             TISetTimerVals(TIMER_INTERRUPT, FALSE);
             MRExecuteInstructions(instrTemp, TRUE);
 	    return;
+<<<<<<< HEAD
         }
+=======
+        }
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 //#else
 //    if (TKReadNoTaskFlag() && instrTemp)
@@ -651,6 +733,7 @@ int PCExecuteInterrupt(int iInterruptTypeArg, int *iCurrentPendingKilledArg)
 
        case SECS2_TYPE :
             MASetMacroIntegerVars( MR_SECS_INTERRUPT, FALSE );
+<<<<<<< HEAD
             break;
 
        case SECS2_TYPE2 :
@@ -666,6 +749,23 @@ int PCExecuteInterrupt(int iInterruptTypeArg, int *iCurrentPendingKilledArg)
             break;
 
         case DER_TYPE:
+=======
+            break;
+
+       case SECS2_TYPE2 :
+            MASetMacroIntegerVars( MR_SECS2_INTERRUPT, FALSE );
+            break;
+
+       case SECS2_TYPE3 :
+            MASetMacroIntegerVars( MR_SECS3_INTERRUPT, FALSE );
+            break;
+
+       case SECS2_TYPE4 :
+            MASetMacroIntegerVars( MR_SECS4_INTERRUPT, FALSE );
+            break;
+
+        case DER_TYPE:
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             MASetMacroIntegerVars( MR_DER_INTERRUPT, FALSE );
             break;
 
@@ -803,7 +903,11 @@ int PCExecuteInterrupt(int iInterruptTypeArg, int *iCurrentPendingKilledArg)
             break;
 
         case DER_TYPE:
+<<<<<<< HEAD
             currPC = MRGetMacroPC(MR_DER_INTERRUPT);
+=======
+            currPC = MRGetMacroPC(MR_DER_INTERRUPT);
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 printf("derPC = %x\n",currPC);
             if(currPC)
             {

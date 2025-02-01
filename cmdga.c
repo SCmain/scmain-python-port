@@ -1,8 +1,38 @@
 /***************************************************************\
  *
+<<<<<<< HEAD
  * Program:     low-level command, command interpreter and Opcode table.
  *
  * File:        cmdga.c
+=======
+ *              Copyright (c) 2007 SCFI Automation, Inc.
+ * Code taken over by georges@sancosme.net after the author passed away and
+ * published under GNU GPLv3
+ *
+ * File Name            : cmdfn2.c
+ * Description          : Functions which act as an interface for the LowLevel
+ *              commands. These functions are local to the low-level command module.
+ * Original Author      : (Deceased)
+ * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Maintained Since     : 13.01.2025
+ * Created On           : 04.06.2007
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ * Program:     low-level command, command interpreter and Opcode table.
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Functions:
  *
@@ -25,7 +55,11 @@
 
 #include "cmdfns.h"
 #include "cmdga.h"
+<<<<<<< HEAD
 #include "cmdsp.h"
+=======
+#include "cmdsp.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "cmdal.h"
 #include "scmac.h"
 #include "scio.h"
@@ -39,7 +73,11 @@
 #include "scregg.h"
 #include "scmem.h"
 #include "ro.h"
+<<<<<<< HEAD
 #include "roga.h"
+=======
+#include "roga.h"
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "roloc.h"
 #include "rofio.h"
 #include "gaintr.h"
@@ -52,6 +90,7 @@
 #include "map.h"
 #include "scproc.h"
 #include "secsg.h"
+<<<<<<< HEAD
 #include "alstep.h"
 #include "fio.h"
 
@@ -78,10 +117,39 @@ int  giRCActive = 0;
 long PDConvAxis(ULONG ulAxisArg);
 
 int FIODownGalilMac();
+=======
+#include "alstep.h"
+#include "fio.h"
+
+extern stVectorParameter sVectorParameter;
+
+extern int giEncoderDriftDetector;
+extern int giEncoderAlarm;
+extern int giTOTFlag;
+extern int giDisableLatch;
+extern long glPickCounter;
+extern long glIdleTime;
+extern long glMaxWaferPickCounter;
+extern int giFrictionTestAxis;
+extern int giFrictionTest;
+extern int glFrictionDataReady;
+extern int giFrictionTestAxis;
+
+extern long glMotorResolution[8];
+
+int  giRCNeedUpload = 0;
+int  giRCActive = 0;
+
+
+long PDConvAxis(ULONG ulAxisArg);
+
+int FIODownGalilMac();
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 int ex_GMAC(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
+<<<<<<< HEAD
     long lVal;
 
     Optr=instr->opr_ptr;
@@ -89,6 +157,16 @@ int ex_GMAC(instr_ptr instr)
     {
 	if (lVal == 313) return FIODownGalilMac();
     }
+=======
+    long lVal;
+
+    Optr=instr->opr_ptr;
+    if( CMDgetValue(Optr,&lVal) == SUCCESS )  /* 2nd operand, get the direction  */
+    {
+	if (lVal == 313) return FIODownGalilMac();
+    }
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return FAILURE;
 }
 
@@ -197,8 +275,13 @@ int ex_WMO(instr_ptr instr)
 //            if(iOnOffFlag != 1 && iTOTFlag == 1)
 //                return FAILURE;
 	    if(iTOTFlag != 1 && iTOTFlag != 0)
+<<<<<<< HEAD
 		return FAILURE;
 //	    giTOTFlag = iTOTFlag; // set it to kick off TP update
+=======
+		return FAILURE;
+//	    giTOTFlag = iTOTFlag; // set it to kick off TP update
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	
         }
 
@@ -211,13 +294,21 @@ int ex_WMO(instr_ptr instr)
             {
 //if(ulAxis == 0x01)
 //printf("WMO keep PC. axis=%d\n",ulAxis);
+<<<<<<< HEAD
                 MASetPC(instr);         /* re-execute the instruction to wait until the motion is completed. */
+=======
+                MASetPC(instr);         /* re-execute the instruction to wait until the motion is completed. */
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             }
 //if(ulAxis == 0x01)
 //printf("WMO return SUCCESS. axis=%d\n",ulAxis);
             return SUCCESS;
         }
+<<<<<<< HEAD
     }
+=======
+    }
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("ex_WMO return FAILURE..... axis=%d tot=%d iKeep=%d\n",ulAxis, iTOTFlag, iMotion);
     return FAILURE;
 }
@@ -298,7 +389,11 @@ int ex_RETH(instr_ptr instr)
     long lRWAxis=0;
     long lHome;
     long lCHome[8];
+<<<<<<< HEAD
     int iEEindex;
+=======
+    int iEEindex;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     int iRet;
 
     /* let's start by getting R-axis customized home position */
@@ -347,11 +442,19 @@ int ex_RETH(instr_ptr instr)
             else
                 lRWAxis = 0;
         }
+<<<<<<< HEAD
     }
     iRet = RORetractR(lHome, (int)lRWAxis); // retract the radial 
 
     return iRet;
 
+=======
+    }
+    iRet = RORetractR(lHome, (int)lRWAxis); // retract the radial 
+
+    return iRet;
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 /***************************************************************************
  * Function Name:   ex_STROK
@@ -378,7 +481,11 @@ int ex_STROK(instr_ptr instr)
     int iStationIndex, iStrokeDirection;
     long lVal;
     CMDoperand_ptr Optr;
+<<<<<<< HEAD
     int iRet;
+=======
+    int iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* get the first operand */
     Optr=instr->opr_ptr;
@@ -386,11 +493,19 @@ int ex_STROK(instr_ptr instr)
         return FAILURE;
     if( CMDgetValue(Optr->next,&lVal) == SUCCESS )  /* 2nd operand, get the direction  */
         iStrokeDirection = (lVal ? -1 : +1);
+<<<<<<< HEAD
 
     iRet = ROMoveStroke( iStationIndex, iStrokeDirection );  /* move Z-axis up or down */
 
     return iRet;
 
+=======
+
+    iRet = ROMoveStroke( iStationIndex, iStrokeDirection );  /* move Z-axis up or down */
+
+    return iRet;
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 /***************************************************************************
  * Function Name:   ex_HOME
@@ -413,6 +528,7 @@ int ex_STROK(instr_ptr instr)
 int ex_HOME(instr_ptr instr)
 {
     ULONG ulAxis;
+<<<<<<< HEAD
     int iRet;
 
     if( (ulAxis=CMDgetAxis(instr)) != (unsigned long)FAILURE )
@@ -420,6 +536,15 @@ int ex_HOME(instr_ptr instr)
         iRet = ROHomeAxis(ulAxis, FALSE);      /* home the specified axis */
 
         return iRet;
+=======
+    int iRet;
+
+    if( (ulAxis=CMDgetAxis(instr)) != (unsigned long)FAILURE )
+    {
+        iRet = ROHomeAxis(ulAxis, FALSE);      /* home the specified axis */
+
+        return iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     return FAILURE;
 }
@@ -443,12 +568,21 @@ int ex_HOME(instr_ptr instr)
 int ex_FE(instr_ptr instr)
 {
     ULONG ulAxis;
+<<<<<<< HEAD
     int iRet;
 
     if( (ulAxis=CMDgetAxis(instr)) != (unsigned long)FAILURE )
     {
         iRet = ROHomeAxis(ulAxis, TRUE);      /* home the specified axis with parameter indicating the Stage Controller*/
         return iRet;
+=======
+    int iRet;
+
+    if( (ulAxis=CMDgetAxis(instr)) != (unsigned long)FAILURE )
+    {
+        iRet = ROHomeAxis(ulAxis, TRUE);      /* home the specified axis with parameter indicating the Stage Controller*/
+        return iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     return FAILURE;
 }
@@ -477,7 +611,11 @@ int ex_MOVA(instr_ptr instr)
     ULONG ulAxis;
     long lPosition[8]={0,0,0,0,0,0,0,0};
     CMDoperand_ptr Optr=instr->opr_ptr;
+<<<<<<< HEAD
     int iRet;
+=======
+    int iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
       /* get axis from first operand */
     if( (ulAxis=CMDgetAxis(instr)) != (unsigned long)FAILURE )
@@ -487,8 +625,13 @@ int ex_MOVA(instr_ptr instr)
 	    return FAILURE;
         /* move absolute to the position specified. */
         iRet = ROMoveToAbs( ulAxis, lPosition );
+<<<<<<< HEAD
 
         return iRet;
+=======
+
+        return iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     return FAILURE;
 }
@@ -515,7 +658,11 @@ int ex_MOVR(instr_ptr instr)
     ULONG ulAxis;
     long lPosition[8]={0,0,0,0,0,0,0,0};
     CMDoperand_ptr Optr=instr->opr_ptr;
+<<<<<<< HEAD
     int iRet;
+=======
+    int iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if( (ulAxis=CMDgetAxis(instr)) != (unsigned long)FAILURE )  /* get axis */
     {
@@ -524,8 +671,13 @@ int ex_MOVR(instr_ptr instr)
 	if(CMDgetAxisValue(ulAxis, Optr->next, lPosition)==FAILURE)
             return FAILURE;
         iRet = ROMoveToRel( ulAxis, lPosition );  /* move relative distance specified */
+<<<<<<< HEAD
 
         return iRet;
+=======
+
+        return iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     return FAILURE;
 }
@@ -554,8 +706,13 @@ int ex_STOP(instr_ptr instr)
 {
     ULONG ulAxis;
     long lValue = TRUE;
+<<<<<<< HEAD
     CMDoperand_ptr Optr = instr->opr_ptr;
 	char cpCommand[8] = "ST";
+=======
+    CMDoperand_ptr Optr = instr->opr_ptr;
+	char cpCommand[8] = "ST";
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	char cpBuf[20];
 
     if(instr->nofopr>=1)                /* can be only one operand */
@@ -568,10 +725,17 @@ int ex_STOP(instr_ptr instr)
     if( ulAxis != (unsigned long)FAILURE )
     {
         if( ROStopMotion(ulAxis) == SUCCESS )  /* stop the motion of specified axis */
+<<<<<<< HEAD
         {
 	    if (ulAxis == 0) // just to make sure threads are killed in Galil
 		GASendReceiveGalil( 1, cpCommand, cpBuf );
 
+=======
+        {
+	    if (ulAxis == 0) // just to make sure threads are killed in Galil
+		GASendReceiveGalil( 1, cpCommand, cpBuf );
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             /* if there is second operand, then get the flag value */
             if(instr->nofopr>=2)
             {
@@ -629,7 +793,11 @@ int ex_MATS(instr_ptr instr)
     long lDir=0;
     char cAxis;
     ULONG ulAxis;
+<<<<<<< HEAD
     int iRet;
+=======
+    int iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* get the first operand */
     Optr=instr->opr_ptr;
@@ -681,8 +849,13 @@ int ex_MATS(instr_ptr instr)
     }
     /* move the axis to specified station coordinate. */
     iRet = ROMoveAxisDirect( ulAxis, iStationIndex, (int)lDir );
+<<<<<<< HEAD
 
     return iRet; 
+=======
+
+    return iRet; 
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 /***************************************************************************
  * Function Name:   ex_MTCS
@@ -712,7 +885,11 @@ int ex_MTCS(instr_ptr instr)
     int iStationIndex;
     CMDoperand_ptr Optr;
     long lDir=0;
+<<<<<<< HEAD
     int iRet;
+=======
+    int iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if( (iStationIndex=CMDgetStnIndx(Optr)) == FAILURE )  /* get the station index */
@@ -727,8 +904,13 @@ int ex_MTCS(instr_ptr instr)
             return FAILURE;
     }
     iRet = ROMoveDirect(iStationIndex,(int)lDir);  /* move all the axes to station. */
+<<<<<<< HEAD
 
     return iRet;
+=======
+
+    return iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 /***************************************************************************
  * Function Name:   ex_MTCR
@@ -763,8 +945,13 @@ int ex_MTCR(instr_ptr instr)
     CMDoperand_ptr Optr;
     int iStationIndex, iDoRetract=TRUE;
     long lVal, lZOffset=0, lUseScan=FALSE;
+<<<<<<< HEAD
     int iActionStatus;
     int iRet;
+=======
+    int iActionStatus;
+    int iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if( (iStationIndex=CMDgetStnIndx(Optr)) == FAILURE )  /* get the station index */
@@ -793,6 +980,7 @@ int ex_MTCR(instr_ptr instr)
             }
         }
     }
+<<<<<<< HEAD
     /* moves theta and Z axis to station and extend the radial at the final movement. */
     iActionStatus = ROActionStatus();
     if (iActionStatus)
@@ -802,6 +990,17 @@ int ex_MTCR(instr_ptr instr)
     	iRet = ROMoveRetract( iStationIndex, (int)lZOffset, iDoRetract, TRUE, (int)lUseScan );
 
         return iRet;
+=======
+    /* moves theta and Z axis to station and extend the radial at the final movement. */
+    iActionStatus = ROActionStatus();
+    if (iActionStatus)
+	MASetPC(instr);         // re-execute the instruction to wait until 
+    else
+    {
+    	iRet = ROMoveRetract( iStationIndex, (int)lZOffset, iDoRetract, TRUE, (int)lUseScan );
+
+        return iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 }
 /***************************************************************************
@@ -836,7 +1035,11 @@ int ex_MTPS(instr_ptr instr)
     CMDoperand_ptr Optr;
     int iStationIndex, iDoRetract=TRUE;
     long lVal, lZOffset=0, lUseScan=FALSE;
+<<<<<<< HEAD
     int iRet;
+=======
+    int iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if( (iStationIndex=CMDgetStnIndx(Optr)) == FAILURE )  /* get the station index */
@@ -868,8 +1071,13 @@ int ex_MTPS(instr_ptr instr)
     }
     /* move the axis to station with retract first and without Z-offset and no final extend. */
     iRet = ROMoveRetract( iStationIndex, (int)lZOffset, iDoRetract, FALSE, (int)lUseScan );
+<<<<<<< HEAD
 
     return iRet;
+=======
+
+    return iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 /***************************************************************************
  * Function Name:   ex_MHS
@@ -880,6 +1088,7 @@ int ex_MTPS(instr_ptr instr)
 int ex_MHS(instr_ptr instr)
 {
     ULONG ulAxis;
+<<<<<<< HEAD
     int iRet;
 
     ulAxis = CMDgetAxis(instr);          /* get the axis */
@@ -887,6 +1096,15 @@ int ex_MHS(instr_ptr instr)
     {
         iRet = ROSendMoveToHSorIP(ulAxis, 0, 1, TRUE);
         return iRet;
+=======
+    int iRet;
+
+    ulAxis = CMDgetAxis(instr);          /* get the axis */
+    if( ulAxis != (unsigned long)FAILURE )
+    {
+        iRet = ROSendMoveToHSorIP(ulAxis, 0, 1, TRUE);
+        return iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     return FAILURE;
 }
@@ -899,6 +1117,7 @@ int ex_MHS(instr_ptr instr)
 int ex_MIP(instr_ptr instr)
 {
     ULONG ulAxis;
+<<<<<<< HEAD
     int iRet;
 
     ulAxis = CMDgetAxis(instr);          /* get the axis */
@@ -913,6 +1132,22 @@ int ex_MIP(instr_ptr instr)
 /***************************************************************************
  * Function Name:   ex_XRC
  * Description:     Starts Galil data recording by RC command
+=======
+    int iRet;
+
+    ulAxis = CMDgetAxis(instr);          /* get the axis */
+    if( ulAxis != (unsigned long)FAILURE )
+    {
+        iRet = ROSendMoveToHSorIP(ulAxis, 1, 1, TRUE);
+        return iRet;
+    }
+    return FAILURE;
+}
+
+/***************************************************************************
+ * Function Name:   ex_XRC
+ * Description:     Starts Galil data recording by RC command
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
@@ -920,6 +1155,7 @@ int ex_XRC(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
     ULONG ulAxis;
+<<<<<<< HEAD
     long lFlag;
 
     Optr = instr->opr_ptr;         /* if there is an operand */
@@ -928,10 +1164,21 @@ int ex_XRC(instr_ptr instr)
         ulAxis = CMDgetAxis(instr);          /* get the axis */
         if( ulAxis != (unsigned long)FAILURE )
         {
+=======
+    long lFlag;
+
+    Optr = instr->opr_ptr;         /* if there is an operand */
+    if( Optr )
+    {
+        ulAxis = CMDgetAxis(instr);          /* get the axis */
+        if( ulAxis != (unsigned long)FAILURE )
+        {
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    Optr=Optr->next;     /* if 2nd operand */
     	    if (Optr)
     	    {
                 if( CMDgetValue(Optr, &lFlag) == FAILURE )  /* get start index */
+<<<<<<< HEAD
                     return FAILURE;
 	    }
 	    else
@@ -946,6 +1193,22 @@ int ex_XRC(instr_ptr instr)
 /***************************************************************************
  * Function Name:   ex_XQU
  * Description:     Dumps Galil data recorded by RC command
+=======
+                    return FAILURE;
+	    }
+	    else
+		lFlag = 0;
+	    return ROSendRQ(ulAxis, lFlag);   // RC 1 starts
+        }
+    }
+//printf("RC axis=%ld\n",ulAxis);
+    return FAILURE;
+}
+
+/***************************************************************************
+ * Function Name:   ex_XQU
+ * Description:     Dumps Galil data recorded by RC command
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
@@ -954,15 +1217,26 @@ int ex_XQU(instr_ptr instr)
     ULONG ulAxis;
 
     ulAxis = CMDgetAxis(instr);          /* get the axis */
+<<<<<<< HEAD
     if( ulAxis != (unsigned long)FAILURE )
     {
 	return ROSendQU(ulAxis);   // RC 1 starts
     }
+=======
+    if( ulAxis != (unsigned long)FAILURE )
+    {
+	return ROSendQU(ulAxis);   // RC 1 starts
+    }
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return FAILURE;	   // RC 0 ends
 }
 /***************************************************************************
  * Function Name:   ex_XDM
+<<<<<<< HEAD
  * Description:     Dumps Galil data recorded by RC command
+=======
+ * Description:     Dumps Galil data recorded by RC command
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
@@ -971,12 +1245,21 @@ int ex_XDM(instr_ptr instr)
     CMDoperand_ptr Optr;
     ULONG ulAxis;
     long lFirst, lLast;
+<<<<<<< HEAD
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     ulAxis = CMDgetAxis(instr);          /* get the axis */
     if( ulAxis == (unsigned long)FAILURE )
 	return FAILURE;
 
+=======
+
+    Optr=instr->opr_ptr;         /* if there is an operand */
+    ulAxis = CMDgetAxis(instr);          /* get the axis */
+    if( ulAxis == (unsigned long)FAILURE )
+	return FAILURE;
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     Optr=Optr->next;     /* if 2nd operand */
     if (Optr)
     {
@@ -987,6 +1270,7 @@ int ex_XDM(instr_ptr instr)
         {
             if( CMDgetValue(Optr, &lLast) == FAILURE ) /* get last index */
                 return FAILURE;
+<<<<<<< HEAD
 	    return RODumpRC(ulAxis, lFirst, lLast);  
 	}
     }
@@ -996,32 +1280,62 @@ int ex_XDM(instr_ptr instr)
 /***************************************************************************
  * Function Name:   ex_SEDF
  * Description:     Sets Encoder Drift-detector Flag
+=======
+	    return RODumpRC(ulAxis, lFirst, lLast);  
+	}
+    }
+//printf("DM axis=%ld first=%ld last=%ld\n",ulAxis, lFirst, lLast);
+    return FAILURE;
+}
+/***************************************************************************
+ * Function Name:   ex_SEDF
+ * Description:     Sets Encoder Drift-detector Flag
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_SEDF(instr_ptr instr)
 {
+<<<<<<< HEAD
     giEncoderDriftDetector = 0;
     return SUCCESS;
 }
 /***************************************************************************
  * Function Name:   ex_REDF
  * Description:     Reads Encoder Drift-detected Status
+=======
+    giEncoderDriftDetector = 0;
+    return SUCCESS;
+}
+/***************************************************************************
+ * Function Name:   ex_REDF
+ * Description:     Reads Encoder Drift-detected Status
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_REDF(instr_ptr instr)
 {
+<<<<<<< HEAD
 
     return CMDReadParam(instr->opr_ptr, giEncoderDriftDetector);
 }
 /***************************************************************************
  * Function Name:   ex_XCLR
  * Description:     Sets Encoder Drift-detector Flag
+=======
+
+    return CMDReadParam(instr->opr_ptr, giEncoderDriftDetector);
+}
+/***************************************************************************
+ * Function Name:   ex_XCLR
+ * Description:     Sets Encoder Drift-detector Flag
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_XCLR(instr_ptr instr)
+<<<<<<< HEAD
 {
     int iDat;
     FILE *iFP;
@@ -1029,11 +1343,21 @@ int ex_XCLR(instr_ptr instr)
 
     CMDoperand_ptr Optr;
     long lAlarm, lNum;
+=======
+{
+    int iDat;
+    FILE *iFP;
+    int iCount;
+
+    CMDoperand_ptr Optr;
+    long lAlarm, lNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum) == FAILURE )  /* complex number */
+<<<<<<< HEAD
             return FAILURE;
 
 	if(lNum != 313) return FAILURE;
@@ -1047,32 +1371,64 @@ int ex_XCLR(instr_ptr instr)
 /***************************************************************************
  * Function Name:   ex_RARM
  * Description:     Reads Encoder Drift-detected Status
+=======
+            return FAILURE;
+
+	if(lNum != 313) return FAILURE;
+
+	ROClearAlarm();
+    	return SUCCESS;
+    }
+    return FAILURE;
+}
+
+/***************************************************************************
+ * Function Name:   ex_RARM
+ * Description:     Reads Encoder Drift-detected Status
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_RARM(instr_ptr instr)
 {
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return CMDReadParam(instr->opr_ptr, giEncoderAlarm);
 }
 /***************************************************************************
  * Function Name:   ex_WXRC
+<<<<<<< HEAD
  * Description:     Write RC data (Torques & Pos data) to a file
+=======
+ * Description:     Write RC data (Torques & Pos data) to a file
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_WXRC(instr_ptr instr)
 {
+<<<<<<< HEAD
     return ROWriteRC();
 }
 /***************************************************************************
  * Function Name:   ex_RXRC
  * Description:     Read RC data (Torques & Pos data) from a file
+=======
+    return ROWriteRC();
+}
+/***************************************************************************
+ * Function Name:   ex_RXRC
+ * Description:     Read RC data (Torques & Pos data) from a file
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_RXRC(instr_ptr instr)
 {
+<<<<<<< HEAD
     return ROReadRC();
 }
 // Wafer Pick Counter Increment
@@ -1093,11 +1449,34 @@ int ex_XSWC(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
     long lCount, lNum;
+=======
+    return ROReadRC();
+}
+// Wafer Pick Counter Increment
+int ex_XWCI(instr_ptr instr)
+{
+    ++glPickCounter;
+    return SUCCESS;
+}
+
+// Return Pick Counter 
+int ex_XRWC(instr_ptr instr)
+{
+    return CMDReadParam(instr->opr_ptr, glPickCounter);
+}
+
+// Wafer Pick Counter Set (only for testing purpose)
+int ex_XSWC(instr_ptr instr)
+{
+    CMDoperand_ptr Optr;
+    long lCount, lNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum) == FAILURE )  /* complex number */
+<<<<<<< HEAD
             return FAILURE;
 
 	if(lNum != 313) return FAILURE;
@@ -1123,11 +1502,39 @@ int ex_XITM(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
     long lTime, lNum;
+=======
+            return FAILURE;
+
+	if(lNum != 313) return FAILURE;
+
+    	Optr=Optr->next;         /* if there is a second operand */
+	if(!Optr) return FAILURE;
+
+        if( CMDgetValue(Optr, &lCount) == FAILURE )  /* counter set value */
+            return FAILURE;
+	
+	if(lCount >= 0)
+	    glPickCounter = lCount;
+	else
+	    return FAILURE;
+
+    	return SUCCESS;
+    }
+    return FAILURE;
+}
+
+// System Idle Time Set
+int ex_XITM(instr_ptr instr)
+{
+    CMDoperand_ptr Optr;
+    long lTime, lNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum) == FAILURE )  /* complex number */
+<<<<<<< HEAD
             return FAILURE;
 
 	if(lNum != 313) return FAILURE;
@@ -1159,11 +1566,45 @@ int ex_XSMX(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
     long lCount, lNum;
+=======
+            return FAILURE;
+
+	if(lNum != 313) return FAILURE;
+
+    	Optr=Optr->next;         /* if there is a second operand */
+	if(!Optr) return FAILURE;
+
+        if( CMDgetValue(Optr, &lTime) == FAILURE )  /* idle time in seconds */
+            return FAILURE;
+	
+	if(lTime >= 0)
+	    glIdleTime = lTime;
+	else
+	    return FAILURE;
+
+    	return SUCCESS;
+    }
+    return FAILURE;
+}
+
+// return system idle time
+int ex_XRTM(instr_ptr instr)
+{
+    return CMDReadParam(instr->opr_ptr, glIdleTime);
+}
+
+// Set Maximum wafer pick counter
+int ex_XSMX(instr_ptr instr)
+{
+    CMDoperand_ptr Optr;
+    long lCount, lNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum) == FAILURE )  /* complex number */
+<<<<<<< HEAD
             return FAILURE;
 
 	if(lNum != 313) return FAILURE;
@@ -1208,11 +1649,58 @@ int ex_XSFT(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
     long lCount, lNum;
+=======
+            return FAILURE;
+
+	if(lNum != 313) return FAILURE;
+
+    	Optr=Optr->next;         /* if there is a second operand */
+	if(!Optr) return FAILURE;
+
+        if( CMDgetValue(Optr, &lCount) == FAILURE )  /* idle time in seconds */
+            return FAILURE;
+	
+	if(lCount >= 0)
+	    glMaxWaferPickCounter = lCount;
+	else
+	    return FAILURE;
+
+    	return SUCCESS;
+    }
+    return FAILURE;
+}
+
+// return Maximum wafer pick counter
+int ex_XRMX(instr_ptr instr)
+{
+    return CMDReadParam(instr->opr_ptr, glMaxWaferPickCounter);
+}
+
+// return axis to be tested for friction
+int ex_XRFA(instr_ptr instr)
+{
+    CMDoperand_ptr Optr;
+    long lValue[4];
+    ULONG   ulAxis = RO_AXIS_T | RO_AXIS_R | RO_AXIS_Z; 
+
+    lValue[0] = giFrictionTestAxis;
+    lValue[1] = giFrictionTest;
+    lValue[2] = glFrictionDataReady;
+    return CMDreadBackParms( instr->opr_ptr, lValue, ulAxis );
+}
+
+// Set Friction Test flag
+int ex_XSFT(instr_ptr instr)
+{
+    CMDoperand_ptr Optr;
+    long lCount, lNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum) == FAILURE )  /* complex number */
+<<<<<<< HEAD
             return FAILURE;
 
 	if(lNum != 313) return FAILURE;
@@ -1249,11 +1737,50 @@ int ex_XENL(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
     long lCount, lNum;
+=======
+            return FAILURE;
+
+	if(lNum != 313) return FAILURE;
+
+    	Optr=Optr->next;         /* if there is a second operand */
+	if(!Optr) return FAILURE;
+
+        if( CMDgetValue(Optr, &lCount) == FAILURE )  /* idle time in seconds */
+            return FAILURE;
+
+    	Optr=Optr->next;         /* if there is a second operand */
+	if(!Optr) return FAILURE;
+
+        if( CMDgetValue(Optr, &lNum) == FAILURE )  /* idle time in seconds */
+            return FAILURE;
+
+	
+	if(lCount >= 0)
+	{
+	    giFrictionTest = 1;
+	    glFrictionDataReady = lNum; // The data is overwritten
+	    giFrictionTestAxis = lCount;  // start with the particular
+	}
+	else
+	    return FAILURE;
+
+    	return SUCCESS;
+    }
+    return FAILURE;
+}
+
+// Enable Latch for drift detection
+int ex_XENL(instr_ptr instr)
+{
+    CMDoperand_ptr Optr;
+    long lCount, lNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum) == FAILURE )  /* complex number */
+<<<<<<< HEAD
             return FAILURE;
 
 	if(lNum < 0 || lNum > 1) return FAILURE;
@@ -1272,16 +1799,44 @@ int ex_XENL(instr_ptr instr)
  * Description:     Reads Drift-detect Enable/Disable Status
  *			0 = drift check OK
  *			1 = drift check Disabled
+=======
+            return FAILURE;
+
+	if(lNum < 0 || lNum > 1) return FAILURE;
+
+	if(lNum == 1)
+	    RODisableLatch(0);
+	else
+	    RODisableLatch(1);
+
+    	return SUCCESS;
+    }
+    return FAILURE;
+}
+/***************************************************************************
+ * Function Name:   ex_XREL
+ * Description:     Reads Drift-detect Enable/Disable Status
+ *			0 = drift check OK
+ *			1 = drift check Disabled
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_XREL(instr_ptr instr)
 {
+<<<<<<< HEAD
 
     return CMDReadParam(instr->opr_ptr, giDisableLatch);
 }
 
 // Read Motor Resolution
+=======
+
+    return CMDReadParam(instr->opr_ptr, giDisableLatch);
+}
+
+// Read Motor Resolution
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int ex_XRMR(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
@@ -1289,6 +1844,7 @@ int ex_XRMR(instr_ptr instr)
     long lAxis, lData;
     ULONG ulAxis;
 
+<<<<<<< HEAD
     Optr = instr->opr_ptr; 
     if(Optr)
     {
@@ -1388,18 +1944,126 @@ int ex_XMPA(instr_ptr instr)
 /***************************************************************************
  * Function Name:   ex_XFDC
  * Description:     Friction data Clear
+=======
+    Optr = instr->opr_ptr; 
+    if(Optr)
+    {
+	ulAxis = CMDgetAxis(instr);  // get the axis 
+	lAxis = PDConvAxis(ulAxis);
+        if(lAxis < 0 || lAxis > 7) return FAILURE;
+
+	lData = glMotorResolution[lAxis];
+	return CMDReadParam(Optr->next, lData);
+    }
+    return FAILURE;
+}
+
+//
+// MOTION PROFILE DATA ACQUISITION
+//
+int ex_XMPA(instr_ptr instr)
+{
+    CMDoperand_ptr Optr;
+    int iStationSource, iStationDestin;
+    long lSourcePos[4], lDestinPos[4];
+    long lEncSource, lEncDestin;
+    long lCHome[8];
+    ULONG ulAxis;
+
+    ulAxis = CMDgetAxis(instr);	// get axis first
+
+    Optr=instr->opr_ptr;
+    if(Optr)
+    {
+
+	Optr = Optr->next;
+	iStationSource = CMDgetStnIndx(Optr);
+    	if( iStationSource < 0 )
+            return FAILURE;
+
+     	Optr = Optr->next;
+	iStationDestin = CMDgetStnIndx(Optr);
+    	if( iStationDestin < 0 )
+            return FAILURE;
+
+        if( FIOGetStnCoord(iStationSource, 0, &lSourcePos[0])==FAILURE ||
+            FIOGetStnCoord(iStationSource, 1, &lSourcePos[1])==FAILURE ||
+            FIOGetStnCoord(iStationSource, 2, &lSourcePos[2])==FAILURE ) 
+	    return FAILURE;
+
+        if( FIOGetStnCoord(iStationDestin, 0, &lDestinPos[0])==FAILURE ||
+            FIOGetStnCoord(iStationDestin, 1, &lDestinPos[1])==FAILURE ||
+            FIOGetStnCoord(iStationDestin, 2, &lDestinPos[2])==FAILURE ) 
+	    return FAILURE;
+
+	switch(ulAxis)
+	{
+	    case RO_AXIS_R: // R-axis source position is retract pos
+    		if( FIOGetParamVals(ROBOTFILE, CUSTOMIZED_HOME, lCHome) == FAILURE )
+        	    return FAILURE;
+		if (ROEUToEncoder(ulAxis, lCHome[1], &lEncSource)==FAILURE)
+		    return FAILURE;
+		if (ROEUToEncoder(ulAxis, lSourcePos[1], &lEncDestin)==FAILURE)
+		    return FAILURE;
+		break;
+	    case RO_AXIS_W:
+ 	    	if( FIOGetStnVals(iStationSource, TRACK_POS, &lSourcePos[3]) == FAILURE ) 
+		    return FAILURE;
+ 	    	if( FIOGetStnVals(iStationDestin, TRACK_POS, &lDestinPos[3]) == FAILURE ) 
+		    return FAILURE;
+		if (ROEUToEncoder(ulAxis, lSourcePos[3], &lEncSource)==FAILURE)
+		    return FAILURE;
+		if (ROEUToEncoder(ulAxis, lDestinPos[3], &lEncDestin)==FAILURE)
+		    return FAILURE;
+		break;
+	    case RO_AXIS_T:
+		if (ROEUToEncoder(ulAxis, lSourcePos[0], &lEncSource)==FAILURE)
+		    return FAILURE;
+		if (ROEUToEncoder(ulAxis, lDestinPos[0], &lEncDestin)==FAILURE)
+		    return FAILURE;
+		break;
+	    case RO_AXIS_Z:
+		if (ROEUToEncoder(ulAxis, lSourcePos[2], &lEncSource)==FAILURE)
+		    return FAILURE;
+		if (ROEUToEncoder(ulAxis, lDestinPos[2], &lEncDestin)==FAILURE)
+		    return FAILURE;
+		break;
+	    default:
+		return FAILURE;
+	}
+	if(ROMotionProfTest(ulAxis, lEncSource, lEncDestin) == FAILURE)
+	    return FAILURE;
+
+	return SUCCESS;
+
+    }
+
+    return FAILURE;
+}
+
+/***************************************************************************
+ * Function Name:   ex_XFDC
+ * Description:     Friction data Clear
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_XFDC(instr_ptr instr)
+<<<<<<< HEAD
 {
     CMDoperand_ptr Optr;
     long lAlarm, lNum;
+=======
+{
+    CMDoperand_ptr Optr;
+    long lAlarm, lNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum) == FAILURE )  /* complex number */
+<<<<<<< HEAD
             return FAILURE;
 
 	if(lNum != 313) return FAILURE;
@@ -1413,13 +2077,32 @@ int ex_XFDC(instr_ptr instr)
 /***************************************************************************
  * Function Name:   ex_XMVC
  * Description:     Move absolute axis to position(s) specified in cartesian coordinate system, s straight line. Must specify T and R.
+=======
+            return FAILURE;
+
+	if(lNum != 313) return FAILURE;
+
+	ROClearFrictionData();
+    	return SUCCESS;
+    }
+    return FAILURE;
+}
+
+/***************************************************************************
+ * Function Name:   ex_XMVC
+ * Description:     Move absolute axis to position(s) specified in cartesian coordinate system, s straight line. Must specify T and R.
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  ***************************************************************************/
 int ex_XMVC(instr_ptr instr)
 {
     ULONG ulAxis;
     long lPosition[8]={0,0,0,0,0,0,0,0};
     CMDoperand_ptr Optr=instr->opr_ptr;
+<<<<<<< HEAD
     int iRet;
+=======
+    int iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
       /* get axis from first operand */
     if( (ulAxis=CMDgetAxis(instr)) != (unsigned long)FAILURE )
@@ -1429,24 +2112,39 @@ int ex_XMVC(instr_ptr instr)
 	    return FAILURE;
         /* move absolute to the position specified. */
         iRet = ROMoveToCartesian( ulAxis, lPosition );
+<<<<<<< HEAD
 
         return iRet;
+=======
+
+        return iRet;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     return FAILURE;
 }
 /***************************************************************************
+<<<<<<< HEAD
  * Function Name:   ex_XSEE
  * 	Set End-Effector length for vector operation
+=======
+ * Function Name:   ex_XSEE
+ * 	Set End-Effector length for vector operation
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  ***************************************************************************/
 int ex_XSEE(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
+<<<<<<< HEAD
     long lNum;
+=======
+    long lNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum) == FAILURE )  /* complex number */
+<<<<<<< HEAD
             return FAILURE;
 
 	if(lNum < 0) return FAILURE;
@@ -1459,27 +2157,55 @@ int ex_XSEE(instr_ptr instr)
 /***************************************************************************
  * Function Name:   ex_XREE
  * 	Read End-Effector length for vector operation
+=======
+            return FAILURE;
+
+	if(lNum < 0) return FAILURE;
+
+	sVectorParameter.m_lEELength = lNum;
+    	return SUCCESS;
+    }
+    return FAILURE;
+}
+/***************************************************************************
+ * Function Name:   ex_XREE
+ * 	Read End-Effector length for vector operation
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  ***************************************************************************/
 int ex_XREE(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
+<<<<<<< HEAD
     long lNum;
+=======
+    long lNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return CMDReadParam(instr->opr_ptr, sVectorParameter.m_lEELength);
 }
 /***************************************************************************
+<<<<<<< HEAD
  * Function Name:   ex_XSVS
  * 	Set Vector Speed for vector operation
+=======
+ * Function Name:   ex_XSVS
+ * 	Set Vector Speed for vector operation
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  ***************************************************************************/
 int ex_XSVS(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
+<<<<<<< HEAD
     long lNum;
+=======
+    long lNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum) == FAILURE )  /* complex number */
+<<<<<<< HEAD
             return FAILURE;
 
 	if(lNum < 0) return FAILURE;
@@ -1492,26 +2218,54 @@ int ex_XSVS(instr_ptr instr)
 /***************************************************************************
  * Function Name:   ex_XRVS
  * 	Read vector speed for vector operation
+=======
+            return FAILURE;
+
+	if(lNum < 0) return FAILURE;
+
+	sVectorParameter.m_lVS = lNum;
+    	return SUCCESS;
+    }
+    return FAILURE;
+}
+/***************************************************************************
+ * Function Name:   ex_XRVS
+ * 	Read vector speed for vector operation
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  ***************************************************************************/
 int ex_XRVS(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
+<<<<<<< HEAD
 
     return CMDReadParam(instr->opr_ptr, sVectorParameter.m_lVS);
 }
 /***************************************************************************
  * Function Name:   ex_XSVA
  * 	Set Vector Acceleration for vector operation
+=======
+
+    return CMDReadParam(instr->opr_ptr, sVectorParameter.m_lVS);
+}
+/***************************************************************************
+ * Function Name:   ex_XSVA
+ * 	Set Vector Acceleration for vector operation
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  ***************************************************************************/
 int ex_XSVA(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
+<<<<<<< HEAD
     long lNum;
+=======
+    long lNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum) == FAILURE )  /* complex number */
+<<<<<<< HEAD
             return FAILURE;
 
 	if(lNum < 0) return FAILURE;
@@ -1524,10 +2278,25 @@ int ex_XSVA(instr_ptr instr)
 /***************************************************************************
  * Function Name:   ex_XRVA
  * 	Read vector accel for vector operation
+=======
+            return FAILURE;
+
+	if(lNum < 0) return FAILURE;
+
+	sVectorParameter.m_lVA = lNum;
+    	return SUCCESS;
+    }
+    return FAILURE;
+}
+/***************************************************************************
+ * Function Name:   ex_XRVA
+ * 	Read vector accel for vector operation
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  ***************************************************************************/
 int ex_XRVA(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
+<<<<<<< HEAD
 
     return CMDReadParam(instr->opr_ptr, sVectorParameter.m_lVA);
 }
@@ -1535,16 +2304,30 @@ int ex_XRVA(instr_ptr instr)
 /***************************************************************************
  * Function Name:   ex_XSVD
  * 	Set Vector Deceleration for vector operation
+=======
+
+    return CMDReadParam(instr->opr_ptr, sVectorParameter.m_lVA);
+}
+
+/***************************************************************************
+ * Function Name:   ex_XSVD
+ * 	Set Vector Deceleration for vector operation
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  ***************************************************************************/
 int ex_XSVD(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
+<<<<<<< HEAD
     long lNum;
+=======
+    long lNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum) == FAILURE )  /* complex number */
+<<<<<<< HEAD
             return FAILURE;
 
 	if(lNum < 0) return FAILURE;
@@ -1557,10 +2340,25 @@ int ex_XSVD(instr_ptr instr)
 /***************************************************************************
  * Function Name:   ex_XRVD
  * 	Read vector decel for vector operation
+=======
+            return FAILURE;
+
+	if(lNum < 0) return FAILURE;
+
+	sVectorParameter.m_lVD = lNum;
+    	return SUCCESS;
+    }
+    return FAILURE;
+}
+/***************************************************************************
+ * Function Name:   ex_XRVD
+ * 	Read vector decel for vector operation
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  ***************************************************************************/
 int ex_XRVD(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
+<<<<<<< HEAD
 
     return CMDReadParam(instr->opr_ptr, sVectorParameter.m_lVD);
 }
@@ -1578,11 +2376,31 @@ int ex_XSRF(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
     long lNum;
+=======
+
+    return CMDReadParam(instr->opr_ptr, sVectorParameter.m_lVD);
+}
+
+/***************************************************************************
+ * Function Name:   ex_XSAV
+ * 	save vector parameter for vector operation
+ ***************************************************************************/
+int ex_XSAV(instr_ptr instr)
+{
+    return FIOWriteVectorFile();
+}
+
+int ex_XSRF(instr_ptr instr)
+{
+    CMDoperand_ptr Optr;
+    long lNum;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum) == FAILURE )  /* Efem Theta Zero Angle */
+<<<<<<< HEAD
             return FAILURE;
 
 	if(lNum < 0) return FAILURE;
@@ -1620,11 +2438,51 @@ int ex_XR2W(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
     long lNum1, lNum2, lNum3, lNum4;
+=======
+            return FAILURE;
+
+	if(lNum < 0) return FAILURE;
+
+	sVectorParameter.m_lEfemTheta0 = lNum;
+	sVectorParameter.m_fSinTheta = ROGetSinTheta(lNum);
+	sVectorParameter.m_fCosTheta = ROGetCosTheta(lNum);
+    	return SUCCESS;
+    }
+    return FAILURE;
+}
+
+int ex_XRRF(instr_ptr instr)
+{
+    CMDoperand_ptr Optr;
+    long lNum;
+
+    Optr=instr->opr_ptr;         /* if there is an operand */
+    CMDReadParam(Optr, sVectorParameter.m_lEfemTheta0);
+
+    if (Optr)
+	Optr = Optr->next;
+    lNum = (long) (1000. * sVectorParameter.m_fSinTheta);
+    CMDReadParam(Optr, lNum);
+
+    if (Optr)
+	Optr = Optr->next;
+    lNum = (long) (1000. * sVectorParameter.m_fCosTheta);
+    CMDReadParam(Optr, (long) (1000 * sVectorParameter.m_fCosTheta));
+
+    return SUCCESS;
+}
+
+int ex_XR2W(instr_ptr instr)
+{
+    CMDoperand_ptr Optr;
+    long lNum1, lNum2, lNum3, lNum4;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum1) == FAILURE )  /* Theta */
+<<<<<<< HEAD
             return FAILURE;
     }
     else
@@ -1655,11 +2513,44 @@ int ex_XW2R(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
     long lNum1, lNum2, lNum3, lNum4;
+=======
+            return FAILURE;
+    }
+    else
+	return FAILURE;
+
+    Optr = Optr->next;
+    if (Optr)
+    {
+        if( CMDgetValue(Optr, &lNum2) == FAILURE )  /* R */
+            return FAILURE;
+    }
+    else
+	return FAILURE;
+
+    ROConvertRobotToWorld(lNum1, lNum2, &lNum3, &lNum4);
+
+    Optr = Optr->next;
+    CMDReadParam(Optr, lNum3);
+
+    if (Optr)
+	Optr = Optr->next;
+    CMDReadParam(Optr, lNum4);
+
+    return SUCCESS;
+}
+
+int ex_XW2R(instr_ptr instr)
+{
+    CMDoperand_ptr Optr;
+    long lNum1, lNum2, lNum3, lNum4;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum1) == FAILURE )  /* x */
+<<<<<<< HEAD
             return FAILURE;
     }
     else
@@ -1690,11 +2581,44 @@ int ex_XW2E(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
     long lNum1, lNum2, lNum3, lNum4;
+=======
+            return FAILURE;
+    }
+    else
+	return FAILURE;
+
+    Optr = Optr->next;
+    if (Optr)
+    {
+        if( CMDgetValue(Optr, &lNum2) == FAILURE )  /* y */
+            return FAILURE;
+    }
+    else
+	return FAILURE;
+
+    ROConvertWorldToRobot(lNum1, lNum2, &lNum3, &lNum4);
+
+    Optr = Optr->next;
+    CMDReadParam(Optr, lNum3);
+
+    if (Optr)
+	Optr = Optr->next;
+    CMDReadParam(Optr, lNum4);
+
+    return SUCCESS;
+}
+
+int ex_XW2E(instr_ptr instr)
+{
+    CMDoperand_ptr Optr;
+    long lNum1, lNum2, lNum3, lNum4;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum1) == FAILURE )  /* x */
+<<<<<<< HEAD
             return FAILURE;
     }
     else
@@ -1725,11 +2649,44 @@ int ex_XE2W(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
     long lNum1, lNum2, lNum3, lNum4;
+=======
+            return FAILURE;
+    }
+    else
+	return FAILURE;
+
+    Optr = Optr->next;
+    if (Optr)
+    {
+        if( CMDgetValue(Optr, &lNum2) == FAILURE )  /* y */
+            return FAILURE;
+    }
+    else
+	return FAILURE;
+
+    ROConvertWorldToEfem(lNum1, lNum2, &lNum3, &lNum4);
+
+    Optr = Optr->next;
+    CMDReadParam(Optr, lNum3);
+
+    if (Optr)
+	Optr = Optr->next;
+    CMDReadParam(Optr, lNum4);
+
+    return SUCCESS;
+}
+
+int ex_XE2W(instr_ptr instr)
+{
+    CMDoperand_ptr Optr;
+    long lNum1, lNum2, lNum3, lNum4;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum1) == FAILURE )  /* x */
+<<<<<<< HEAD
             return FAILURE;
     }
     else
@@ -1763,12 +2720,48 @@ int ex_XE2W(instr_ptr instr)
 int ex_XMCD(instr_ptr instr)
 {
     long lDirection, lDistance;
+=======
+            return FAILURE;
+    }
+    else
+	return FAILURE;
+
+    Optr = Optr->next;
+    if (Optr)
+    {
+        if( CMDgetValue(Optr, &lNum2) == FAILURE )  /* y */
+            return FAILURE;
+    }
+    else
+	return FAILURE;
+
+    ROConvertEfemToWorld(lNum1, lNum2, &lNum3, &lNum4);
+
+    Optr = Optr->next;
+    CMDReadParam(Optr, lNum3);
+
+    if (Optr)
+	Optr = Optr->next;
+    CMDReadParam(Optr, lNum4);
+
+    return SUCCESS;
+}
+
+/***************************************************************************
+ * Function Name:   ex_XMCD
+ * Description:     Cartesian move in direction from the current pos.
+ ***************************************************************************/
+int ex_XMCD(instr_ptr instr)
+{
+    long lDirection, lDistance;
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     CMDoperand_ptr Optr;
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lDirection) == FAILURE )  /* x */
+<<<<<<< HEAD
             return FAILURE;
     }
     else
@@ -1785,4 +2778,22 @@ int ex_XMCD(instr_ptr instr)
 
     return ROMoveCartesianDirection(lDirection, lDistance);
 
+=======
+            return FAILURE;
+    }
+    else
+	return FAILURE;
+
+    Optr = Optr->next;
+    if (Optr)
+    {
+        if( CMDgetValue(Optr, &lDistance) == FAILURE )  /* y */
+            return FAILURE;
+    }
+    else
+	return FAILURE;
+
+    return ROMoveCartesianDirection(lDirection, lDistance);
+
+>>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
