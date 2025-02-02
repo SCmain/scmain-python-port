@@ -1,7 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -25,7 +23,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  *
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * File:        fiog.c
  *
  * Program:     Controller firmware
@@ -89,13 +86,8 @@
 #include <sys/stat.h>
 #include <ctype.h>
 #include <string.h>
-<<<<<<< HEAD
 #include <malloc.h>
 #include <stdio.h>
-=======
-#include <malloc.h>
-#include <stdio.h>
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <time.h>
 
 #include "fio.h"
@@ -108,26 +100,15 @@
 #include "romain.h"
 #include "otf.h"
 #include "scmem.h"
-<<<<<<< HEAD
 #include "dmclnx.h"
 
-=======
-#include "dmclnx.h"
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "scver.h"
 #include "rofn.h"
 
 extern HANDLEDMC ghDMC;
-<<<<<<< HEAD
 
 extern int giNumOfAxes;
 extern int giSysCfgNum;
-=======
-
-extern int giNumOfAxes;
-extern int giSysCfgNum;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /********** Variables Used Locally **********/
 /* Parameter file structures for holding variable values pertaining to the parameter files. */
@@ -138,13 +119,8 @@ stCtrlParam sAuxParam;          /* ctrl_par_t, *pauxctrl_par, auxctrl_par
                                  *              Global parameter structure for the auxilliary parameter file. */
 unsigned uRobotChkSum;
 unsigned uPreChkSum;
-<<<<<<< HEAD
 unsigned uAuxChkSum;
 
-=======
-unsigned uAuxChkSum;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //stLatchCalData aLatchCalData;
 
 /* Configuration table structure for holding variable values pertaining to the configuration file. */
@@ -156,24 +132,15 @@ stStationData aStationData[FIO_MAX_NUM_STATIONS];    /* Array of structures to h
 int iCurrentStation;            /* The station currently selected to be active. Typically
                                  * the last station used in a move command. */
 
-<<<<<<< HEAD
 float gfCoordFileRevision;        /* Coordinate file revision */
 
 stVectorParameter sVectorParameter;
 
 extern int iDefineFlag, iEmulatorMode, iaDiagParms[3];
-=======
-float gfCoordFileRevision;        /* Coordinate file revision */
-
-stVectorParameter sVectorParameter;
-
-extern int iDefineFlag, iEmulatorMode, iaDiagParms[3];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 int FIODownGalilMac()
 {
     FILE *iFP;
-<<<<<<< HEAD
     char* ipos;
     char* istr; 
     int i,iDone=0;
@@ -209,48 +176,10 @@ int FIODownGalilMac()
 	iFP = fopen(GM8FILENAME, "r");
     else
 	iFP = fopen(GM4FILENAME, "r");
-=======
-    char* ipos;
-    char* istr; 
-    int i,iDone=0;
-    char aMacLine[180];
-    char pcRespStr[180];
-    int iStatus;
-    int ctrlQ = 0x11;
-    int nLine;
-//    char* strBuf[999];
-//    char aMacBuf[999][180];
-
-//    int iNumAxes;
-//    int iaEquipeAxis[8], iaGalilAxis[8], iaMechType[8], iaSpecialAxis[8];
-
-//    struct timespec tv;
-//    tv.tv_sec = 0;
-//    iStatus = DMCDownloadFile(ghDMC, (PSZ)GMCFILENAME, NULL);
-//    iStatus = DMCSendFile(ghDMC, (PSZ)GMCFILENAME);
-//    printf("DMCSendFile: %d\n",iStatus);
-//    return SUCCESS;
-//
-//int ctrlD = 0x04;
-//aMacLine[0]=ctrlD;
-//aMacLine[1]='\0';
-//sprintf(aMacLine,"DL\n");
-//iStatus = DMCCommand( ghDMC, aMacLine, pcRespStr, 80);
-//sprintf(aMacLine,"gmac\n");
-//iStatus = DMCCommand( ghDMC, aMacLine, pcRespStr, 80);
-//return SUCCESS;
-
-    /* Open the parameter file in NVSRAM. */
-    if (giNumOfAxes > 4)
-	iFP = fopen(GM8FILENAME, "r");
-    else
-	iFP = fopen(GM4FILENAME, "r");
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if( iFP == (FILE *)0 )
     {
         /* On an unsuccessful configuration table file open... */
-<<<<<<< HEAD
         printf( "Galil Macro Open Error\n" );
 	return FAILURE;
     }
@@ -334,91 +263,6 @@ printf("BP: %d\n",iStatus);
 //    if (ROInit(iNumAxes, iaMechType, iaEquipeAxis, iaGalilAxis, iaSpecialAxis, iDefineFlag, iEmulatorMode) == FAILURE)
 //    {
 //        return FAILURE;
-=======
-        printf( "Galil Macro Open Error\n" );
-	return FAILURE;
-    }
-//    sprintf(aMacLine, "RS\n");
-//    iStatus = DMCCommand( ghDMC, aMacLine, pcRespStr, 180);
-    iDone = nLine = 0;
-/*
-    while(!iDone)
-    {
-//	nRead = getline(aMacLine, &len, iFP);
-	istr = fgets(aMacBuf[nLine], 180, iFP);
-	if(istr != NULL && istr != EOF)
-	{
-	    nLine++;
-	}
-	else
-	    iDone = 1;
-    }
-    //printf("nLine = %d\n",nLine);
-    fclose( iFP );
-*/
-    sprintf(aMacLine, "DL\n");
-    iStatus = DMCCommand( ghDMC, aMacLine, pcRespStr, 180);
-    if(iStatus |= 0)
- 	printf("DL cmd failed: %d\n",iStatus);
-/* 
-    for(i=0; i<nLine; ++i)
-    {
-	iStatus = DMCCommand( ghDMC, aMacBuf[i], pcRespStr, 180);
-	if(iStatus != 0)
-	    //printf("DMC error:%d comm:%s resp:%s\n",iStatus, aMacBuf[i], pcRespStr);
-    }
-*/
-
-    iDone = nLine = 0;
-    while(!iDone)
-    {
-//	nRead = getline(aMacLine, &len, iFP);
-	istr = fgets(aMacLine, 180, iFP);
-	if(istr != NULL && istr != EOF)
-	{
-//	    ipos = index(aMacLine, 0x27); // 0x27 = "'"
-//	    if(ipos != 0)
-//	    {
-//		*ipos++ = '\n';
-//		*ipos = '\0';
-//		aMacLine[ipos] = '\0';
-//	 	aMacLine[ipos+1] = '\0';
-//	    }
-//	    iStatus = DMCCommand( ghDMC, aMacLine, pcRespStr, 180);
-//    tv.tv_nsec = 1000000;
-//    nanosleep(&tv, NULL);
-	    iStatus = DMCCommand( ghDMC, istr, pcRespStr, 180);
-	    if(iStatus != 0)
-		printf("DMC line:%d code:%d comm:%s resp:%s\n",nLine, iStatus, istr, pcRespStr);
-	    nLine++;
-	}
-	else
-	    iDone = 1;
-    }
-    //printf("nLine = %d\n",nLine);
-    fclose( iFP );
-
-
-    aMacLine[0]=ctrlQ; aMacLine[1]='\n'; aMacLine[2]='\0';
-    iStatus = DMCCommand( ghDMC, aMacLine, pcRespStr, 180);
-
-//    sprintf(aMacLine, "BN\n");
-//    iStatus = DMCCommand( ghDMC, aMacLine, pcRespStr, 180);
-////printf("BN: %d\n",iStatus);
-    sprintf(aMacLine, "BP\n");
-    iStatus = DMCCommand( ghDMC, aMacLine, pcRespStr, 180);
-if(iStatus)
-printf("BP: %d\n",iStatus);
-//    sprintf(aMacLine, "BV\n");
-//    iStatus = DMCCommand( ghDMC, aMacLine, pcRespStr, 180);
-//printf("BV: %d\n",iStatus);
-//    sprintf(aMacLine, "MT 1,1,1,1,1,1,1,-1\n");
-//    iStatus = DMCCommand( ghDMC, aMacLine, pcRespStr, 180);
-//    InitMechArrays(&iNumAxes, &iDefineFlag, &iEmulatorMode, iaEquipeAxis, iaGalilAxis, iaMechType, iaSpecialAxis, iaDiagParms);
-//    if (ROInit(iNumAxes, iaMechType, iaEquipeAxis, iaGalilAxis, iaSpecialAxis, iDefineFlag, iEmulatorMode) == FAILURE)
-//    {
-//        return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	//FailureExit("ROInit has failed");
         //SSSetModulesInitializationsStatus(MECHANISM_MODULE, TRUE);
 //    }
@@ -563,17 +407,10 @@ int FIOTestFileChkSum( char *pcFileName )
 
     if(stat(pcFileName, &filest))
 	return FAILURE;
-<<<<<<< HEAD
     lBlockSize = filest.st_size - 2;
 
     if(lBlockSize <= 0)
 	return FAILURE;
-=======
-    lBlockSize = filest.st_size - 2;
-
-    if(lBlockSize <= 0)
-	return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     uReadSize = 2048;           /* Reads by 2K block or less. */
 
@@ -1348,11 +1185,7 @@ int FIOTestNVSRAM( int iDevModeArg )
     FILE *iFP;
     int iRet;
     unsigned uCount;
-<<<<<<< HEAD
 	float gfCoordFileRevision;
-=======
-	float gfCoordFileRevision;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     TTPrintsAt( 1, 1, "Test NVSRAM frmt.." );
     /* Check for NVSRAM existence. */
@@ -2070,15 +1903,9 @@ int FIOGetParamVals(int iParamFileArg, int iParamDescArg, long *plaValuesArg)
             return FAILURE;
     }
 
-<<<<<<< HEAD
 	if (iParamFileArg == 1)
 		for (i=0; i<4; i++)
 			plaValuesArg[i+4] = plaValuesArg[i];
-=======
-	if (iParamFileArg == 1)
-		for (i=0; i<4; i++)
-			plaValuesArg[i+4] = plaValuesArg[i];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return iResult;
 }
@@ -2092,17 +1919,10 @@ int FIOSetParamVals(int iParamFileArg, int iParamDescArg, long *plaValuesArg)
         return FAILURE;
 
     pstTempCtrlPar = FIOGetParamFileType(iParamFileArg);
-<<<<<<< HEAD
 
     if (iParamFileArg == 1 && giSysCfgNum != 30) // special case I2AXO W is in pre-file
 	for (i=0; i<4; i++)
 		plaValuesArg[i] = plaValuesArg[i+4];
-=======
-
-    if (iParamFileArg == 1 && giSysCfgNum != 30) // special case I2AXO W is in pre-file
-	for (i=0; i<4; i++)
-		plaValuesArg[i] = plaValuesArg[i+4];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     switch (iParamDescArg)
     {
@@ -2938,11 +2758,7 @@ int FIOGetFileRevision(long lFileNum, char *sRevisionArg)
 
     return SUCCESS;
 }
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 // latch encoder pos calibration file
 //int FIOReadLatchCalFile()
 //{
@@ -2957,11 +2773,7 @@ int FIOGetFileRevision(long lFileNum, char *sRevisionArg)
 //    else
 //    {
 //       iTotalInt = fread( &aLatchCalData, sizeof( stLatchCalData ), 1, iFP);
-<<<<<<< HEAD
 //	if( iTotalInt<=0 )
-=======
-//	if( iTotalInt<=0 )
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //	{
 //            perror( "Latch Cal Read Error " );
 //	}
@@ -2985,11 +2797,7 @@ int FIOGetFileRevision(long lFileNum, char *sRevisionArg)
 //    else
 //    {
 //        iCount = fwrite(&aLatchCalData, sizeof(stLatchCalData), 1, iFP);
-<<<<<<< HEAD
 //        if (iCount <= 0) 
-=======
-//        if (iCount <= 0) 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //        {
 //            perror( "Latch Cal Write Error " );
 //        }
@@ -2999,11 +2807,7 @@ int FIOGetFileRevision(long lFileNum, char *sRevisionArg)
 //    }
 //
 //    return SUCCESS;
-<<<<<<< HEAD
 //}
-=======
-//}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 int FIOWriteVectorFile()
 {
@@ -3015,27 +2819,16 @@ int FIOWriteVectorFile()
     if( iFP == (FILE *)0 )
     {
         /* On an unsuccessful OTF file open... */
-<<<<<<< HEAD
         perror( "Vector File Write Open Error " );
-=======
-        perror( "Vector File Write Open Error " );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	return FAILURE;
     }
     else
     {
         iCount = fwrite(&sVectorParameter, sizeof(stVectorParameter), 1, iFP);
-<<<<<<< HEAD
         if (iCount <= 0) 
         {
             perror( "Vector File Write Error " );
 	    fclose(iFP);
-=======
-        if (iCount <= 0) 
-        {
-            perror( "Vector File Write Error " );
-	    fclose(iFP);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    return FAILURE;
         }
         
@@ -3055,27 +2848,16 @@ int FIOReadVectorFile()
     iFP = fopen(VECTORFNAME, "r");
     if( iFP == (FILE *)0 )
     {
-<<<<<<< HEAD
         perror( "Vector File Read Open Error " );
-=======
-        perror( "Vector File Read Open Error " );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	return FAILURE;
     }
     else
     {
         iCount = fread(&sVectorParameter, sizeof(stVectorParameter), 1, iFP);
-<<<<<<< HEAD
         if (iCount <= 0) 
         {
             perror( "Vector File Read Error " );
 	    fclose(iFP);
-=======
-        if (iCount <= 0) 
-        {
-            perror( "Vector File Read Error " );
-	    fclose(iFP);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    return FAILURE;
         }
         

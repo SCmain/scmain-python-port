@@ -1,8 +1,5 @@
 /***************************************************************\
  *
- * Program:     low-level command, command interpreter and Opcode table.
- *
- * File:        LLexec.c
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -53,11 +50,7 @@
 
 #include "cmdfns.h"
 #include "cmdex.h"
-<<<<<<< HEAD
 #include "cmdsp.h"
-=======
-#include "cmdsp.h"
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "cmdal.h"
 #include "scmac.h"
 #include "scio.h"
@@ -82,7 +75,6 @@
 #include "mapstn.h"
 #include "map.h"
 #include "scproc.h"
-<<<<<<< HEAD
 #include "secsg.h"
 #include "scio.h"
 #include "scintr.h"
@@ -113,38 +105,6 @@ extern int giOutpStnNumber;
 extern unsigned long glTimeIO[10][4][100];
 extern int giTimeIOCounter[10][4];
 
-=======
-#include "secsg.h"
-#include "scio.h"
-#include "scintr.h"
-#include "alk.h"
-
-int input_L = 0;
-int input_F = 0;
-
-void ALChuckVacuum(int);
-void ALPinVacuum(int);
-void GAGalilWriteIO(int, int);
-int  GAGalilReadIO(int);
-
-extern unsigned long glTimeStart00;
-extern unsigned long glTimeStart01;
-extern unsigned long glTimeStart10;
-extern unsigned long glTimeStart11;
-extern unsigned long glTimeStart20;
-extern unsigned long glTimeStart21;
-extern int giCheck00Flag;
-extern int giCheck01Flag;
-extern int giCheck10Flag;
-extern int giCheck11Flag;
-extern int giCheck20Flag;
-extern int giCheck21Flag;
-
-extern int giOutpStnNumber;
-extern unsigned long glTimeIO[10][4][100];
-extern int giTimeIOCounter[10][4];
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //int FORM_MAIN(int,int);
 
 /***************************************************************************
@@ -178,11 +138,7 @@ int ex_FRMT(instr_ptr instr)
     Optr = instr->opr_ptr;              /* get first operand */
     if( Optr->opr.l != 313 )            /* the value must be 313 */
         return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return SUCCESS;
 
 //    iReturn = FIOWriteConfig();       /* write the configuration table back to NVSRAM */
@@ -200,11 +156,7 @@ int ex_FRMT(instr_ptr instr)
 
 //    if (TIDelay(50) == FAILURE)
 //        return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    FIOWriteToNVSRAMLogFile(INIT_FILECOUNTERS);
 
 //    return SUCCESS;
@@ -253,11 +205,7 @@ int ex_DUMPP(instr_ptr instr)
 
     iCmdPort = SERGetCmdPort();
 
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* get the parameter file type, default or 0 is robot file*/
     if( (Optr=instr->opr_ptr) )
     {
@@ -277,11 +225,7 @@ int ex_DUMPP(instr_ptr instr)
     /* get and write the baud rate */
     if( FIOGetParamBaudRate(iType,&iBaudeRate) == FAILURE )
         goto error_exit;
-<<<<<<< HEAD
 //    itoa( iBaudeRate, sBuf, 10 );
-=======
-//    itoa( iBaudeRate, sBuf, 10 );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     sprintf(sBuf, "%d", iBaudeRate);
     strcat( sBuf, "\r\n" );
     if( CMDdumpBuf(sBuf) == FAILURE )  /* dump baude rate  and wait for the CR from the host */
@@ -300,19 +244,11 @@ int ex_DUMPP(instr_ptr instr)
     sBuf[1] = 0;
 	if(CMDShowDescription(iCmdPort, sBuf)==FAILURE)
 		goto error_exit;
-<<<<<<< HEAD
 
     return SUCCESS;
 
 error_exit:
 
-=======
-
-    return SUCCESS;
-
-error_exit:
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return FAILURE;
 }
 /***************************************************************************
@@ -350,11 +286,7 @@ int ex_DUMPS(instr_ptr instr)
 
     iCmdPort = SERGetCmdPort();
 
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* get Customized Home */
     if( ROGetParameter(TRUE,RO_AXIS_ALL,lCHome,CUSTOMIZED_HOME) == FAILURE )
         goto error_exit;
@@ -462,19 +394,11 @@ int ex_DUMPS(instr_ptr instr)
     sBuf[1] = 0;
 	if(CMDShowDescription(iCmdPort, sBuf)==FAILURE)
 		goto error_exit;
-<<<<<<< HEAD
 
     return SUCCESS;
 
 error_exit:
 
-=======
-
-    return SUCCESS;
-
-error_exit:
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return FAILURE;
 }
 /***************************************************************************
@@ -507,16 +431,11 @@ int ex_INPUT(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
     long lBitNum, lValue, lPortID;
-<<<<<<< HEAD
     //int iOnOffFlag;
-=======
-    //int iOnOffFlag;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     //unsigned char iValue;
     char cBuf[5];
 
     // get first operand, which is the port name or bit number
-<<<<<<< HEAD
     Optr = instr->opr_ptr; 
     if(!Optr)
         return FAILURE;
@@ -525,16 +444,6 @@ int ex_INPUT(instr_ptr instr)
     switch( Optr->type )  
     {
         case LONG_CONST :   // bit number
-=======
-    Optr = instr->opr_ptr; 
-    if(!Optr)
-        return FAILURE;
-
-    // set values of Bit number and Port Id
-    switch( Optr->type )  
-    {
-        case LONG_CONST :   // bit number
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         case INDIRECT_REG :
 	    if(CMDgetValue(Optr, &lBitNum)==FAILURE)
 		return FAILURE;
@@ -550,7 +459,6 @@ int ex_INPUT(instr_ptr instr)
         default:
             return FAILURE;
     }
-<<<<<<< HEAD
 
     // read the port value
     lValue = (long)(CMDreadPort(lBitNum,(char)lPortID));
@@ -560,17 +468,6 @@ int ex_INPUT(instr_ptr instr)
 
     // if Second operand, store the value into the indirect register
     if( (Optr=Optr->next) )
-=======
-
-    // read the port value
-    lValue = (long)(CMDreadPort(lBitNum,(char)lPortID));
-
-    if( lValue==FAILURE )
-        return FAILURE;
-
-    // if Second operand, store the value into the indirect register
-    if( (Optr=Optr->next) )
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     {
         return CMDSetIndirectReg(Optr, lValue);
     }
@@ -623,20 +520,12 @@ int ex_WRIP(instr_ptr instr)
 
     iCmdPort = SERGetCmdPort();
 
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* get file type from first operand if there is one. If there is
      * no operand then the default is robot parameter file.
      * If there is operand and value is 0, then it is robot
      * parameter file. */
-<<<<<<< HEAD
     iType = ROBOTFILE;
-=======
-    iType = ROBOTFILE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if( (Optr=instr->opr_ptr) )
     {
         if( Optr->opr.l == 1 )          /* prealigner parameter file */
@@ -670,15 +559,9 @@ int ex_WRIP(instr_ptr instr)
     {
         if( (iReturn=CMDreadLparms(lBuf)) == FAILURE )
             goto error_exit;
-<<<<<<< HEAD
 		if (iType == 1)
 			for (i=0; i<4; i++)
 				lBuf[i+4] = lBuf[i];
-=======
-		if (iType == 1)
-			for (i=0; i<4; i++)
-				lBuf[i+4] = lBuf[i];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if( (iReturn=FIOSetParamVals(iType,iParmIdx,lBuf)) == FAILURE )
             goto error_exit;
     }
@@ -691,11 +574,7 @@ int ex_WRIP(instr_ptr instr)
         ROInitGalil(iType);
         goto error_exit;
     }
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return FIOWriteParam(iType);         /* write information to NVSRAM */
 
 error_exit:
@@ -711,11 +590,7 @@ error_exit:
         else
             iReturn = FIOWriteParam(iType);         /* write information to NVSRAM */
 	}
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return iReturn;
 }
 /***************************************************************************
@@ -755,11 +630,7 @@ int ex_WRIS(instr_ptr instr)
 
     iCmdPort = SERGetCmdPort();
 
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     while( !iDone )                     /* loop while not ctrl-z */
     {
         /* get the station coordinate from the comm port. */
@@ -800,11 +671,7 @@ int ex_WRIS(instr_ptr instr)
 
 error_exit:
     FIOReadCoord();
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return FAILURE;
 }
 /***************************************************************************
@@ -938,11 +805,7 @@ int ex_EQUAL(instr_ptr instr)
 int ex_OUTP(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
-<<<<<<< HEAD
     int iBitWrite; //, iOnOffFlag;
-=======
-    int iBitWrite; //, iOnOffFlag;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     //unsigned char iValue;
     long lBitNum, lValue;
     char cPortID;
@@ -980,7 +843,6 @@ int ex_OUTP(instr_ptr instr)
         lBitNum = -1;                   /* clear the Bit Number */
 
     if( CMDgetValue(Optr->next,&lValue) == FAILURE )  /* get value for second operand */
-<<<<<<< HEAD
         return FAILURE;
 
     switch( cPortID )
@@ -1018,51 +880,11 @@ int ex_OUTP(instr_ptr instr)
             IOWriteIO( (int)lBitNum, (int)lValue, IO_ROBOT_OUTPUT_B );
             break;
         case 'C' :
-=======
-        return FAILURE;
-
-    switch( cPortID )
-    {
-        case 'A' :
-	    if(lBitNum == 0)
-    	    {
-	    	if((lValue & 0x01) == 0)
-	    	{
-	    	    glTimeStart00 = TIRSTime();
-	    	    giCheck00Flag = 1;
-	    	}
-	    	else if ((lValue & 0x01) == 1)
-	        {
-	    		glTimeStart01 = TIRSTime();
-	    		giCheck01Flag = 1;
-	        }
-    	    }
-    	    else if (lBitNum == 1)
-    	    {
-	    	if((lValue & 0x01) == 0)
-	    	{
-	     	    glTimeStart10 = TIRSTime();
-	    	    giCheck10Flag = 1;
-	    	}
-	    	else if ((lValue & 0x01) == 1)
-	     	{
-	    	    glTimeStart11 = TIRSTime();
-	      	    giCheck11Flag = 1;
-	    	}
-            }
-	    IOWriteIO( (int)lBitNum, (int)lValue, IO_ROBOT_OUTPUT_A);
-            break;
-        case 'B' :
-            IOWriteIO( (int)lBitNum, (int)lValue, IO_ROBOT_OUTPUT_B );
-            break;
-        case 'C' :
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //            IOWriteIO( (int)lBitNum, (int)lValue, IO_ROBOT_OUTPUT_C );
             break;
         case 'D' :
             IOWriteIO( (int)lBitNum, (int)lValue, IO_ROBOT_OUTPUT_D );
             break;
-<<<<<<< HEAD
         case 'E' :
 //            IOWriteIO( (int)lBitNum, (int)lValue, IO_ROBOT_OUTPUT_E );
             break;
@@ -1081,26 +903,6 @@ int ex_OUTP(instr_ptr instr)
 	        }
     	    }
 	    IOWriteIO( (int)lBitNum, (int)lValue, IO_PRE_OUTPUT_L );
-=======
-        case 'E' :
-//            IOWriteIO( (int)lBitNum, (int)lValue, IO_ROBOT_OUTPUT_E );
-            break;
-        case 'L' :
-	    if(lBitNum == 0)
-    	    {
-	    	if((lValue & 0x01) == 0)
-	    	{
-	    	    glTimeStart20 = TIRSTime();
-	    	    giCheck20Flag = 1;
-	    	}
-	    	else if ((lValue & 0x01) == 1)
-	        {
-	    		glTimeStart21 = TIRSTime();
-	    		giCheck21Flag = 1;
-	        }
-    	    }
-	    IOWriteIO( (int)lBitNum, (int)lValue, IO_PRE_OUTPUT_L );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             break;
         case 'F' :                      /* valid but write nothing */
         case 'G' :
@@ -1306,11 +1108,7 @@ int ex_SAV(instr_ptr instr)
     long lSpeed[8]={0,0,0,0,0,0,0,0};
     long lAccel[8]={0,0,0,0,0,0,0,0};
     long lDecel[8]={0,0,0,0,0,0,0,0};
-<<<<<<< HEAD
     int iFileType, iOTFFlag;
-=======
-    int iFileType, iOTFFlag;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     unsigned long ulAxes;
 	int iCount, iIndex;
 	unsigned long ulaAxisArray[2] = {0,0};
@@ -1429,7 +1227,6 @@ int ex_SAV(instr_ptr instr)
     }
 
     if (FIOGetCfgFeatureFlags(OTF, &iOTFFlag) == FAILURE)
-<<<<<<< HEAD
         return FAILURE;
 
     if (iOTFFlag)
@@ -1438,16 +1235,6 @@ int ex_SAV(instr_ptr instr)
 	{
 //printf("oft file write error\n");
             return FAILURE;
-=======
-        return FAILURE;
-
-    if (iOTFFlag)
-    {
-        if (FIOWriteOTFFile() == FAILURE)
-	{
-//printf("oft file write error\n");
-            return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	}
     }
 
@@ -1483,15 +1270,9 @@ int ex_EXINP(instr_ptr instr )
 
     Optr = instr->opr_ptr;
 	if(CMDgetValue(Optr, &lPortID)==FAILURE)
-<<<<<<< HEAD
 		return FAILURE;
     if (lPortID < 0x300 || lPortID > 0x300+20)
 	return FAILURE;
-=======
-		return FAILURE;
-    if (lPortID < 0x300 || lPortID > 0x300+20)
-	return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     lValue = (long)inb((int)lPortID);
 
@@ -1531,15 +1312,9 @@ int ex_EXOUT(instr_ptr instr )
     Optr=instr->opr_ptr;        /* if no operands      */
 	if(CMDgetValue(Optr, &lPortID)==FAILURE)
 		return FAILURE;
-<<<<<<< HEAD
 
     if (lPortID < 0x300 || lPortID > 0x300+20)
 	return FAILURE;
-=======
-
-    if (lPortID < 0x300 || lPortID > 0x300+20)
-	return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if( !(Optr=Optr->next) )            /* get second operand  */
         return FAILURE;
@@ -1642,13 +1417,8 @@ int ex_GALCO(instr_ptr instr)
 
     Optr = instr->opr_ptr;
     strcpy(caString, Optr->opr.s);
-<<<<<<< HEAD
     iLength = strlen(caString);
     if (iLength > 0)
-=======
-    iLength = strlen(caString);
-    if (iLength > 0)
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     {
     	if(caString[iLength - 1] == '>')
         	iLength--;
@@ -1661,15 +1431,9 @@ int ex_GALCO(instr_ptr instr)
     	if(GASendReceiveGalil(iGalilCardNumber, caString, pcGalilResponse) == FAILURE)
         	return FAILURE;
     	SERPutsTxBuff(SERGetCmdPort(), pcGalilResponse);
-<<<<<<< HEAD
     	return SUCCESS;
     }
     else 
-=======
-    	return SUCCESS;
-    }
-    else 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	return FAILURE;
 }
 /***************************************************************************
@@ -1896,7 +1660,6 @@ int ex_RHLN(instr_ptr instr)
     }
     return SUCCESS;
 }
-<<<<<<< HEAD
 
 //
 // Set Output Station Number
@@ -1993,130 +1756,20 @@ int ex_XRSI(instr_ptr instr)
 /***************************************************************************
  * Function Name:   ex_XWIO
  * Description:     Write RC data (Torques & Pos data) to a file
-=======
-
-//
-// Set Output Station Number
-//
-int ex_XOSN(instr_ptr instr)
-{
-    //CMDoperand_ptr Optr;
-    long lStnNum;
-
-    if(CMDgetValue(instr->opr_ptr, &lStnNum)==FAILURE)
-	return FAILURE;
-
-    if(lStnNum < 0 || lStnNum > 9)
-	return FAILURE;
-
-    giOutpStnNumber = (int) lStnNum;
-
-    return SUCCESS;
-}
-//
-// Read Output Station Number
-//
-int ex_XROS(instr_ptr instr)
-{
-//    CMDoperand_ptr Optr;
-//    int lStnNum;
-
-    return CMDReadParam(instr->opr_ptr, (long) giOutpStnNumber);
-}
-//
-// Read Output Station IO Counter
-//
-int ex_XROC(instr_ptr instr)
-{
-    CMDoperand_ptr Optr;
-    long lStnNum, lCaseNum;
-    int iCounter;
-
-    Optr = instr->opr_ptr;
-    if(CMDgetValue(Optr, &lStnNum)==FAILURE)
-	return FAILURE;
-
-    if(lStnNum < 0 || lStnNum > 9)
-	return FAILURE;
-
-    Optr = Optr->next;
-    if(CMDgetValue(Optr, &lCaseNum)==FAILURE)
-	return FAILURE;
-
-    if(lCaseNum < 0 || lCaseNum > 3)
-	return FAILURE;
-
-    iCounter = giTimeIOCounter[lStnNum][lCaseNum];
-
-    Optr=Optr->next;
-    return CMDReadParam(Optr, (long) iCounter);
-}
-
-//
-// XRSI - Read Station IO time for vacuum
-//
-int ex_XRSI(instr_ptr instr)
-{
-    CMDoperand_ptr Optr;
-    long lStnNum, lCaseNum, lCurPtr, lTime;
-
-    Optr = instr->opr_ptr;
-    if(CMDgetValue(Optr, &lStnNum)==FAILURE)
-	return FAILURE;
-
-    if(lStnNum < 0 || lStnNum > 9)
-	return FAILURE;
-
-    Optr = Optr->next;
-    if(CMDgetValue(Optr, &lCaseNum)==FAILURE)
-	return FAILURE;
-
-    if(lCaseNum < 0 || lCaseNum > 3)
-	return FAILURE;
-
-    Optr = Optr->next;
-    if(CMDgetValue(Optr, &lCurPtr)==FAILURE)
-	return FAILURE;
-
-    if(lCurPtr < 0 || lCurPtr > 99)
-	return FAILURE;
-
-    lTime = glTimeIO[lStnNum][lCaseNum][lCurPtr];
-
-    return CMDReadParam(Optr->next, lTime);
-
-}
-
-/***************************************************************************
- * Function Name:   ex_XWIO
- * Description:     Write RC data (Torques & Pos data) to a file
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_XWIO(instr_ptr instr)
 {
-<<<<<<< HEAD
     return IOWriteSTNIO();
 }
 /***************************************************************************
  * Function Name:   ex_XRIO
  * Description:     Read RC data (Torques & Pos data) from a file
-=======
-    return IOWriteSTNIO();
-}
-/***************************************************************************
- * Function Name:   ex_XRIO
- * Description:     Read RC data (Torques & Pos data) from a file
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_XRIO(instr_ptr instr)
 {
-<<<<<<< HEAD
     return IOReadSTNIO();
-=======
-    return IOReadSTNIO();
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }

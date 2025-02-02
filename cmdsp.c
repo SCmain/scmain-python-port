@@ -1,10 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
- * Program:     low-level command.
- *
- * File:        LLexecSP.c
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -31,7 +26,6 @@
  * Program:     low-level command.
  *
  * File:        cmdsp.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Functions:
  *              CMDstringEqual
@@ -85,19 +79,11 @@
 #include "sctim.h"
 #include "scintr.h"
 #include "fiog.h"
-<<<<<<< HEAD
 #include "scmem.h"
 
 extern int giVersionPA;
 extern int giSysCfgNum;
 extern int giNumOfAxes;
-=======
-#include "scmem.h"
-
-extern int giVersionPA;
-extern int giSysCfgNum;
-extern int giNumOfAxes;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /* These variables are used for password decryption. */
 double dTimeDateTemp, dDecryptedPassword, dTemp1, dTemp2, dTemp3, dMult1;
@@ -120,7 +106,6 @@ int CMDgetAxisLoc(ULONG ulAxis)
 {
     if( ulAxis==RO_AXIS_ALL || ulAxis==RO_AXIS_all )  /* either all robot axes or all prealigner axes. */
         return 0;
-<<<<<<< HEAD
     if( ulAxis==RO_AXIS_T)
 		return 0;
 	if( ulAxis==RO_AXIS_t)
@@ -137,24 +122,6 @@ int CMDgetAxisLoc(ULONG ulAxis)
 		return 3;
 	if( ulAxis==RO_AXIS_w)
 		return 7;
-=======
-    if( ulAxis==RO_AXIS_T)
-		return 0;
-	if( ulAxis==RO_AXIS_t)
-		return 4;
-	if( ulAxis==RO_AXIS_R)
-		return 1;
-	if( ulAxis==RO_AXIS_r)
-		return 5;
-	if( ulAxis==RO_AXIS_Z)
-		return 2;
-	if( ulAxis==RO_AXIS_z)
-		return 6;
-	if( ulAxis==RO_AXIS_W)
-		return 3;
-	if( ulAxis==RO_AXIS_w)
-		return 7;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return FAILURE;
 }
 /********************************************************************************
@@ -396,26 +363,16 @@ ULONG CMDgetAxis(instr_ptr instr)
         {
             return 0;                   /* only for SVON, SVOF, and STOP */
         }
-<<<<<<< HEAD
 
 	if (giVersionPA)
 		return RO_AXIS_all;
-=======
-
-	if (giVersionPA)
-		return RO_AXIS_all;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	else
         	return RO_AXIS_ALL;             /* other comamnds as default to 'A' or 'a' */
     }
 
     /* if there is operand then return specific axis value */
     if(CMDgetCharacter(Optr,&cVal)==FAILURE)
-<<<<<<< HEAD
 	return FAILURE;
-=======
-	return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     switch(cVal)
     {
@@ -424,15 +381,9 @@ ULONG CMDgetAxis(instr_ptr instr)
             if(((instr->OC == SVON) || (instr->OC == SVOF) || (instr->OC == STOP)) && (CMDinitFlags == DFVAC514))
             {
                 return RO_AXIS_T | RO_AXIS_R;
-<<<<<<< HEAD
             }
 	    if (giVersionPA)
 		return RO_AXIS_t;	// PA version
-=======
-            }
-	    if (giVersionPA)
-		return RO_AXIS_t;	// PA version
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    else
             	return RO_AXIS_T;           /* robot T axis, first galil card */
         case 'R' :
@@ -441,7 +392,6 @@ ULONG CMDgetAxis(instr_ptr instr)
             {
                 return RO_AXIS_T | RO_AXIS_R;
             }
-<<<<<<< HEAD
 	    if (giVersionPA)
 		return RO_AXIS_r;	// PA version
 	    else
@@ -472,38 +422,6 @@ ULONG CMDgetAxis(instr_ptr instr)
             return RO_AXIS_z;           /* prealigner z axis, second galil card */
         case 'a' :
 	    if(giNumOfAxes <= 4)
-=======
-	    if (giVersionPA)
-		return RO_AXIS_r;	// PA version
-	    else
-            	return RO_AXIS_R;           /* robot R axis, first galil card */
-        case 'Z' :
-	    if (giVersionPA)
-		return RO_AXIS_z;	// PA version
-	    else
-            	return RO_AXIS_Z;           /* robot Z axis, first galil card */
-        case 'A' :
-	    if (giVersionPA)
-		return RO_AXIS_all;	// PA version
-	    else
-            	return RO_AXIS_ALL;         /* robot all axes, first galil card */
-        case 't' :
-	    if(giSysCfgNum == 30) 	// I2AXO version (use t for Track)
-		return RO_AXIS_W;
-	    if(giNumOfAxes <= 4)
-		return (unsigned long)FAILURE;
-            return RO_AXIS_t;           /* prealigner t axis, second galil card */
-        case 'r' :
-	    if(giNumOfAxes <= 4)
-		return (unsigned long)FAILURE;
-            return RO_AXIS_r;           /* prealginer r axis, second galil card */
-        case 'z' :
-	    if(giNumOfAxes <= 4)
-		return (unsigned long)FAILURE;
-            return RO_AXIS_z;           /* prealigner z axis, second galil card */
-        case 'a' :
-	    if(giNumOfAxes <= 4)
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		return (unsigned long)FAILURE;
             return RO_AXIS_all;         /* prealigner all axes, second galil card */
         case 'W' :
@@ -511,11 +429,7 @@ ULONG CMDgetAxis(instr_ptr instr)
                                          * track is on first galil card if there is 4-axis system; otherwise
                                          * the track mostly is on the second galil card. */
         case 'w' :
-<<<<<<< HEAD
 	    if(giNumOfAxes <= 4)
-=======
-	    if(giNumOfAxes <= 4)
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		return (unsigned long)FAILURE;
             return RO_AXIS_w;           /* track, second galil card */
         default:
@@ -759,11 +673,7 @@ int CMDreadLparms(long *lValues)
 //        return FAILURE;
 //    }
     if( (iReturn=SERGetsRxBuff(SERGetCmdPort(),sBuf,FALSE,&iNumBytes,TRUE)) == FAILURE )  /* get values from com port */
-<<<<<<< HEAD
         goto exit_point;
-=======
-        goto exit_point;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("cmdsp: CMDReadLParms sBuf: %s\n",sBuf);
     if( sBuf[0] )                       /* if something there */
     {
@@ -771,11 +681,7 @@ int CMDreadLparms(long *lValues)
         lValues[1] = atol(strtok(NULL,","));  /* find next non-comma and append it */
         lValues[2] = atol(strtok(NULL,","));  /* find next non-comma and append it */
 //printf("CMDReadLParms lValues: %d,%d,%d,%d,%d,%d,%d,%d\n",lValues[0],lValues[1],lValues[2],lValues[3],lValues[4],lValues[5],lValues[6],lValues[7]);
-<<<<<<< HEAD
     }
-=======
-    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	if((iReturn=CMDShowDescription(SERGetCmdPort(), "\r"))==FAILURE)
 		goto exit_point;
 
@@ -804,7 +710,6 @@ int CMDreadPort(long lBitNum, char cPortID)
 
     switch(cPortID)
     {
-<<<<<<< HEAD
         case 'A' : // OUTP ports
             iData = inb( IO_ROBOT_OUTPUT_A );
             break;
@@ -840,43 +745,6 @@ int CMDreadPort(long lBitNum, char cPortID)
             iData = inb( IO_PRE_INPUT_K );
             break;
         case 'L' : 
-=======
-        case 'A' : // OUTP ports
-            iData = inb( IO_ROBOT_OUTPUT_A );
-            break;
-        case 'B' : 
-            iData = inb( IO_ROBOT_OUTPUT_B );
-            break;
-        case 'C' : 
-//            iData = inb( IO_ROBOT_OUTPUT_C );
-            break;
-        case 'D' : 
-            iData = inb( IO_ROBOT_OUTPUT_D );
-            break;
-        case 'E' : 
-//            iData = inb( IO_ROBOT_OUTPUT_E );
-            break;
-        case 'F' : // INPUT ports
-            iData = inb( IO_ROBOT_INPUT_F );
-            break;
-        case 'G' : 
-            iData = inb( IO_ROBOT_INPUT_G );
-            break;
-        case 'H' :
-            IOSetIOIntPending(FALSE); /* signal user interrupt is cleared */
-            iData = inb( IO_ROBOT_INPUT_H );
-            break;
-        case 'I' :
-//            iData = inb( IO_ROBOT_INPUT_I );
-            break;
-        case 'J' : 
-//            iData = inb( IO_ROBOT_INPUT_J );
-            break;
-        case 'K' : 
-            iData = inb( IO_PRE_INPUT_K );
-            break;
-        case 'L' : 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             iData = inb( IO_PRE_OUTPUT_L );
             break;
         default:
@@ -935,7 +803,6 @@ int CMDreadBackParms(CMDoperand_ptr Optr, long *lValue, ULONG ulAxis)
     }
     else
     {
-<<<<<<< HEAD
         if( ulAxis==RO_AXIS_ALL)
 			sprintf( sBuf, "%ld,%ld,%ld", lValue[0], lValue[1], lValue[2] );
 		else if (ulAxis==RO_AXIS_all)  /* All axis */
@@ -943,15 +810,6 @@ int CMDreadBackParms(CMDoperand_ptr Optr, long *lValue, ULONG ulAxis)
         else                            /* 1 specified axis */
 		{
 	 	    sprintf(sBuf, "%ld", lValue[CMDgetAxisLoc(ulAxis)]);
-=======
-        if( ulAxis==RO_AXIS_ALL)
-			sprintf( sBuf, "%ld,%ld,%ld", lValue[0], lValue[1], lValue[2] );
-		else if (ulAxis==RO_AXIS_all)  /* All axis */
-            sprintf( sBuf, "%ld,%ld,%ld", lValue[4], lValue[5], lValue[6] );
-        else                            /* 1 specified axis */
-		{
-	 	    sprintf(sBuf, "%ld", lValue[CMDgetAxisLoc(ulAxis)]);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		}
 		return CMDShowDescription(SERGetCmdPort(), sBuf);
     }

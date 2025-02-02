@@ -1,10 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
- * Program:     low-level command, command interpreter and Opcode table.
- *
- * File:        LLexmac.c
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -31,7 +26,6 @@
  * Program:     low-level command, command interpreter and Opcode table.
  *
  * File:        cmdmac.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Functions:
  *
@@ -365,11 +359,7 @@ int ex_EIM(instr_ptr instr)
         case 9 :
             MASetMacroIntegerVars(MR_CMER_ENABLED, (int)lOpr2);
             break;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         case 10 :
             MASetMacroIntegerVars(MR_DER_ENABLED, (int)lOpr2);
             break;
@@ -985,11 +975,7 @@ int ex_RMCS(instr_ptr instr)
 	int iCmdPort;
 
     /* get the macro status from the macro module and covert to ascii character to send to comm port. */
-<<<<<<< HEAD
 //    itoa( MRGetMacroStatus(), sBuf, 10 );
-=======
-//    itoa( MRGetMacroStatus(), sBuf, 10 );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	sprintf(sBuf, "%d", MRGetMacroStatus());
 	iCmdPort = SERGetCmdPort();
 	if(CMDShowDescription(iCmdPort, sBuf)==FAILURE)
@@ -1341,17 +1327,12 @@ int ex_RCMEF(instr_ptr instr)
     else
     {   /* send the value to COM */
         iCmdPort = SERGetCmdPort();
-<<<<<<< HEAD
 //        ltoa(lVal, caString, 10);
-=======
-//        ltoa(lVal, caString, 10);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	sprintf(caString, "%d", (int)lVal);
         if( SERPutsTxBuff(iCmdPort, caString) == FAILURE )
             return FAILURE;
     }
     return SUCCESS;
-<<<<<<< HEAD
 }
 
 int ex_SDUMP(instr_ptr instr)
@@ -1359,13 +1340,4 @@ int ex_SDUMP(instr_ptr instr)
 
    return SERDumpSECSStatus(3);
 
-=======
-}
-
-int ex_SDUMP(instr_ptr instr)
-{
-
-   return SERDumpSECSStatus(3);
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }

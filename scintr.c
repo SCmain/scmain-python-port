@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-/****************************************************************
- *
- * Program:     Controller firmware
- * File:        isr.c
- * Functions:   
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -33,7 +26,6 @@
  * Program:     Controller firmware
  * File:        scintr.c
  * Functions:   
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *              ISGetJmpBufMarkPtr
  *              ISSetJmpBufMark
  *              ISGetJmpBufMainMarkPtr
@@ -43,21 +35,13 @@
  * Description: General use defines mainly for direct hardware
  *      interfacing. Used mostly for scanner, I/O, motion control,
  *      and timer. Functions used to return to the top of the main
-<<<<<<< HEAD
  *      loop in the case of a catastrophic failure.
-=======
- *      loop in the case of a catastrophic failure.
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Modification history:
  * Rev      ECO#    Date    Author      Brief Description
  *
  ****************************************************************/
-<<<<<<< HEAD
 #include <sys/io.h>
-=======
-#include <sys/io.h>
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <signal.h>
 #include <float.h>
 #include "sck.h"
@@ -115,13 +99,8 @@ int *ISGetJmpBufMarkPtr()
  *
  ***************************************************************/
 int ISSetJmpBufMark(unsigned uMarkIndex, int iNewVal)
-<<<<<<< HEAD
 {
     unsigned _JBLEN = 10;
-=======
-{
-    unsigned _JBLEN = 10;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (uMarkIndex >= _JBLEN)
         return FAILURE;
@@ -162,13 +141,8 @@ int *ISGetJmpBufMainMarkPtr()
  *
  ***************************************************************/
 int ISGetJmpBufMainMark(unsigned uMarkIndex)
-<<<<<<< HEAD
 {
     unsigned  _JBLEN = 10;
-=======
-{
-    unsigned  _JBLEN = 10;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (uMarkIndex >= _JBLEN)
         return FAILURE;

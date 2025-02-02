@@ -1,8 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
- * File:        datafile.c
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -27,7 +24,6 @@
  *
  *
  * File:        dfconfig.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Program:     Controller firmware
  * Functions:   FIOTestFileChkSum
@@ -92,20 +88,12 @@
 #include <string.h>
 
 #include "fio.h"
-<<<<<<< HEAD
 #include "fiol.h"
-=======
-#include "fiol.h"
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "fiog.h"
 
 /* Configuration table structure for holding variable values pertaining to the configuration file. */
 stCfgTable sCfgTbl;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 /****************************************************************
  *
  * Function:    FIOComputeChkSum
@@ -239,21 +227,13 @@ int FIOReadConfig()
 //        iTotalInt = read( iFP, &uCfgChkSum, sizeof ( unsigned ) );
         iTotalInt = fread(&uCfgChkSum, sizeof(unsigned), 1, iFP);
 	/* If the check sum is no good... */
-<<<<<<< HEAD
         if (iTotalInt < 1) 
-=======
-        if (iTotalInt < 1) 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         {
             /* ...initialize the configuration table structure to default values... */
             FIOInitConfig();
             /* ...and register a failure with the status module. */
             //SSSetCheckSumStatus( CFG_FILE, TRUE );
-<<<<<<< HEAD
 	}
-=======
-	}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     /* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
     fclose( iFP );
@@ -328,11 +308,7 @@ int FIOWriteConfig()
         iCount += fwrite(&uCfgChkSum, sizeof(unsigned), 1, iFP);
         /* Make sure everything was written in its entirety. */
         if (iCount != 2) //sizeof(stCfgTable)+sizeof(unsigned) )
-<<<<<<< HEAD
         {
-=======
-        {
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		//printf("FIOWriteConfig fwrite iCount=%d\n", iCount);
             /* Otherwise register a failure with the status module. */
             //SSSetCheckSumStatus( CFG_FILE, TRUE );
@@ -345,27 +321,17 @@ int FIOWriteConfig()
 //    if ( SSGetCheckSumStatus( CFG_FILE ) )
 //        return FAILURE;
     return 0;
-<<<<<<< HEAD
 }
 
 main(int argc, char *argv[])
 {
   int iIndex;
  
-=======
-}
-
-main(int argc, char *argv[])
-{
-  int iIndex;
- 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     strcpy(sCfgTbl.m_caSysCfgString, "I2AXO-TS");
     for (iIndex=0; iIndex<MAXFEATURECONFIG; iIndex++)
     {
         sCfgTbl.m_iaFeatureFlags[iIndex] = 0;
     }
-<<<<<<< HEAD
 
     sCfgTbl.m_iaFeatureFlags[SECS_HOST] = 1;
     sCfgTbl.m_iaFeatureFlags[SECS_DEVICE] = 1;
@@ -383,24 +349,5 @@ main(int argc, char *argv[])
 
     return;
 }
-=======
-
-    sCfgTbl.m_iaFeatureFlags[SECS_HOST] = 1;
-    sCfgTbl.m_iaFeatureFlags[SECS_DEVICE] = 1;
-    sCfgTbl.m_iaFeatureFlags[TOT] = 1;
-    sCfgTbl.m_iaFeatureFlags[OTF] = 1;
-    sCfgTbl.m_iaFeatureFlags[MULTI_CHIP_ALIGN] = 0;
-    sCfgTbl.m_iaFeatureFlags[COM3_SUPPORT] = 0;
-    sCfgTbl.m_iaFeatureFlags[INTELLIPICK] = 0;
-    sCfgTbl.m_iaFeatureFlags[SQUARE_WAFER_ALIGN] = 0;
-    sCfgTbl.m_iaFeatureFlags[SCANNER] = 1;
-    sCfgTbl.m_iaFeatureFlags[EQUIPE_BUS] = 0;
-    sCfgTbl.m_iaFeatureFlags[FAST_ALIGN] = 0;
-
-    FIOWriteConfig();
-
-    return;
-}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 

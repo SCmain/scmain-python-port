@@ -1,7 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -25,7 +23,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  *
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Program:     GALIL Motion Control Interface Header
  * File:        gag.c
  * Functions:   GAGetUseGalilFlag
@@ -72,7 +69,6 @@
 #include "gafn.h"
 #include "gag.h"
 #include "scintr.h"
-<<<<<<< HEAD
 #include "scstat.h"
 #include "sctim.h"
 #include "gaintr.h"
@@ -86,28 +82,12 @@ int  GAGalilReadOut(int);
 
 extern HANDLEDMC ghDMC;
 extern CONTROLLERINFO gControllerInfo;
-=======
-#include "scstat.h"
-#include "sctim.h"
-#include "gaintr.h"
-#include "mapio.h"
-#include "scio.h"
-#include "dmclnx.h"
-
-void GAGalilWriteIO(int, int);
-int  GAGalilReadIO(int);
-int  GAGalilReadOut(int);
-
-extern HANDLEDMC ghDMC;
-extern CONTROLLERINFO gControllerInfo;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 char gGalilReadBuffer [MAXGASTR];
 int giNumGalilRead = 0;
 int giGalilReadPointer = 0;
 char cpNull[8];
 int giTOcount=0;
-<<<<<<< HEAD
 // 
 // DMCCommand Interface
 //	Check for Timeout
@@ -133,38 +113,10 @@ int GASendDMCCommand(HANDLEDMC ghDMC, char* caCommand, char* caResp, int iMaxStr
 	{
 	    rc = DMCClose(ghDMC);
 	    rc = DMCOpen( &gControllerInfo, &ghDMC );
-=======
-// 
-// DMCCommand Interface
-//	Check for Timeout
-//	If time-out, reestablish connection.
-//
-int GASendDMCCommand(HANDLEDMC ghDMC, char* caCommand, char* caResp, int iMaxStr)
-{
-    int iTC=0;
-    long rc=0;
-    char caLocal[80];
-
-    rc = DMCCommand(ghDMC, caCommand, caResp, iMaxStr);
-    if (rc == -1)
-    {
-	++giTOcount;
-
-	rc = DMCCommand(ghDMC, "TC", caLocal, 80);
-	iTC = atoi(caLocal);
-
-	//printf("Galil timeout cnt=%d at=%s TC=%d\n",giTOcount, caCommand, iTC);
-
-	if (rc || iTC == 123) // TCP lost or Time-out
-	{
-	    rc = DMCClose(ghDMC);
-	    rc = DMCOpen( &gControllerInfo, &ghDMC );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    if (rc)
 	    {
 	    	//printf("DMCOpen Restablish Error: %d\n", rc);
             	return FAILURE;  
-<<<<<<< HEAD
     	    }
 	    // Just re-try
 	    //printf("DMCOpen Restablished!: %d\n", rc);
@@ -218,61 +170,6 @@ int  GAGalilReadOut(int nIONum)
 	return iResult;
 }
 
-=======
-    	    }
-	    // Just re-try
-	    //printf("DMCOpen Restablished!: %d\n", rc);
-	    rc = DMCCommand(ghDMC, caCommand, caResp, iMaxStr);
-    	}
-	else // Just re-try
-	{
-	    rc = DMCCommand(ghDMC, caCommand, caResp, iMaxStr);
-	}
-    }
-    return rc; // rc=0 if Success, others if error
-}
-
-void GAGalilWriteIO(int nIONum, int iBit)
-{
-    int iResult;
-    char cpBuf[16];
-	char cpResp[16];
-
-	if (iBit)
-		sprintf(cpBuf, "SB%d\xD", nIONum);
-	else
-		sprintf(cpBuf, "CB%d\xD", nIONum);
-
-	iResult = GASendReceiveGalil( GA_CARD_1, cpBuf, cpResp);
-}
-
-int  GAGalilReadIO(int nIONum)
-{
-    int iResult;
-    char cpBuf[16];
-	char cpResp[16];
-
-	sprintf(cpBuf, "MG @IN[%d]\xD", nIONum);
-    iResult = GASendReceiveGalil( GA_CARD_1, cpBuf, cpResp );
-
-    iResult = atoi(cpResp);
-	return iResult;
-}
-
-int  GAGalilReadOut(int nIONum)
-{
-    int iResult;
-    char cpBuf[16];
-	char cpResp[16];
-
-	sprintf(cpBuf, "MG @OUT[%d]\xD", nIONum);
-    iResult = GASendReceiveGalil( GA_CARD_1, cpBuf, cpResp );
-
-    iResult = atoi(cpResp);
-	return iResult;
-}
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 /****************************************************************\
  *
  * Function:    MCUseGalilFlag
@@ -461,11 +358,7 @@ int GAReadGalilInputOutputPort(int iCardNoArg, int *piReadData)
         iCardNum = IO_PRE_INPUT_K;
     else
         return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     *piReadData = inb( iCardNum );
     return SUCCESS;
 }
@@ -516,7 +409,6 @@ int GASendReceiveGalil(int iCardNoArg, char *pcCmdStr, char *pcRespStr)
 
     return iStatus;
 
-<<<<<<< HEAD
 }
 
 int MCCheckWaferOnChuck(void)
@@ -546,37 +438,6 @@ int MCCheckWaferOnChuck(void)
     return iStatus;
 }
 
-=======
-}
-
-int MCCheckWaferOnChuck(void)
-{
-    int iStatus;
-    char pcReadStr[MAXGASTR];
-    char pcCmdStr[MAXGASTR];
-
-    iStatus = 0;
-
-    sprintf(pcCmdStr, "MG @IN[13]\n\r");
-    iStatus = GASendDMCCommand( ghDMC, pcCmdStr, pcReadStr, MAXGASTR);
-    if (iStatus)
-    {
-	//printf("Error DMC checking wafer on chuck: %d\n", iStatus);
-	iStatus = 0;
-    }
-    else
-    {
-	iStatus = atoi(pcReadStr);
-	if (iStatus == 0) 
-		iStatus = 1;
-	else
-		iStatus = 0;
-    }
-
-    return iStatus;
-}
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /****************************************************************\
  *
@@ -599,11 +460,7 @@ int MCCheckWaferOnChuck(void)
 \*****************************************************************/
 int GAReadCharFromGalil(int iCardNoArg, int *piReadChar)
 {
-<<<<<<< HEAD
     int iTemp, iResult;
-=======
-    int iTemp, iResult;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     int iBytesRead;
 
     if ( (iResult = GAValidateCardNo(iCardNoArg)) == FAILURE)

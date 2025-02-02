@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-/****************************************************************
-*
-* Program:      File with all SxFx functions for SECS-II
-* File:         S2Secs.c
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -31,7 +25,6 @@
 *
 * Program:      File with all SxFx functions for SECS-II
 * File:         secfnhost.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 * Functions:    S2HostS1F1
 *               S2HostS1F2
 *               S2HostS1F5
@@ -126,11 +119,7 @@ int S2HostS1F1(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iPo
 
 int S2HostS1F2(fpstSecsInfo fpstTempDevArg, int iRegisterNumber)
 {
-<<<<<<< HEAD
     //was Equipe function #20 and #101
-=======
-    //was Equipe function #20 and #101
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("fpstTempDev=%x iReg=%d\n",fpstTempDevArg, iRegisterNumber);
     RGSetRegister(iRegisterNumber, fpstTempDevArg->m_wDevID & 0x0000FFFFL);
     return SUCCESS;
@@ -145,13 +134,8 @@ int S2HostS1F5(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iPo
 
 //    if(!(fpstTempDevArg->m_wDevID))
 //        return FAILURE;
-<<<<<<< HEAD
 
 //printf("S1F5 PCWait=%d iParm=%d\n",*ipPCWaitingArg, iParameterArg);
-=======
-
-//printf("S1F5 PCWait=%d iParm=%d\n",*ipPCWaitingArg, iParameterArg);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if(!(*ipPCWaitingArg) )
     {
@@ -201,30 +185,19 @@ int S2HostS1F5(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iPo
 
 int S2HostS1F6(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iParameterArg,
                 int iRegisterNum1, int iRegisterNum2, int iRegisterNum3)
-<<<<<<< HEAD
 {
     long lElvPos;
 
-=======
-{
-    long lElvPos;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     switch(iParameterArg)
     {
         case 2 :  //SFCD = 2, reads map results from S1F5, SFCD = 2, was Equipe function #4
             if(!(fpstTempDevArg->m_wDevID))
-<<<<<<< HEAD
                 return FAILURE;
-=======
-                return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             RGSetRegister(iRegisterNum2, (unsigned long)fpstTempDevArg->m_cMap[iRegisterNum1]);
 //            RGSetRegister(iRegisterNum2, (unsigned long)fpstTempComArg->m_cMap[iRegisterNum1]);
             break;
         case 0 :  //SFCD = 0, gets status from Device, was Equipe function #9
-<<<<<<< HEAD
 //            RGSetRegister(iRegisterNum1, (unsigned long)fpstTempComArg->m_ulInxFsd);
             RGSetRegister(iRegisterNum1, (unsigned long)fpstTempDevArg->m_ulInxFsd);
 	    if(iRegisterNum2>0)
@@ -236,25 +209,11 @@ int S2HostS1F6(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iPa
 //printf("S2HostS1F6 0 msg0=%x msg1=%x pos=%d\n ", fpstTempComArg->m_ucMsgBlock[56],fpstTempComArg->m_ucMsgBlock[57], lElvPos);
 	    }
 	    RGSetRegister(iRegisterNum3, (unsigned long)fpstTempDevArg->m_ucMsgBlock[23]);
-=======
-//            RGSetRegister(iRegisterNum1, (unsigned long)fpstTempComArg->m_ulInxFsd);
-            RGSetRegister(iRegisterNum1, (unsigned long)fpstTempDevArg->m_ulInxFsd);
-	    if(iRegisterNum2>0)
-	    {	// get elevator position in mm.
-		lElvPos = fpstTempDevArg->m_ucMsgBlock[56];
-		lElvPos <<= 8;
-		lElvPos |= fpstTempDevArg->m_ucMsgBlock[57];
-		RGSetRegister(iRegisterNum2, lElvPos);
-//printf("S2HostS1F6 0 msg0=%x msg1=%x pos=%d\n ", fpstTempComArg->m_ucMsgBlock[56],fpstTempComArg->m_ucMsgBlock[57], lElvPos);
-	    }
-	    RGSetRegister(iRegisterNum3, (unsigned long)fpstTempDevArg->m_ucMsgBlock[23]);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
             break;
         default:
             return FAILURE;
     }
-<<<<<<< HEAD
 
 //printf("S1F6 fpCom=%x iReg1=%d iReg2=%d iReg3=%d\n",fpstTempComArg, fpstTempComArg->m_ulInxFsd, lElvPos, fpstTempComArg->m_ucMsgBlock[23]);
 //printf("S1F6 fpDev=%x iReg1=%d iReg2=%d iReg3=%d\n", fpstTempDevArg, fpstTempDevArg->m_ulInxFsd, lElvPos, fpstTempDevArg->m_ucMsgBlock[23]);
@@ -262,15 +221,6 @@ int S2HostS1F6(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iPa
     return SUCCESS;
 }
 
-=======
-
-//printf("S1F6 fpCom=%x iReg1=%d iReg2=%d iReg3=%d\n",fpstTempComArg, fpstTempComArg->m_ulInxFsd, lElvPos, fpstTempComArg->m_ucMsgBlock[23]);
-//printf("S1F6 fpDev=%x iReg1=%d iReg2=%d iReg3=%d\n", fpstTempDevArg, fpstTempDevArg->m_ulInxFsd, lElvPos, fpstTempDevArg->m_ucMsgBlock[23]);
-
-    return SUCCESS;
-}
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int S2HostS2F13(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iPortNumArg,
                    unsigned uDevIDArg, int iParameterArg, int *ipSetPCInstrArg, int *ipPCWaitingArg )
 {
@@ -287,11 +237,7 @@ int S2HostS2F13(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iP
         // Request EC
         memcpy(caSecsMsgData, "\x01\x01\xA5\x01\x01", 5);
 //        caSecsMsgData[9] = (unsigned char)((uDevIDArg & 0xFF00)>>8);  // UpperDevID
-<<<<<<< HEAD
 //        caSecsMsgData[10] = (unsigned char)(uDevIDArg & 0x00FF);      // LowerDevID
-=======
-//        caSecsMsgData[10] = (unsigned char)(uDevIDArg & 0x00FF);      // LowerDevID
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         caSecsMsgData[4] = iParameterArg; // ECID
         *ipSetPCInstrArg = TRUE;
         *ipPCWaitingArg = TRUE;
@@ -385,7 +331,6 @@ int S2HostS2F16(fpstSecsInfo fpstTempDevArg, int iRegisterNum)
     RGSetRegister(iRegisterNum,(fpstTempDevArg->m_uiInxEac & 0x00FF));
     return SUCCESS;
 }
-<<<<<<< HEAD
 
 
 int S2HostS2F37(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iPortNumArg, unsigned uDevIDArg, int iParameterArg, int *ipSetPCInstrArg, int *ipPCWaitingArg)
@@ -394,33 +339,16 @@ int S2HostS2F37(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iP
     unsigned char caSecsMsgData[245];
     int iRetVal;
 
-=======
-
-
-int S2HostS2F37(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iPortNumArg, unsigned uDevIDArg, int iParameterArg, int *ipSetPCInstrArg, int *ipPCWaitingArg)
-{
-    unsigned uMsgLen;
-    unsigned char caSecsMsgData[245];
-    int iRetVal;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    if( !(fpstTempDevArg->m_wDevID) )
 //        return FAILURE;
 
     if(!(*ipPCWaitingArg) )
     {
         *ipSetPCInstrArg = TRUE;
-<<<<<<< HEAD
         *ipPCWaitingArg = TRUE;
 			//     L,2         CEED        item2
         memcpy(caSecsMsgData, "\x01\x02\xA5\x01\x01\x01\x00", 7);
   	if(iParameterArg == 0)
-=======
-        *ipPCWaitingArg = TRUE;
-			//     L,2         CEED        item2
-        memcpy(caSecsMsgData, "\x01\x02\xA5\x01\x01\x01\x00", 7);
-  	if(iParameterArg == 0)
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    caSecsMsgData[4] = (unsigned char)0x00;
         ulS1F1TimeOut = 0;
     }
@@ -443,15 +371,9 @@ int S2HostS2F37(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iP
     }
     iRetVal = S2PrepareSecsMsg(iPortNumArg, uDevIDArg, 2, 37, 1, 1, caSecsMsgData, 7);
     return(iRetVal);
-<<<<<<< HEAD
 
 }
 
-=======
-
-}
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int S2HostS2F38(fpstSecsInfo fpstTempDevArg, int iRegisterNumArg)
 {
     if(fpstTempDevArg->m_uiInxHcack == 0x00FF)
@@ -461,11 +383,7 @@ int S2HostS2F38(fpstSecsInfo fpstTempDevArg, int iRegisterNumArg)
         RGSetRegister(iRegisterNumArg, (unsigned long)fpstTempDevArg->m_uiInxHcack);
     return SUCCESS;
 }
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 int S2HostS2F41(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iPortNumArg,
                     unsigned uDevIDArg, int iParameterArg, int iPositionArg, int *ipSetPCInstrArg,
@@ -501,23 +419,14 @@ int S2HostS2F41(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iP
                 caSecsMsgData[10] = (unsigned char)(iPositionArg & 0x00FF);
                 uMsgLenght = 11;
                 fpstTempDevArg->m_uiInxHcack = 0x00FF;
-<<<<<<< HEAD
                 fpstTempDevArg->m_uiInxCeid &= 0xFFF0;
-=======
-                fpstTempDevArg->m_uiInxCeid &= 0xFFF0;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("S1F41 RMCD=6, 12: ipos=%d\n",iPositionArg);
                 break;
             case 16 : //RMCD = 5, resets alarm, was Equipe function #5
                 fpstTempDevArg->m_uiInxHcack = 0;
                 fpstTempDevArg->m_uiInxCeid = 0;
-<<<<<<< HEAD
                 break;
 	    case 149 :
-=======
-                break;
-	    case 149 :
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                 caSecsMsgData[6] = (unsigned char)0x03;
                 caSecsMsgData[7] = (unsigned char)0xA9;
                 caSecsMsgData[8] = (unsigned char)0x02;
@@ -533,15 +442,9 @@ int S2HostS2F41(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iP
                 caSecsMsgData[18] = (unsigned char)0x01; //(1000 & 0x00FF);
                 uMsgLenght = 19;
                 fpstTempDevArg->m_uiInxHcack = 0x00FF;
-<<<<<<< HEAD
                 fpstTempDevArg->m_uiInxCeid &= 0xFFF0;
 //printf("S2F41 149, pos=%d c1=%x c1=%x c2=%x c2=%x c3=%x c3=%x\n",iPositionArg,caSecsMsgData[9],caSecsMsgData[10],caSecsMsgData[9],caSecsMsgData[13],caSecsMsgData[14],caSecsMsgData[17],caSecsMsgData[18]);
 		break;
-=======
-                fpstTempDevArg->m_uiInxCeid &= 0xFFF0;
-//printf("S2F41 149, pos=%d c1=%x c1=%x c2=%x c2=%x c3=%x c3=%x\n",iPositionArg,caSecsMsgData[9],caSecsMsgData[10],caSecsMsgData[9],caSecsMsgData[13],caSecsMsgData[14],caSecsMsgData[17],caSecsMsgData[18]);
-		break;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
             case 9 :   //RMCD = 9, move to stage, was Equipe command #0
             case 13 :  //RMCD = 13, move to home, was Equipe function #1
@@ -609,7 +512,6 @@ int S2HostS2F41(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iP
 int S2HostS2F42(fpstSecsInfo fpstTempDevArg, int iRegisterNumArg)
 {
     //was part of Equipe function #3, gets HCACK
-<<<<<<< HEAD
 //printf("S2F42 fpst=%x iReg=%d m_ack=%d\n",fpstTempDevArg, iRegisterNumArg, fpstTempDevArg->m_uiInxHcack);
 
     if(fpstTempDevArg->m_uiInxHcack == 0x00FF)
@@ -618,16 +520,6 @@ int S2HostS2F42(fpstSecsInfo fpstTempDevArg, int iRegisterNumArg)
         RGSetRegister(iRegisterNumArg, 0x0200);
 //        RGSetRegister(iRegisterNumArg, 0x0000);
 printf("S2F42 ack=0200 fp=%x\n",fpstTempDevArg);
-=======
-//printf("S2F42 fpst=%x iReg=%d m_ack=%d\n",fpstTempDevArg, iRegisterNumArg, fpstTempDevArg->m_uiInxHcack);
-
-    if(fpstTempDevArg->m_uiInxHcack == 0x00FF)
-    {
-        // Illegal HACK, make it as can't perform now
-        RGSetRegister(iRegisterNumArg, 0x0200);
-//        RGSetRegister(iRegisterNumArg, 0x0000);
-printf("S2F42 ack=0200 fp=%x\n",fpstTempDevArg);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     else
         RGSetRegister(iRegisterNumArg, (unsigned long)fpstTempDevArg->m_uiInxHcack);
@@ -781,13 +673,8 @@ int S2HostS5F1(fpstSecsInfo fpstTempDevArg,int iRegisterNumArg)
 {
     //was part of Equipe function #3, returns ALID and ALCD
     unsigned long ulTempRegister;
-<<<<<<< HEAD
 
 //printf("S5F1 fpst=%x iReg=%d m_aid=%d\n",fpstTempDevArg, iRegisterNumArg, fpstTempDevArg->m_uiInxAlid);
-=======
-
-//printf("S5F1 fpst=%x iReg=%d m_aid=%d\n",fpstTempDevArg, iRegisterNumArg, fpstTempDevArg->m_uiInxAlid);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if((fpstTempDevArg->m_uiInxAlid & 0x00FF) == 0x00FF)
     {
@@ -816,17 +703,10 @@ int S2HostS5F1(fpstSecsInfo fpstTempDevArg,int iRegisterNumArg)
 int S2HostS6F13(fpstSecsInfo fpstTempDevArg, int iRegisterNumArg, int iParameterArg)
 {
     //was part of Equipe function #3, returns CEID
-<<<<<<< HEAD
 //printf("S6F13 fpst=%x iReg=%d m_cid=%d\n",fpstTempDevArg, iRegisterNumArg, fpstTempDevArg->m_uiInxCeid);
 
     if(iParameterArg == 99)
 	fpstTempDevArg->m_uiInxCeid = 0;
-=======
-//printf("S6F13 fpst=%x iReg=%d m_cid=%d\n",fpstTempDevArg, iRegisterNumArg, fpstTempDevArg->m_uiInxCeid);
-
-    if(iParameterArg == 99)
-	fpstTempDevArg->m_uiInxCeid = 0;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     else if(fpstTempDevArg->m_uiInxCeid == 0x00FF)
         // Illegal CEID, make it as POWER_UP
         RGSetRegister(iRegisterNumArg, 5);
@@ -842,11 +722,7 @@ int S2HostSxFx(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iPo
     unsigned char *fpucMsgBlock;
     //optimization
     unsigned char caSecsMsgData[245];
-<<<<<<< HEAD
     unsigned uMsgLenght;
-=======
-    unsigned uMsgLenght;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     int iMsgLen;
     fpstSecsHeader fpstSecsMsgHeader;
     char pcTempString[256];
@@ -879,15 +755,9 @@ int S2HostSxFx(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iPo
             }
             *ipSetPCInstrArg = TRUE;
             return SUCCESS;
-<<<<<<< HEAD
         case 202 :  //Generic read, was Equipe function #103
 //printf("S2HostSxFx 202 devID=%d\n",fpstTempDevArg->m_wDevID);
 printf("SxFx 202 fpCom=%x DevID=%x fpDev=%x devID=%d\n", fpstTempComArg,fpstTempComArg->m_wDevID, fpstTempDevArg,fpstTempDevArg->m_wDevID);
-=======
-        case 202 :  //Generic read, was Equipe function #103
-//printf("S2HostSxFx 202 devID=%d\n",fpstTempDevArg->m_wDevID);
-printf("SxFx 202 fpCom=%x DevID=%x fpDev=%x devID=%d\n", fpstTempComArg,fpstTempComArg->m_wDevID, fpstTempDevArg,fpstTempDevArg->m_wDevID);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             *ipSetPCInstrArg = FALSE;
             *ipPCWaitingArg = FALSE;
             if(!(fpstTempDevArg->m_wDevID))
@@ -895,17 +765,10 @@ printf("SxFx 202 fpCom=%x DevID=%x fpDev=%x devID=%d\n", fpstTempComArg,fpstTemp
 //            fpucMsgBlock = fpstTempComArg->m_ucMsgBlock;
             fpucMsgBlock = fpstTempDevArg->m_ucMsgBlock;
 //            uMsgLenght = (unsigned int)fpucMsgBlock[0] - sizeof(stSecsHeader);
-<<<<<<< HEAD
             uMsgLenght = (unsigned int)fpucMsgBlock[0] - 10;
             iMsgLen = (unsigned int)fpucMsgBlock[0] - 10;
 	    if (iMsgLen < 0)
 		iMsgLen = 128;
-=======
-            uMsgLenght = (unsigned int)fpucMsgBlock[0] - 10;
-            iMsgLen = (unsigned int)fpucMsgBlock[0] - 10;
-	    if (iMsgLen < 0)
-		iMsgLen = 128;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //		return FAILURE;
             fpstSecsMsgHeader = (fpstSecsHeader)(fpucMsgBlock + 1);
 //            fpucMsgBlock += sizeof(stSecsHeader) + 1;
@@ -918,17 +781,10 @@ printf("SxFx 202 fpCom=%x DevID=%x fpDev=%x devID=%d\n", fpstTempComArg,fpstTemp
             RGSetRegister(iRegisterNum3Arg, uMsgLenght);
 //printf("S2HostSxFx 202 S=%d F=%d Len=%d\n",fpstSecsMsgHeader->m_bStream,fpstSecsMsgHeader->m_bFunction,uMsgLenght);
             //Gets message string
-<<<<<<< HEAD
 //printf("SxFx 202 fpCom=%x DevID=%x uMsglen=%d\n", fpstTempComArg,fpstTempComArg->m_wDevID, uMsgLenght);
             memcpy(pcTempString, fpucMsgBlock, iMsgLen);
             pcTempString[uMsgLenght] = '\0';
 //printf("S2HostSxFx 202 tempStr=%x, msgBlk=%x\n", pcTempString, fpucMsgBlock);
-=======
-//printf("SxFx 202 fpCom=%x DevID=%x uMsglen=%d\n", fpstTempComArg,fpstTempComArg->m_wDevID, uMsgLenght);
-            memcpy(pcTempString, fpucMsgBlock, iMsgLen);
-            pcTempString[uMsgLenght] = '\0';
-//printf("S2HostSxFx 202 tempStr=%x, msgBlk=%x\n", pcTempString, fpucMsgBlock);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
             RGSetString(iRegisterNum4Arg, pcTempString, 1);
             return SUCCESS;
@@ -938,13 +794,8 @@ printf("SxFx 202 fpCom=%x DevID=%x fpDev=%x devID=%d\n", fpstTempComArg,fpstTemp
     iRetVal = S2PrepareSecsMsg(iPortNumArg, uDevIDArg, (unsigned char)iRegisterNum3Arg,
                 (unsigned char)iRegisterNum4Arg, 1, 1, caSecsMsgData, iRegisterNum1Arg);
     return(iRetVal);
-<<<<<<< HEAD
 }
 
-=======
-}
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int S2HostS6F4(fpstSecsInfo fpstTempComArg, fpstSecsInfo fpstTempDevArg, int iPortNumArg,
                 unsigned uDevIDArg, int iParameterArg, int *ipSetPCInstrArg, int *ipPCWaitingArg)
 {

@@ -1,7 +1,5 @@
 /***************************************************************\
  *
- * Program:     VerGen decryption program
- * File:        vergen.h
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3

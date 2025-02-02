@@ -1,9 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
- * Program:     Register R, C, and S
- * File:        RCS.c
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -29,7 +25,6 @@
  *
  * Program:     Register R, C, and S
  * File:        screg.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   RGInit
  *              RGGetRegister
  *              RGSetRegister
@@ -481,7 +476,6 @@ int RGSetString(int iIndexArg, char *pcValueArg, int iSecsFlagArg)
         {
             /* if the string length is less than 256 then just
              * set the S-register at iIndexArg.*/
-<<<<<<< HEAD
             if(iSecsFlagArg)
 	    {
                 memcpy(RGpacString[iIndexArg], pcValueArg, MAXSTRINGLENGTH);
@@ -490,16 +484,6 @@ int RGSetString(int iIndexArg, char *pcValueArg, int iSecsFlagArg)
 //for(i=0; i<20; ++i)
 //printf("RGSetString: i=%d RG=%2x pcVal=%2x\n",i,RGpacString[iIndexArg][i],pcValueArg[i]);
 
-=======
-            if(iSecsFlagArg)
-	    {
-                memcpy(RGpacString[iIndexArg], pcValueArg, MAXSTRINGLENGTH);
-
-//int i;
-//for(i=0; i<20; ++i)
-//printf("RGSetString: i=%d RG=%2x pcVal=%2x\n",i,RGpacString[iIndexArg][i],pcValueArg[i]);
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    }
             else
             {
@@ -557,11 +541,7 @@ int RGIsSpecialRegisterIndexValid(int iIndexArg)
  *
 \*****************************************************************/
 int RGIsRegisterIndexValid(int iIndexArg)
-<<<<<<< HEAD
 {
-=======
-{
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (iIndexArg >= 0 && iIndexArg <= MAXREG)
     {
         return SUCCESS;

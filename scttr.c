@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-/****************************************************************
- *
- * Program:     Controller firmware
- * File:        ttscr.c
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -31,7 +25,6 @@
  *
  * Program:     Controller firmware
  * File:        scttr.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   TTSetCursorPos
  *              TTSetCursorType
  *              TTClearScreen
@@ -55,17 +48,10 @@
  *
  ****************************************************************/
 
-<<<<<<< HEAD
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-=======
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <sys/types.h>
 #include "sck.h"
 #include "sctim.h"
@@ -458,20 +444,12 @@ int TTSetKNPMode(int iKNPOnArg)
 
     /* Send the ESCape sequence (or string) to set the KNP mode appropriately */
     if (SERPutsTxBuff(SERGetTTPort(), KNP_STR[iKNPOnArg]) == FAILURE)
-<<<<<<< HEAD
     {   printf("TTSetKNPMode failed SERPutsTxBuff\n");
-=======
-    {   printf("TTSetKNPMode failed SERPutsTxBuff\n");
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         return FAILURE;
     }
     /* Wait for the command to be completely sent */
     if (SERFlushTxBuff(SERGetTTPort()) == FAILURE)
-<<<<<<< HEAD
     {   printf("TTSetKNPMode failed SERFlushTxBuff\n");
-=======
-    {   printf("TTSetKNPMode failed SERFlushTxBuff\n");
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         return FAILURE;
     }
 
@@ -537,15 +515,9 @@ int TTSetKeyRepeat(int iKeyRepeatArg)
 int TTShowLogo()
 {
     /* Turn off CTS/RTS temporarily */
-<<<<<<< HEAD
     if (SERSetCommVals(SERGetTTPort(), FLOW_CTRL, FALSE) == FAILURE)
     {   printf("TTShowLogo failed set flow ctrl\n");
         return FAILURE;
-=======
-    if (SERSetCommVals(SERGetTTPort(), FLOW_CTRL, FALSE) == FAILURE)
-    {   printf("TTShowLogo failed set flow ctrl\n");
-        return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 
     /* Reset comm parameters in case they have been changed */
@@ -553,27 +525,17 @@ int TTShowLogo()
 //        return FAILURE;
     if (TTInitTP() == FAILURE)
     {   printf("TTShowLogo failed TTInitTP\n");
-<<<<<<< HEAD
         return FAILURE;
     }
 
     if (TTSetEchoMode(FALSE) == FAILURE)
     {   printf("TTShowLogo failed TTSetEchoMode\n");
         return FAILURE;
-=======
-        return FAILURE;
-    }
-
-    if (TTSetEchoMode(FALSE) == FAILURE)
-    {   printf("TTShowLogo failed TTSetEchoMode\n");
-        return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 
     /* Reset TP modes in case they have been changed */
     if (TTSetKNPMode(FALSE) == FAILURE)
     {   printf("TTShowLogo failed TTSetKNPMode\n");
-<<<<<<< HEAD
         return FAILURE;
     }
     if (TTSetCursorType(NO_BLINK) == FAILURE)
@@ -583,24 +545,12 @@ int TTShowLogo()
     if (TTSetCursorType(NO_CURSOR) == FAILURE)
     {   printf("TTShowLogo failed TTSetCursorType no cursor\n");
         return FAILURE;
-=======
-        return FAILURE;
-    }
-    if (TTSetCursorType(NO_BLINK) == FAILURE)
-    {   printf("TTShowLogo failed TTSetCursorType\n");
-        return FAILURE;
-    }
-    if (TTSetCursorType(NO_CURSOR) == FAILURE)
-    {   printf("TTShowLogo failed TTSetCursorType no cursor\n");
-        return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 
     /* Clear the TP LCD screen and print out the Equipe Logo.
      * Waits for transmit to finish are done within each individual function. */
     if (TTClearScreen() == FAILURE)
     {   printf("TTShowLogo failed TTClearScreen\n");
-<<<<<<< HEAD
         return FAILURE;
     }
     if (TTPrintsAt(1, 14, "tm") == FAILURE)
@@ -614,31 +564,12 @@ int TTShowLogo()
     if (TTPrintsAt(3, 5, "AUTOMATION") == FAILURE)
     {   printf("TTShowLogo failed TTPrintsAt\n");
         return FAILURE;
-=======
-        return FAILURE;
-    }
-    if (TTPrintsAt(1, 14, "tm") == FAILURE)
-    {   printf("TTShowLogo failed TTPrintsAt\n");
-        return FAILURE;
-    }
-    if (TTPrintsAt(2, 8, "XyZ") == FAILURE)
-    {   printf("TTShowLogo failed TTPrintsAt\n");
-        return FAILURE;
-    }
-    if (TTPrintsAt(3, 5, "AUTOMATION") == FAILURE)
-    {   printf("TTShowLogo failed TTPrintsAt\n");
-        return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 
     /* Turn CTS/RTS back on */
     if (SERSetCommVals(SERGetTTPort(), FLOW_CTRL, TRUE) == FAILURE)
     {   printf("TTShowLogo failed SERSetCommVals\n");
-<<<<<<< HEAD
         return FAILURE;
-=======
-        return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 
     return SUCCESS;

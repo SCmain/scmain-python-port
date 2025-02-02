@@ -1,52 +1,3 @@
-<<<<<<< HEAD
-/****************************************************************
- *
- * Program:     Controller firmware
- * File:        roga.c
- * Functions:   ROHomeAxis
- *              ROMoveToAbsOrRel
- *              ROMoveToAbs
- *              ROMoveToRel
- *              ROMoveRetract
- *              ROMoveDirect
- *              ROMoveAxisDirect
- *              ROMoveStroke
- *              RORetractR
- *              ROSendMoveToHSorIP
- *              ROMoveAllOrAxisDirect
- *
- * Description: Handles all normal robot motion
- *
- * Modification history:
- * Rev      ECO#    Date    Author      Brief Description
- *
- ****************************************************************/
-#include <math.h>
-#include <sys/io.h>
-
-#include "sck.h"
-#include "ro.h"
-#include "roga.h"
-#include "roloc.h"
-#include "rofio.h"
-#include "romain.h"
-#include "gaintr.h"
-#include "gag.h"
-#include "fiog.h"
-#include "fio.h"
-#include "mapstn.h"
-#include "sctch.h"
-#include "ser.h"
-#include "dmclnx.h"
-#include "sctim.h"
-#include "scio.h"
-
-#define PIDEF 3.14159265359
-#define HUNDREDDEG_TO_RAD ( PIDEF / 18000.0 )   // .01 degrees to 1 radian conversion
-#define DEG_TO_RAD   ( PIDEF / 180.0 )      // 1 degree to 1 radian
-#define RAD_TO_HUNDREDDEG ( 18000.0 / PIDEF )   // 1 radian to .01 degrees conversion
-#define RAD_TO_DEG   ( 180.0 / PIDEF )      // 1 radian to 1 degree
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -117,12 +68,10 @@
 #define DEG_TO_RAD   ( PIDEF / 180.0 )      // 1 degree to 1 radian
 #define RAD_TO_HUNDREDDEG ( 18000.0 / PIDEF )   // 1 radian to .01 degrees conversion
 #define RAD_TO_DEG   ( 180.0 / PIDEF )      // 1 radian to 1 degree
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 //long glEELength = 9250;
 long glEELength = 7500;
 extern stVectorParameter sVectorParameter;
-<<<<<<< HEAD
 
 /********** VARIABLES USED LOCALLY (within this source file) **********/
 
@@ -150,35 +99,6 @@ extern int giEncoderAlarm;
  *      they would disappear after the function was exited and the action
  *      buffer would be left high and dry. */
 
-=======
-
-/********** VARIABLES USED LOCALLY (within this source file) **********/
-
-/* Variables used exclusively in ROHomeAxis */
-long laHomeOffset[8];
-long laCustomizedHome[8];
-long laHomeOffsetW[8];
-long laCustomizedHomeW[8];
-long laCustomizedHomeUnscale[8];
-long laCustomizedHomeWUnscale[8];
-
-unsigned long ulCurrentAxis, ulTempAxis;
-char sBuf[80];
-char cpNull[8];
-
-extern HANDLEDMC ghDMC;
-extern int giVersionPA;
-
-extern unsigned long ulHoming;
-
-extern int giEncoderAlarm;
-
-/* NOTE: These variable are file globals, and not internal to functions,
- *      because they are used by the action buffer. If they were used locally
- *      they would disappear after the function was exited and the action
- *      buffer would be left high and dry. */
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 extern int giIPW[8];
 extern int giIPWenc[8];
 extern int giIPWFlag[8];
@@ -242,7 +162,6 @@ extern int giXYZRobot;
 
 int giFrictionTestFail;
 
-<<<<<<< HEAD
 /****************************************************************
  *
  * Function Name:   ROHomeAxis
@@ -305,87 +224,18 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
     long laScanOffset[8];   /* For a dual arm, the scanner offset assists in determining
                              * the customized home position. */
     unsigned uAMWait, uAMNext, uINWait, uINNext, uTMWait;
-=======
-/****************************************************************
- *
- * Function Name:   ROHomeAxis
- *
- * Description:     Home the specified axis. If no axis is
- *      specified (axis = A) then home all robot axes. Otherwise,
- *      home the specific axis. It starts by initialzing variables,
- *      collecting information about the axis to home (speeds,
- *      accelerations, etc.), and setting up action buffer variables.
- *      Then it schedules a DP, PA, and BG in the action buffer.
- *      Finally it kick starts the homing by sending an HM and
- *      BG.
- *
- *      For A (all robot) axes, it schedules a DP, PA, and BG
- *      for the R axis first, then schedules the HM and BG for
- *      T and Z axes, and then schedules the DP, PA, and BG for
- *      the T and Z axes. It finally kick starts the homing with
- *      an HM and BG for the R axis.
- *
- *      For a (all pre-aligner) axes, it schedules a DP, PA, and
- *      BG for the r and z axes and then just a DP for the t axis.
- *      It finally kick starts the homing with an HM and BG for
- *      the r and z axes. The spindle (t) has no home switch.
- *
- *      The track or flipper schedules a DP, PA, and BG and
- *      then gets kicked with an HM and BG. W and w axes
- *      have to be homed separately so they don't need much scheduling.
- *
- *      VAC514 robot requires special homing sequence:
- *
- *      Homing on VAC514 robot for R or T axis is same:
- *      1. FEY with the user defined home speed
- *      2. FEY with the slow hardcoded speed
- *      3. FEX at the user defined speed along with the HMZ at user defined speed
- *      4. FEX at the slow hardcoded speed
- *      5. Disengage any gearing
- *      5. JG -hardcoded speed, hardcoded speed to set directions for the Find Index Pulse motion
- *      6. FIXY
- *      7. Wait for all axes including Z, and do DP, home_offset, home_offset, home_offset
- *      8. Move to Customized home for all axes
- *
- * Parameter:
- *      ulEquipeAxisArg     (in) The axes to home.
- *      iStageFlagArg       indicates if we are homing the Stage
- *                          (In Stage homing process we replace HM Galil command with FE)
- *
- * Return:          SUCCESS or FAILURE.
- *
- ***************************************************************/
-int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
-{
-    int iReturn, iAxis, iCardNum, iFileType;
-    unsigned uGalilAxes;
-    long laHomeSpeed[8];    /* The home speeds to set for the axes. */
-    long laHomeAccel[8];    /* The home accelerations to set for the axes. */
-    long laHomeDecel[8];    /* The home decelerations to set for the axes. */
-    long laSCurves[8];      /* The array to turn of S-curve profiling. Since we're
-                             * moving without knowing when we are going to hit a
-                             * home switch, S-curve profiles don't make sense. */
-    long laScanOffset[8];   /* For a dual arm, the scanner offset assists in determining
-                             * the customized home position. */
-    unsigned uAMWait, uAMNext, uINWait, uINNext, uTMWait;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     unsigned long ulAxis, ulHomeParsSetTempAxis, ulVAC514TempAxis;
     long rc;
     USHORT usStatus;
     char HMcommand[MAXGASTR];
     char ReturnBuffer[MAXGASTR];
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // if Encoder Drift Alarm is ON, don't do anything
     if(giEncoderAlarm)
     {
 	return FAILURE;
     }
-<<<<<<< HEAD
 
     /* We have to set a permanent variable to the axis definition because
      * it is referenced in the action buffer. The passed in parameter will
@@ -481,103 +331,6 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
     uTMWait = uINWait = uINNext = 0;
 
 //    usStatus = 1;  // clear interrupt status
-=======
-
-    /* We have to set a permanent variable to the axis definition because
-     * it is referenced in the action buffer. The passed in parameter will
-     * disappear as soon as we exit this function. */
-    ulCurrentAxis = ulEquipeAxisArg;
-
-    /* Variable initialization. */
-    for (iAxis=0; iAxis<8; iAxis++)
-    {
-        laHomeSpeed[iAxis] = 0;
-        laHomeAccel[iAxis] = 0;
-        laHomeDecel[iAxis] = 0;
-        laSCurves[iAxis] = 0;
-        laScanOffset[iAxis] = 0;
-    }
-
-    /* Validation to check if homing is possible with the given axis parameters. */
-    if (ROValidAxis(ulCurrentAxis, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
-        return FAILURE;
-
-    /* Must have servo on and motion complete. */
-    if (ulCurrentAxis & (ulServoFlag | ~ulAMFlag) )
-        return FAILURE;
-
-    // On VAC514, T and R are always geared, thus check for motion flag on both
-    if(iDefineFlag & DFVAC514)
-    {
-        if(ulCurrentAxis & RO_AXIS_R)
-        {
-            if (RO_AXIS_T & (ulServoFlag | ~ulAMFlag))
-                return FAILURE;
-        }
-
-        if(ulCurrentAxis & RO_AXIS_T)
-        {
-            if (RO_AXIS_R & (ulServoFlag | ~ulAMFlag))
-                return FAILURE;
-        }
-    }
-
-    // On VAC514 homing T or R axis requires to home both axes thus set the parameters for both axes
-    if((iDefineFlag & DFVAC514) && ((ulCurrentAxis == RO_AXIS_T) || (ulCurrentAxis == RO_AXIS_R)))
-        ulHomeParsSetTempAxis = RO_AXIS_T | RO_AXIS_R;
-    else
-        ulHomeParsSetTempAxis = ulCurrentAxis;
-
-    /* Get and set speeds and accelerations. These are very slow during homing.
-     * Also turn off S-curve profiling.
-     * we check if we are homing the Stage, it's homing doesn't require special homing speeds,
-     * we just need to turn off the S-Curve. */
-    if(!iStageFlagArg)
-    {
-        if (ROGetParameter(TRUE, ulHomeParsSetTempAxis, laHomeSpeed, HOME_SPEED) == FAILURE)
-            return FAILURE;
-        if (ROGetParameter(TRUE, ulHomeParsSetTempAxis, laHomeAccel, HOME_ACCEL) == FAILURE)
-            return FAILURE;
-
-        for (iAxis=0; iAxis<8; iAxis++) laHomeDecel[iAxis] = laHomeAccel[iAxis];
-
-        if (ROSetParameter(FALSE, ulHomeParsSetTempAxis, laHomeSpeed, OPERATIONAL_SPEED) == FAILURE)
-            return FAILURE;
-        if (ROSetParameter(FALSE, ulHomeParsSetTempAxis, laHomeAccel, OPERATIONAL_ACCEL)==FAILURE)
-            return FAILURE;
-        if (ROSetParameter(FALSE, ulHomeParsSetTempAxis, laHomeDecel, OPERATIONAL_DECEL)==FAILURE)
-            return FAILURE;
-    }
-//    if (ROEnableSCurveProfile(ulHomeParsSetTempAxis, laSCurves)==FAILURE)
-//        return FAILURE;
-
-    /* Get the home offset and customized home position. The home offset is the distance
-     * from the home switch that the actual home position is. It is recorded in the
-     * datafile in encoder counts. */
-    if ((ulCurrentAxis == ROGetSpecialAxis(RO_TRACK)) || (ulCurrentAxis == ROGetSpecialAxis(RO_DUAL_ARM)))
-   {
-        if (ROGetParameter(TRUE, ulHomeParsSetTempAxis, laHomeOffsetW, HOME_OFFSET) == FAILURE)
-            return FAILURE;
-        if (ROGetParameter(TRUE, ulHomeParsSetTempAxis, laCustomizedHomeW, CUSTOMIZED_HOME) == FAILURE)
-            return FAILURE;
-    }
-    else
-    {
-        if (ROGetParameter(TRUE, ulHomeParsSetTempAxis, laHomeOffset, HOME_OFFSET) == FAILURE)
-            return FAILURE;
-        if (ROGetParameter(TRUE, ulHomeParsSetTempAxis, laCustomizedHome, CUSTOMIZED_HOME) == FAILURE)
-            return FAILURE;
-        if (ulCurrentAxis & RO_AXIS_t)	// prealigner t
-            laHomeOffset[4] = laCustomizedHome[4] = 0;
-		if (ulCurrentAxis & RO_AXIS_T && giVersionPA) // prealigner t
-            laHomeOffset[0] = laCustomizedHome[0] = 0;
-
-    }
-
-    uTMWait = uINWait = uINNext = 0;
-
-//    usStatus = 1;  // clear interrupt status
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    rc = DMCGetInterruptStatus(ghDMC, &usStatus);// clear interrupt status
 
 //    sprintf(HMcommand, "EI256");
@@ -585,13 +338,8 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
 
     ulHoming |= ulCurrentAxis;
 
-<<<<<<< HEAD
     /* If the user asks for multiple axes, do only 1 first, specifically R. */
     if (ulCurrentAxis == ulAxisALLRbt || ulCurrentAxis == ulAxisallPre)
-=======
-    /* If the user asks for multiple axes, do only 1 first, specifically R. */
-    if (ulCurrentAxis == ulAxisALLRbt || ulCurrentAxis == ulAxisallPre)
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     {
 	if(ulCurrentAxis == ulAxisALLRbt)
 	{
@@ -603,29 +351,17 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
 		ulAMFlag &= ~RO_AXIS_Z;
 		sprintf(HMcommand, "VRTO = %d", laHomeOffset[0]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
 		ROUnscalePos(RO_AXIS_T, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-		ROUnscalePos(RO_AXIS_T, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		sprintf(HMcommand, "VRTC = %d", laCustomizedHomeUnscale[0]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		sprintf(HMcommand, "VRRO = %d", laHomeOffset[1]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
 		ROUnscalePos(RO_AXIS_R, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-		ROUnscalePos(RO_AXIS_R, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		sprintf(HMcommand, "VRRC = %d", laCustomizedHomeUnscale[1]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		sprintf(HMcommand, "VRZO = %d", laHomeOffset[2]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
 		ROUnscalePos(RO_AXIS_Z, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-		ROUnscalePos(RO_AXIS_Z, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		sprintf(HMcommand, "VRZC = %d", laCustomizedHomeUnscale[2]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		sprintf(HMcommand, "XQ#HOMA,0");
@@ -644,31 +380,19 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
 	    		ulAMFlag &= ~RO_AXIS_z;
 			sprintf(HMcommand, "VRRO = %d", laHomeOffset[1]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
 			ROUnscalePos(RO_AXIS_r, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-			ROUnscalePos(RO_AXIS_r, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			sprintf(HMcommand, "VRRC = %d", laCustomizedHomeUnscale[1]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 			sprintf(HMcommand, "VRZO = %d", laHomeOffset[2]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
 			ROUnscalePos(RO_AXIS_z, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-			ROUnscalePos(RO_AXIS_z, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			sprintf(HMcommand, "VRZC = %d", laCustomizedHomeUnscale[2]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 			sprintf(HMcommand, "XQ#HOMR,1");
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 			sprintf(HMcommand, "XQ#HOMZ,2");
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
 		}
-=======
-		}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		else	// Home ALL axes
 		{
 			// DP 0 fo E-axis (t-axis)
@@ -683,27 +407,18 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
 	    		ulAMFlag &= ~RO_AXIS_z;
 			sprintf(HMcommand, "VPRO = %d", laHomeOffset[5]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
 			ROUnscalePos(RO_AXIS_r, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-			ROUnscalePos(RO_AXIS_r, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			sprintf(HMcommand, "VPRC = %d", laCustomizedHomeUnscale[5]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 			sprintf(HMcommand, "VPZO = %d", laHomeOffset[6]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
 			ROUnscalePos(RO_AXIS_z, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-			ROUnscalePos(RO_AXIS_z, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			sprintf(HMcommand, "VPZC = %d", laCustomizedHomeUnscale[6]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 			sprintf(HMcommand, "XQ#HOMa,3");
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		}
 	}
-<<<<<<< HEAD
     }
     /* If the user asks for a single axis, set it up. */
     else
@@ -713,17 +428,6 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
             case RO_AXIS_t :    /* Prealigner spindle is relative and doesn't need homing. */
 		    //ALResetChuck();
 		if(giVersionPA)
-=======
-    }
-    /* If the user asks for a single axis, set it up. */
-    else
-    {
-        switch (ulCurrentAxis)
-        {
-            case RO_AXIS_t :    /* Prealigner spindle is relative and doesn't need homing. */
-		    //ALResetChuck();
-		if(giVersionPA)
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			sprintf(HMcommand, "DP0");
 		else
 			sprintf(HMcommand, "DP,,,,0");
@@ -731,53 +435,32 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
         	ulHomed |= RO_AXIS_t;
 		sprintf(HMcommand,"VHMD = %d",(int) ulHomed);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
                 return SUCCESS;
-=======
-                return SUCCESS;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
             case RO_AXIS_r :
 		if (giVersionPA)
 		{
-<<<<<<< HEAD
 	                ulHomed &= ~RO_AXIS_r;
 	    		ulAMFlag &= ~RO_AXIS_r;
 			sprintf(HMcommand, "VRRO = %d", laHomeOffset[1]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 			ROUnscalePos(RO_AXIS_r, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-	                ulHomed &= ~RO_AXIS_r;
-	    		ulAMFlag &= ~RO_AXIS_r;
-			sprintf(HMcommand, "VRRO = %d", laHomeOffset[1]);
-			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-			ROUnscalePos(RO_AXIS_r, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			sprintf(HMcommand, "VRRC = %d", laCustomizedHomeUnscale[1]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 			sprintf(HMcommand, "XQ#HOMR,1");
 		}
 		else
 		{
-<<<<<<< HEAD
 	                ulHomed &= ~RO_AXIS_r;
 	    		ulAMFlag &= ~RO_AXIS_r;
 			sprintf(HMcommand, "VPRO = %d", laHomeOffset[5]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 			ROUnscalePos(RO_AXIS_r, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-	                ulHomed &= ~RO_AXIS_r;
-	    		ulAMFlag &= ~RO_AXIS_r;
-			sprintf(HMcommand, "VPRO = %d", laHomeOffset[5]);
-			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-			ROUnscalePos(RO_AXIS_r, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			sprintf(HMcommand, "VPRC = %d", laCustomizedHomeUnscale[5]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 			sprintf(HMcommand, "XQ#HOMr,1"); 
 		}
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
                 return rc;
 		break;
 		
@@ -790,45 +473,22 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
 			sprintf(HMcommand, "VRZO = %d", laHomeOffset[2]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 			ROUnscalePos(RO_AXIS_z, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-                return rc;
-		break;
-		
-		
-            case RO_AXIS_z :
-		if (giVersionPA)
-		{
-	                ulHomed &= ~RO_AXIS_z;
-	    		ulAMFlag &= ~RO_AXIS_z;
-			sprintf(HMcommand, "VRZO = %d", laHomeOffset[2]);
-			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-			ROUnscalePos(RO_AXIS_z, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			sprintf(HMcommand, "VRZC = %d", laCustomizedHomeUnscale[2]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 			sprintf(HMcommand, "XQ#HOMZ,2");
 		}
 		else
 		{
-<<<<<<< HEAD
 	                ulHomed &= ~RO_AXIS_z;
 	    		ulAMFlag &= ~RO_AXIS_z;
 			sprintf(HMcommand, "VPZO = %d", laHomeOffset[6]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 			ROUnscalePos(RO_AXIS_z, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-	                ulHomed &= ~RO_AXIS_z;
-	    		ulAMFlag &= ~RO_AXIS_z;
-			sprintf(HMcommand, "VPZO = %d", laHomeOffset[6]);
-			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-			ROUnscalePos(RO_AXIS_z, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			sprintf(HMcommand, "VPZC = %d", laCustomizedHomeUnscale[6]);
 			rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 			sprintf(HMcommand, "XQ#HOMz,2"); 
 		}
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
                 return rc;
                 break;
 
@@ -838,22 +498,10 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
 		sprintf(HMcommand, "VPWO = %d", laHomeOffset[3]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		ROUnscalePos(RO_AXIS_w, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-                return rc;
-                break;
-
-            case RO_AXIS_w :    /* Almost always track. */
-                ulHomed &= ~RO_AXIS_w;
-    		ulAMFlag &= ~RO_AXIS_w;
-		sprintf(HMcommand, "VPWO = %d", laHomeOffset[3]);
-		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-		ROUnscalePos(RO_AXIS_w, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		sprintf(HMcommand, "VPWC = %d", laCustomizedHomeUnscale[3]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		sprintf(HMcommand, "XQ#HOMw,7");	// track in 8-axis system
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
                 return rc;
 		break;
 
@@ -863,22 +511,10 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
 		sprintf(HMcommand, "VRTO = %d", laHomeOffset[0]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		ROUnscalePos(RO_AXIS_T, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-                return rc;
-		break;
-
-            case RO_AXIS_T :
-                ulHomed &= ~RO_AXIS_T;
-    		ulAMFlag &= ~RO_AXIS_T;
-		sprintf(HMcommand, "VRTO = %d", laHomeOffset[0]);
-		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-		ROUnscalePos(RO_AXIS_T, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		sprintf(HMcommand, "VRTC = %d", laCustomizedHomeUnscale[0]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		sprintf(HMcommand, "XQ#HOMT,4");	// robot T
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
                 return rc;
 		break;
 
@@ -888,22 +524,10 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
 		sprintf(HMcommand, "VRRO = %d", laHomeOffset[1]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		ROUnscalePos(RO_AXIS_R, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-                return rc;
-		break;
-
-            case RO_AXIS_R :
-                ulHomed &= ~RO_AXIS_R;
-    		ulAMFlag &= ~RO_AXIS_R;
-		sprintf(HMcommand, "VRRO = %d", laHomeOffset[1]);
-		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-		ROUnscalePos(RO_AXIS_R, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		sprintf(HMcommand, "VRRC = %d", laCustomizedHomeUnscale[1]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		sprintf(HMcommand, "XQ#HOMR,5");	// robot R or prealinger r if PA
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
                 return rc;
 				break;
 
@@ -913,22 +537,10 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
 		sprintf(HMcommand, "VRZO = %d", laHomeOffset[2]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		ROUnscalePos(RO_AXIS_Z, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-                return rc;
-				break;
-
-            case RO_AXIS_Z :
-                ulHomed &= ~RO_AXIS_Z;
-    		ulAMFlag &= ~RO_AXIS_Z;
-		sprintf(HMcommand, "VRZO = %d", laHomeOffset[2]);
-		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-		ROUnscalePos(RO_AXIS_Z, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		sprintf(HMcommand, "VRZC = %d", laCustomizedHomeUnscale[2]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		sprintf(HMcommand, "XQ#HOMZ,6");	// robot Z or prealinger z if PA
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
                 return rc;
 		break;
 
@@ -938,22 +550,10 @@ int ROHomeAxis(unsigned long ulEquipeAxisArg, int iStageFlagArg)
 		sprintf(HMcommand, "VRWO = %d", laHomeOffset[3]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		ROUnscalePos(RO_AXIS_W, laCustomizedHome, laCustomizedHomeUnscale);
-=======
-                return rc;
-		break;
-
-            case RO_AXIS_W :
-                ulHomed &= ~RO_AXIS_W;
-    		ulAMFlag &= ~RO_AXIS_W;
-		sprintf(HMcommand, "VRWO = %d", laHomeOffset[3]);
-		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-		ROUnscalePos(RO_AXIS_W, laCustomizedHome, laCustomizedHomeUnscale);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		sprintf(HMcommand, "VRWC = %d", laCustomizedHomeUnscale[3]);
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
 		sprintf(HMcommand, "XQ#HOMW,7");	// robot W
 		rc = GASendDMCCommand(ghDMC, HMcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
                 return rc;
 				break;
             default:            /* Unreachable code. Valid axis names are checked first thing. */
@@ -1013,74 +613,12 @@ int ROMoveToAbsOrRel(unsigned long ulEquipeAxisArg, int iRelativeFlagArg, long *
     int iCardNum, iFileType;
     unsigned uGalilAxes;
 
-=======
-                return rc;
-				break;
-            default:            /* Unreachable code. Valid axis names are checked first thing. */
-                return FAILURE;
-        }
-    }
-
-
-    /* Make sure that Galil accepted the commands successfully. */
-    iReturn = GAGetGalilErrorFlag();
-    if (iReturn)
-        goto error_exit;
-
-
-    return SUCCESS;
-
-error_exit:
-    return FAILURE;
-}
-
-
-/****************************************************************
- *
- * Function:    ROMoveToAbsOrRel
- *
- * Abstract:    Performs all types of moves, absolute or relative.
- *      It start by checking that the axes to be moved are valid
- *      in the system. Then it checks if those axes are ready to move,
- *      i.e. servoed on, homed, not in motion, and not in an error state.
- *      Then it grabs the starting position. This is used to calculate
- *      a relative move as well being used by the WPOA and WPOR host
- *      commands. The move is calculated and checked against the software
- *      limits. Then the position is converted to encoder counts and
- *      sent to the motion control card via a PA (position absolute)
- *      and BG (begin motion) command. Finally the AMFlag is changed
- *      to indicate that the axis is in motion.
- *
- * Parameters:
- *      ulEquipeAxisArg     (in) The axes to read
- *      iRelativeFlagArg    (in) Whether it is an absolute or relative
- *                              move (TRUE/FALSE)
- *      lPositionArg        (in) The position to move to
- *
- * Returns:     SUCCESS or FAILURE
- *
- ***************************************************************/
-int ROMoveToAbsOrRel(unsigned long ulEquipeAxisArg, int iRelativeFlagArg, long *lPositionArg)
-{
-    int i, iAxis;                  /* Temporary variable to loop through all axes. */
-    int iMechAxis;              /* The bit pattern of the axis being checked. */
-    long laPosSoftwareLimit[8]; /* Local copy of the positive software limit to check
-                                 * against requested movement position. */
-    long laNegSoftwareLimit[8]; /* Local copy of the negative software limit to check
-                                 * against requested movement position. */
-    long lStartPos[8];          /* Local variable of current position */
-    long laFinalPosition[8]={0,0,0,0,0,0,0,0};  /* The final position to move to. */
-    int iCardNum, iFileType;
-    unsigned uGalilAxes;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     // if Encoder Drift Alarm is ON, don't do anything
     if(giEncoderAlarm)
     {
 	return FAILURE;
     }
 
-<<<<<<< HEAD
     /* Check to see if the axis is ready to move, i.e. servoed on, homed,
      * not currently in motion, and not currently in an error state. */
     if (ROAxisReadyToMove(ulEquipeAxisArg, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
@@ -1131,64 +669,11 @@ int ROMoveToAbsOrRel(unsigned long ulEquipeAxisArg, int iRelativeFlagArg, long *
 	    if (giIPWFlag[iAxis])
 	    {
 		if (lPositionArg[iAxis] > lStartPos[iAxis]) // positive
-=======
-    /* Check to see if the axis is ready to move, i.e. servoed on, homed,
-     * not currently in motion, and not currently in an error state. */
-    if (ROAxisReadyToMove(ulEquipeAxisArg, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
-        return FAILURE;
-
-    /* Get the start position to calculate a relative move and also for use
-     * in the WPOA and WPOR host commands. */
-
-    /* Check for VAC514, cannot move all axes (T&R are checked in ROAxisReadyToMove()) */
-    if(iDefineFlag & DFVAC514)
-    {
-        if(ulEquipeAxisArg == RO_AXIS_ALL)
-            goto error_exit;
-    }
-
-    lStartPos[0] = lStartPos[1] = lStartPos[2] = lStartPos[3] = 0;
-    lStartPos[4] = lStartPos[5] = lStartPos[6] = lStartPos[7] = 0;
-    if (ROReadCurrentPosition(ulEquipeAxisArg, lStartPos) == FAILURE)
-        goto error_exit;
-
-    /* Get the software limits to check that the move doesn't exceed boundary limits. */
-    if(ROGetParameter(TRUE, ulEquipeAxisArg, laPosSoftwareLimit, SOFT_POS_LIMIT) == FAILURE)
-        goto error_exit;
-    if(ROGetParameter(TRUE, ulEquipeAxisArg, laNegSoftwareLimit, SOFT_NEG_LIMIT) == FAILURE)
-        goto error_exit;
-
-    /* Calculate a relative move and check the position against the software limits. */
-    for (iAxis=0; iAxis<8; iAxis++)
-    {
-        /* Get the bit pattern for each axis. */
-        iMechAxis = 1 << iAxis;
-        /* If the axis is requested to be moved... */
-        if (uGalilAxes & iMechAxis)
-        {
-            /* ...calculate the relative move position (absolute moves don't need to be calculated)... */
-            if (iRelativeFlagArg)
-            {
-                lPositionArg[iAxis] += lStartPos[iAxis];
-            }
-
-            /* ...and check the position against the software limits. */
-            if ((lPositionArg[iAxis] < laNegSoftwareLimit[iAxis]) ||
-                (lPositionArg[iAxis] > laPosSoftwareLimit[iAxis]))
-            {
-                goto error_exit;
-            }
- 
-	    if (giIPWFlag[iAxis])
-	    {
-		if (lPositionArg[iAxis] > lStartPos[iAxis]) // positive
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		    giIPWDirection[iAxis] = 1;
 		else					    // negative
 		    giIPWDirection[iAxis] = -1;
 	    }
 
-<<<<<<< HEAD
         }
         /* If the axis is NOT requested to be moved, make sure it stays where it is. */
         else
@@ -1200,19 +685,6 @@ int ROMoveToAbsOrRel(unsigned long ulEquipeAxisArg, int iRelativeFlagArg, long *
     /* Scale the position from normal units to encoder counts. */
     if (ROUnscalePos(ulEquipeAxisArg, lPositionArg, laFinalPosition) == FAILURE)
         goto error_exit;
-=======
-        }
-        /* If the axis is NOT requested to be moved, make sure it stays where it is. */
-        else
-        {
-            lPositionArg[iAxis] = lStartPos[iAxis];
-        }
-    }
-
-    /* Scale the position from normal units to encoder counts. */
-    if (ROUnscalePos(ulEquipeAxisArg, lPositionArg, laFinalPosition) == FAILURE)
-        goto error_exit;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 	for (i=0; i<4; i++)
 		if (giIPWFlag[i] && (ulEquipeAxisArg & (1<<i)))
@@ -1224,7 +696,6 @@ int ROMoveToAbsOrRel(unsigned long ulEquipeAxisArg, int iRelativeFlagArg, long *
 //printf("IPWDestinEU=%d,%d,%d\n",giIPWDestinationEU[0],giIPWDestinationEU[1],giIPWDestinationEU[2]);
 //printf("IPWDestin  =%d,%d,%d\n",giIPWDestination[0],giIPWDestination[1],giIPWDestination[2]);
 
-<<<<<<< HEAD
 
 
 
@@ -1359,158 +830,17 @@ int ROMoveRetract(int iStnArg, int iOffDirArg, int iRetractArg, int iExtendArg, 
     long    lPositionUncale[8];
     unsigned long ulRAxis, ulTZAxis;
     int iCardNum, iFileType;
-=======
-
-
-
-    /* Send the PA (position absolute) and BG (begin motion) commands to the Galil card. */
-    if (GASetValsLong(iCardNum, POSITION_ABS_COMMAND, uGalilAxes, laFinalPosition) == FAILURE)
-        goto error_exit;
-
-    // VAC514 needs to switch the master and slave for T and R motion each time motion applies on these
-    if(iDefineFlag & DFVAC514)
-    {
-        if(ulEquipeAxisArg & RO_AXIS_T)
-        {
-            if(ROElectronicGearingOFF() == FAILURE)
-                return FAILURE;
-            if(ROElectronicGearingON('X', 'Y', VAC514_T_GEARING_RATIO, ROGetCM()) == FAILURE)
-                return FAILURE;
-        }
-        else if(ulEquipeAxisArg & RO_AXIS_R)
-        {
-            if(ROElectronicGearingOFF() == FAILURE)
-                return FAILURE;
-            if(ROElectronicGearingON('Y', 'X', VAC514_R_GEARING_RATIO, ROGetCM()) == FAILURE)
-                return FAILURE;
-        }
-    }
-
-    if (GASendAxesCommand(iCardNum, BEGIN_MOTION_COMMAND, uGalilAxes) == FAILURE)
-        goto error_exit;
-
-    /* If everything was successful, indicate that the axis is in motion. */
-    if (!GAGetGalilErrorFlag())
-    {
-        ulAMFlag &= ~ulEquipeAxisArg;
-    }
-    else
-    {
-        goto error_exit;
-    }
-
-    return SUCCESS;
-
-error_exit:
-    return FAILURE;
-}
-
-
-/****************************************************************
- *
- * Function:    ROMoveToAbs
- *
- * Abstract:    Performs absolute moves.
- *
- * Parameters:
- *      ulEquipeAxisArg     (in) The axes to read
- *      lPositionArg        (in) The position to move to
- *
- * Returns:     SUCCESS or FAILURE
- *
- ***************************************************************/
-int ROMoveToAbs(unsigned long ulEquipeAxisArg, long *lPositionArg)
-{
-    int iReturn;
-
-    iReturn = ROMoveToAbsOrRel(ulEquipeAxisArg, FALSE, lPositionArg);
-
-    return iReturn;
-}
-
-
-/****************************************************************
- *
- * Function:    ROMoveToRel
- *
- * Abstract:    Performs relative moves.
- *
- * Parameters:
- *      ulEquipeAxisArg     (in) The axes to read
- *      lPositionArg        (in) The position to move to
- *
- * Returns:     SUCCESS or FAILURE
- *
- ***************************************************************/
-int ROMoveToRel(unsigned long ulEquipeAxisArg, long *lPositionArg)
-{
-    int iReturn;
-
-    iReturn = ROMoveToAbsOrRel(ulEquipeAxisArg, TRUE, lPositionArg);
-
-    return iReturn;
-}
-
-
-/****************************************************************
- *
- * Function:    ROMoveRetract
- *
- * Abstract:    This is a subroutine to combine some of the code
- *      for MTPS and MTCR host commands. This routine will set up
- *      a sequence of actions. It starts by gathering information
- *      based on the parameters passed in: station coordinate info,
- *      Z offset info, retract before moving or not, extend at end
- *      of move or not, and whether to use scan position coordinates
- *      or not. Then it sets up the move: retract if desired, move
- *      T and Z axes using the correct Z position based on offset demands,
- *      and finally extend if desired.
- *
- * Parameters:
- *      iStnArg         (in) Station to move to (A-Z or a-z)
- *      iOffDirArg      (in) 0   don't use Z offset
- *                           1   add Z offset (go above wafer)
- *                           2   add Z offset - lStroke (go below wafer)
- *      iRetractArg     (in) TRUE to perform initial iRetractArg
- *      iExtendArg      (in) TRUE to perform final extension
- *      iUseScanArg     (in) TRUE will use Z-pos from scanning if one available
- *
- * Returns:     SUCCESS or FAILURE
- *
- ***************************************************************/
-int ROMoveRetract(int iStnArg, int iOffDirArg, int iRetractArg, int iExtendArg, int iUseScanArg )
-{
-    int     iAxis, iSindex, iCount, iLastPass, iPass, iEEindex; /* Temporary variable.  */
-    int     iCurrName = 0;
-    long    lZdest, lZtemp, lZindex, lPitch, lStroke, lOffset;  /* Station parameters. */
-    long    lScanCoord[8]={0,0,0,0,0,0,0,0};  /* The station scan position. */
-    long    lCoord[8]={0,0,0,0,0,0,0,0};      /* The normal station position. */
-    long    lSensorToEE[8]={0,0,0,0,0,0,0,0};
-    long    lRHome[8];
-    long    lExtPos[8];
-    long    lPosition[8];
-    long    lRHomeUncale[8];
-    long    lExtPosUncale[8];
-    long    lPositionUncale[8];
-    unsigned long ulRAxis, ulTZAxis;
-    int iCardNum, iFileType;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     unsigned uGalilAxes;
     long rc;
 //    USHORT usStatus;
     char GAcommand[MAXGASTR];
     char ReturnBuffer[MAXGASTR];
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     // if Encoder Drift Alarm is ON, don't do anything
     if(giEncoderAlarm)
     {
 	return FAILURE;
     }
-<<<<<<< HEAD
 
     /* Check that the parameters passed in are valid. */
     /* Stroke direction should be between 0 and 2. */
@@ -1635,132 +965,6 @@ int ROMoveRetract(int iStnArg, int iOffDirArg, int iRetractArg, int iExtendArg, 
     /*** Move the axes. ***/
     /* If the user wants to retract R first, send the command to move R.
      * The station retract position was already gathered above. */
-=======
-
-    /* Check that the parameters passed in are valid. */
-    /* Stroke direction should be between 0 and 2. */
-    if (iOffDirArg < 0 || iOffDirArg > 2)
-        return FAILURE;
-    if ((iRetractArg != TRUE) && (iRetractArg != FALSE))
-        return FAILURE;
-    if ((iExtendArg != TRUE) && (iExtendArg != FALSE))
-        return FAILURE;
-    if ((iUseScanArg != TRUE) && (iUseScanArg != FALSE))
-        return FAILURE;
-
-    /* Initialize variables. */
-    for (iAxis=0; iAxis<8; iAxis++)
-    {
-        lRHome[iAxis] = 0;
-        lPosition[iAxis] = 0;
-        lExtPos[iAxis] = 0;
-    }
-
-    /* Check to see if the axis is ready to move, i.e. servoed on, homed,
-     * not currently in motion, and not currently in an error state. */
-    if (ROAxisReadyToMove(ulAxisALLRbt, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
-        return FAILURE;
-
-    /* Need to get info about the second arm ASAP for axis checking */
-    if (FIOGetStnEEindex(iStnArg, &iEEindex) == FAILURE)
-        return FAILURE;
-    if ((iEEindex == 1) && (ROGetSpecialAxis(RO_DUAL_ARM)))
-    {
-        ulRAxis = RO_AXIS_W;
-        if (ROAxisReadyToMove(ulRAxis, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
-            return FAILURE;
-    }
-    else
-    {
-        ulRAxis = RO_AXIS_R;
-    }
-
-    /*** Get station parameters. ***/
-    for (iAxis = 0; iAxis < 3; iAxis++)
-    {
-        if (FIOGetStnCoord(iStnArg, iAxis, &lCoord[iAxis]) == FAILURE)
-            return FAILURE;
-        if (FIOGetStnScanCoord(iStnArg, iAxis, &lScanCoord[iAxis]) == FAILURE)
-            return FAILURE;
-    }
-    if (FIOGetStnVals(iStnArg, PITCH, &lPitch) == FAILURE)
-        return FAILURE;
-    if (FIOGetStnVals(iStnArg, Z_INDEX, &lZindex) == FAILURE)
-        return FAILURE;
-    if (FIOGetStnVals(iStnArg, STROKE, &lStroke) == FAILURE)
-        return FAILURE;
-    if (FIOGetStnVals(iStnArg, OFFSET, &lOffset) == FAILURE)
-        return FAILURE;
-    if (FIOGetStnVals(iStnArg, RET_HOME, &lRHome[1]) == FAILURE)
-        return FAILURE;
-
-    /* The following change was made to convert a 10,000ths of an inch standard
-     * to its mil real-world value. The Brooks/Novellus micron standard doesn't need it. */
-    if (~iEmulator & DFEMULATORB)
-    {
-        lPitch /= 10;
-    }
-
-    /* Axes checking is done in the actual move function. */
-    ulTZAxis = RO_AXIS_T|RO_AXIS_Z;
-    lExtPos[1] = iUseScanArg ? lScanCoord[1] : lCoord[1];
-    lExtPos[3] = lExtPos[1]; /* just prepare for W-axis */
-
-    /*** Calculate destination height. ***/
-    iCurrName = MPGetCurrScanName();
-    if ( iUseScanArg && (iCurrName != -1) )
-    {
-        iSindex = MPSearchScanIndex(lZindex);
-        if (MPGetScanParamLastPass(iCurrName, &iLastPass) == FAILURE)
-            return FAILURE;
-        if (iLastPass >= 0 && iSindex >= 0)
-        {
-            if (MPGetScanParamZPos(iCurrName, 0, iSindex, &lZdest) == FAILURE)
-                return FAILURE;
-            if (lZdest)
-	            iCount = 1;
-	        else
-	            iCount = 0;
-
-	        for ( iPass = 1; iPass <= iLastPass; iPass++ )
-            {
-                if (MPGetScanParamZPos(iCurrName, 0, iPass, &lZtemp) == FAILURE)
-                    return FAILURE;
-                if (lZtemp)
-                {
-	                lZdest += lZtemp;
-	                iCount++;
-                }
-            }
-	        lZdest /= iCount * 1000;
-	        lZdest += lSensorToEE[iEEindex];
-        }
-        else
-        {
-            lZdest = lCoord[2] + ((lZindex - 1) * lPitch);
-        }
-    }
-    else
-    {
-        lZdest = (iUseScanArg ? lScanCoord[2] : lCoord[2]) + ((lZindex - 1) * lPitch);
-    }
-
-    /* Add on offset or stroke distance depending on what the user requested. */
-    if (iOffDirArg == 1)
-        lZdest += lOffset;
-    if (iOffDirArg == 2)
-        lZdest += (lOffset-lStroke);
-
-    /* Z position finally computed. */
-    lPosition[2] = lZdest;
-
-    /* T position. */
-    lPosition[0] = iUseScanArg ? lScanCoord[0] : lCoord[0];
-
-    /*** Move the axes. ***/
-    /* If the user wants to retract R first, send the command to move R.
-     * The station retract position was already gathered above. */
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 	if (iRetractArg)
 		sprintf(GAcommand, "VRET = 1");
@@ -1792,7 +996,6 @@ int ROMoveRetract(int iStnArg, int iOffDirArg, int iRetractArg, int iExtendArg, 
 
 	sprintf(GAcommand, "XQ#MTCR");	// MTCR galil macro call
 	rc = GASendDMCCommand(ghDMC, GAcommand, ReturnBuffer, MAXGASTR);
-<<<<<<< HEAD
     return rc;
 
 
@@ -1824,46 +1027,12 @@ int ROMoveAllOrAxisDirect(unsigned long ulAxisArg, int iStnArg, int iOffDirArg, 
     int     iEEindex;
     long    lPosTemp;
     long    lPosition[8];
-=======
-    return rc;
-
-
-}
-
-
-/****************************************************************
- *
- * Function:    ROMoveAllOrAxisDirect
- *
- * Abstract:    Move to station, all axes or one axis only.
- *      Combines ROMoveDirect and ROMoveAxisDirect. CODE-OPTIMIZATION: CK.
- *
- * Parameters:
- *      ulAxesArg       (in) The axes to move.
- *      iStnArg         (in) Station to move to (A-Z or a-z)
- *      iOffDirArg      (in) 0   don't use Z offset
- *                           1   add Z offset (go above wafer)
- *                           2   add Z offset - lStroke (go below wafer)
- *      iFlagArg        (in) 0   one axis only
- *                           1   all axes
- *
- * Returns:     SUCCESS or FAILURE
- *
- ***************************************************************/
-int ROMoveAllOrAxisDirect(unsigned long ulAxisArg, int iStnArg, int iOffDirArg, int iFlagArg)
-{
-    long    lStroke, lZindex, lPitch, lOffset;  /* Station parameters. */
-    int     iEEindex;
-    long    lPosTemp;
-    long    lPosition[8];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // if Encoder Drift Alarm is ON, don't do anything
     if(giEncoderAlarm)
     {
 	return FAILURE;
     }
-<<<<<<< HEAD
 
     /* Stroke direction should be between 0 and 2. */
     if (iOffDirArg < 0 || iOffDirArg > 2)
@@ -2026,177 +1195,12 @@ int ROMoveAxisDirect(unsigned long ulAxisArg, int iStnArg, int iOffDirArg)
     long lWhichInx;
     long lPosition[8];
 
-=======
-
-    /* Stroke direction should be between 0 and 2. */
-    if (iOffDirArg < 0 || iOffDirArg > 2)
-        return FAILURE;
-
-    /* Get coordinates T, R, Z. */
-    if (FIOGetStnCoord(iStnArg, 0, &lPosition[0]) == FAILURE)
-        return FAILURE;
-    if (FIOGetStnCoord(iStnArg, 1, &lPosition[1]) == FAILURE)
-        return FAILURE;
-    if (FIOGetStnCoord(iStnArg, 2, &lPosition[2]) == FAILURE)
-        return FAILURE;
-
-    /* Prepare for W, just in case for dual arm */
-    lPosition[3] = lPosition[1];
-
-    if (FIOGetStnEEindex(iStnArg, &iEEindex) == FAILURE)
-        return FAILURE;
-
-    /* Also prepare for the cases of Track, Flipper while checking axis validity */
-    if (ulAxisArg == RO_AXIS_W) /* it can be DualArm, Flipper, Track */
-    {
-	    if (ROGetSpecialAxis(RO_DUAL_ARM)) /* dual arm */
-        {
-            /* station's EE# must match, otherwise deny the request */
-            if(iEEindex == 0)
-                return FAILURE;
-        }
-        else if (ROGetSpecialAxis(RO_FLIPPER)) /* flipper */
-        {
-            /* get station's flipper position */
-            if (FIOGetStnVals(iStnArg, FLP_COORD, &lPosTemp) == FAILURE)
-                return FAILURE;
-            lPosition[3] = lPosTemp;
-        }
-        else if (ulAxisArg == ROGetSpecialAxis(RO_TRACK)) /* track in robot&track system */
-        {
-            /* get station's track position */
-            if (FIOGetStnVals(iStnArg, TRACK_POS, &lPosTemp) == FAILURE)
-                return FAILURE;
-            lPosition[3] = lPosTemp;
-        }
-        else /* W-axis without any DBM, Flipper, Track, must be denied. */
-            return FAILURE;
-    }
-    else if (ulAxisArg == RO_AXIS_w) /* track in integrated system */
-    {
-        /* get station's track position */
-        if (ulAxisArg == ROGetSpecialAxis(RO_TRACK)) /* track in robot&track system */
-        {
-            if (FIOGetStnVals(iStnArg, TRACK_POS, &lPosTemp) == FAILURE)
-                return FAILURE;
-            lPosition[3] = lPosTemp;
-        }
-        else /* w-axis without track? it must be denied. */
-            return FAILURE;
-    }
-    else if (ulAxisArg == RO_AXIS_R && iEEindex != 0 && ROGetSpecialAxis(RO_DUAL_ARM))
-        return FAILURE; /* station taught with W, cannot move R */
-
-    /* Get station parameters. */
-    if (FIOGetStnVals(iStnArg, PITCH, &lPitch) == FAILURE)
-        return FAILURE;
-    if (FIOGetStnVals(iStnArg, Z_INDEX, &lZindex) == FAILURE)
-        return FAILURE;
-    if (FIOGetStnVals(iStnArg, STROKE, &lStroke) == FAILURE)
-        return FAILURE;
-    if (FIOGetStnVals(iStnArg, OFFSET, &lOffset) == FAILURE)
-        return FAILURE;
-
-    /* The following change was made to convert a 10,000ths of an inch standard
-     * to its mil real-world value. The Brooks/Novellus micron standard doesn't need it. */
-    if (~iEmulator & DFEMULATORB)
-    {
-        lPitch /= 10;
-    }
-
-    /* Set the destination Z height. */
-    lPosition[2] += ((lZindex - 1) * lPitch);
-    if (iOffDirArg == 1)
-        lPosition[2] += lOffset;
-    if (iOffDirArg == 2)
-        lPosition[2] += (lOffset-lStroke);
-
-    /* All axes. Axes checking is done in the actual move function. */
-    if (iFlagArg)
-    {
-        /* Only one condition is satisfied here:
-         * that is, all axes with W-axis to move. */
-        if ((iEEindex == 1) && (ROGetSpecialAxis(RO_DUAL_ARM)))
-        {
-            /* we cannot issue TZ&W axes command simultaneously
-             * TZ and W must be separated, otherwise, ValidAxis returns FAILURE */
-            ulAxisArg = RO_AXIS_T|RO_AXIS_Z;
-            /* Move the axes T&Z. */
-            if (ROMoveToAbs(ulAxisArg, lPosition) == FAILURE)
-                return FAILURE;
- //           ulAxisArg = RO_AXIS_W;
-            /* Move the axis W. */
- //           if (ROMoveToAbs(ulAxisArg, lPosition) == FAILURE)
- //               return FAILURE;
-            return SUCCESS;
-        }
-    }
-
-    /* The rest conditions are satisfied here:
-     * that is, (1) one axis only, (2) all axes (no W-axis) */
-    if (ROMoveToAbs(ulAxisArg, lPosition) == FAILURE)
-        return FAILURE;
-
-    return SUCCESS;
-}
-
-
-/****************************************************************
- *
- * Function:    ROMoveDirect
- *
- * Abstract:    Move to station, all axes simultaneously with
- *      optional Z offset. Start by collecting all relevant
- *      information on the station. Then calculate the Z position.
- *      And finish by initiating the move.
- *
- * Parameters:
- *      iStnArg         (in) Station to move to (A-Z or a-z)
- *      iOffDirArg      (in) 0   don't use Z offset
- *                           1   add Z offset (go above wafer)
- *                           2   add Z offset - lStroke (go below wafer)
- *
- * Returns:     SUCCESS or FAILURE
- *
- ***************************************************************/
-int ROMoveDirect(int iStnArg, int iOffDirArg)
-{
-    /* all axes: 4th argument = 1 */
-    return (ROMoveAllOrAxisDirect(ulAxisALLRbt, iStnArg, iOffDirArg, 1));
-}
-
-
-/****************************************************************
- *
- * Function:    ROMoveAxisDirect
- *
- * Abstract:    Move to station, one specified axis only.
- *      Start by collecting all relevant information on the station.
- *      Then calculate the Z position. And finish by initiating the move.
- *
- * Parameters:
- *      ulAxesArg       (in) The axes to move.
- *      iStnArg         (in) Station to move to (A-Z or a-z)
- *      iOffDirArg      (in) 0   don't use Z offset
- *                           1   add Z offset (go above wafer)
- *                           2   add Z offset - lStroke (go below wafer)
- *
- * Returns:     SUCCESS or FAILURE
- *
- ***************************************************************/
-int ROMoveAxisDirect(unsigned long ulAxisArg, int iStnArg, int iOffDirArg)
-{
-    long lWhichInx;
-    long lPosition[8];
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     // if Encoder Drift Alarm is ON, don't do anything
     if(giEncoderAlarm)
     {
 	return FAILURE;
     }
 
-<<<<<<< HEAD
     if (FIOGetStnVals(iStnArg, TRACK_POS, &lWhichInx) == FAILURE)
         return FAILURE;
     if ((ulAxisArg == ROGetSpecialAxis(RO_INDEXER_Z1)) ||
@@ -2256,74 +1260,12 @@ int ROMoveStroke(int iStnArg, int iStrokeDirArg)
     long    lStroke;                            /* Station parameters. */
     long    lPosition[8];
 
-=======
-    if (FIOGetStnVals(iStnArg, TRACK_POS, &lWhichInx) == FAILURE)
-        return FAILURE;
-    if ((ulAxisArg == ROGetSpecialAxis(RO_INDEXER_Z1)) ||
-        (ulAxisArg == ROGetSpecialAxis(RO_INDEXER_Z2)))
-    {
-        if (((ulAxisArg == ROGetSpecialAxis(RO_INDEXER_Z1)) && (lWhichInx != 0)) ||
-            ((ulAxisArg == ROGetSpecialAxis(RO_INDEXER_Z2)) && (lWhichInx != 1)))
-            return FAILURE;
-        if (FIOGetStnlscsi(iStnArg, 2, &lPosition[1]) == FAILURE)
-            return FAILURE;
-        lPosition[2] = lPosition[1];
-        return (ROMoveToAbs(ulAxisArg, lPosition));
-    }
-    if ((ulAxisArg == ROGetSpecialAxis(RO_INDEXER_T1)) ||
-        (ulAxisArg == ROGetSpecialAxis(RO_INDEXER_T2)))
-    {
-        if (((ulAxisArg == ROGetSpecialAxis(RO_INDEXER_T1)) && (lWhichInx != 0)) ||
-            ((ulAxisArg == ROGetSpecialAxis(RO_INDEXER_T2)) && (lWhichInx != 1)))
-            return FAILURE;
-        if (FIOGetStnlscsi(iStnArg, 3, &lPosition[0]) == FAILURE)
-            return FAILURE;
-        lPosition[3] = lPosition[0];
-        return (ROMoveToAbs(ulAxisArg, lPosition));
-    }
-    /* Validation to check if motion is possible with the given axis parameters.
-     * Axes checking is usually done in the actual move function but we need
-     * to use the axes here to collect information. */
-    if ((ulAxisArg != RO_AXIS_T) && (ulAxisArg != RO_AXIS_R) &&
-        (ulAxisArg != RO_AXIS_Z) && (ulAxisArg != RO_AXIS_W) &&
-        (ulAxisArg != RO_AXIS_w))
-        return FAILURE;
-
-    /* one axis only: 4th argument = 0 */
-    return (ROMoveAllOrAxisDirect(ulAxisArg, iStnArg, iOffDirArg, 0));
-}
-
-
-/****************************************************************
- *
- * Function:    ROMoveStroke
- *
- * Abstract:    Move Z up or down by station's stroke distance.
- *      Start by collecting all relevant information on the station.
- *      Then calculate the Z position. And finish by initiating the move.
- *
- * Parameters:
- *      iStnArg         (in) Station to move to (A-Z or a-z)
- *      iStrokeDirArg   (in) +1  move up
- *                           -1  move down
- *
- * Returns:     SUCCESS or FAILURE
- *
- ***************************************************************/
-int ROMoveStroke(int iStnArg, int iStrokeDirArg)
-{
-    unsigned long ulEquipeAxis = RO_AXIS_Z;     /* Z axis only */
-    long    lStroke;                            /* Station parameters. */
-    long    lPosition[8];
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     // if Encoder Drift Alarm is ON, don't do anything
     if(giEncoderAlarm)
     {
 	return FAILURE;
     }
 
-<<<<<<< HEAD
     /* Stroke direction should be between -1 and 1. */
     if (iStrokeDirArg < -1 || iStrokeDirArg > 1)
         return FAILURE;
@@ -2643,341 +1585,14 @@ int ROSetJGSpeed(unsigned long ulAxisArg)
 
     return SUCCESS;
 }
-=======
-    /* Stroke direction should be between -1 and 1. */
-    if (iStrokeDirArg < -1 || iStrokeDirArg > 1)
-        return FAILURE;
-
-    /* If Stroke direction is 0, do nothing. */
-    if (iStrokeDirArg == 0)
-        return SUCCESS;
-
-    /* Get station parameters. */
-    if (FIOGetStnVals(iStnArg, STROKE, &lStroke) == FAILURE)
-        return FAILURE;
-
-    /* Set Z axis relative move/stroke distance. */
-    lPosition[2] = iStrokeDirArg * lStroke;
-
-    /* Move the Z axis. */
-    if (ROMoveToRel(ulEquipeAxis, lPosition) == FAILURE)
-        return FAILURE;
-
-    return SUCCESS;
-
-}
-
-
-/****************************************************************
- *
- * Function:    RORetractR
- *
- * Abstract:    This routine retracts R/W to the position passed in.
- *      It sets the R/W position and initiates the move.
- *
- * Parameters:
- *      lPosArg         (in) Position to retract R
- *      iRWAxisFlag     (in) 0=R-axis, 1=W-axis
- *
- * Returns:     SUCCESS or FAILURE
- *
- ***************************************************************/
-int RORetractR(long lPosArg, int iRWAxisFlag)
-{
-    unsigned long ulEquipeAxis;
-    long lPosition[8];
-
-    if(iRWAxisFlag && ROGetSpecialAxis(RO_DUAL_ARM))
-    {
-        ulEquipeAxis = RO_AXIS_W;   /* W-axis only */
-        lPosition[3] = lPosArg;
-    }
-    else
-    {
-        ulEquipeAxis = RO_AXIS_R;   /* R-axis only */
-        lPosition[1] = lPosArg;
-    }
-
-    /* Move the R or W axis. */
-    if (ROMoveToAbs(ulEquipeAxis, lPosition) == FAILURE)
-        return FAILURE;
-
-    return SUCCESS;
-}
-
-
-/***************************************************************************
- *
- * Function Name:   ROSendMoveToHSorIP
- *
- * Description:     Moves specified axis to the Home Switch or Index pulse
- *
- * Parameter:       ulAxisArg       (in) The axis to move
- *                  iFlagArg        (in) 0=Home Switch, 1=Index Pulse
- *                  iResetParsFlagArg
- *                  iGearingFlagArg  indicates whether we want t use gearing or not,
- *                                   i.e. Homing sequence on VAC514 doesn't use gearing
- *
- * Returns:         SUCCESS or FAILURE.
- *
- ***************************************************************************/
-int ROSendMoveToHSorIP(ULONG ulAxisArg, int iFlagArg, int iResetParsFlagArg, int iGearingFlagArg)
-{
-    int iReturn, iCounter, iCardNum, iFileType;
-    unsigned uGalilAxes;
-    long laHomeSpeed[8]={0,0,0,0,0,0,0,0};
-    long laHomeAccel[8]={0,0,0,0,0,0,0,0};
-    long laHomeDecel[8]={0,0,0,0,0,0,0,0};
-    long laSCurves[8]={0,0,0,0,0,0,0,0};
-
-    /* Validation to check if homing is possible with the given axis parameters. */
-    if (ROValidAxis(ulAxisArg, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
-        return FAILURE;
-    /* Return error if servo off or motion not complete on the requested axes. */
-    if(ulAxisArg & (ulServoFlag | ~ulAMFlag))
-        return FAILURE;
-
-    // On VAC514, T and R are always geared, thus check for motion flag on both
-    if((iDefineFlag & DFVAC514) && iGearingFlagArg)
-    {
-        if(ulAxisArg & RO_AXIS_R)
-        {
-            if (RO_AXIS_T & (ulServoFlag | ~ulAMFlag))
-                return FAILURE;
-        }
-
-        if(ulAxisArg & RO_AXIS_T)
-        {
-            if (RO_AXIS_R & (ulServoFlag | ~ulAMFlag))
-                return FAILURE;
-        }
-    }
-
-    // Get speeds and accelerations. These rather be very slow like during homing.
-    if(iResetParsFlagArg)
-    {
-        if(ROGetParameter(TRUE, ulAxisArg, laHomeSpeed, HOME_SPEED) == FAILURE)
-            return FAILURE;
-        if(ROGetParameter(TRUE, ulAxisArg, laHomeAccel, HOME_ACCEL) == FAILURE)
-            return FAILURE;
-        for(iCounter = 0; iCounter < 4; iCounter++) laHomeDecel[iCounter] = laHomeAccel[iCounter];
-
-        // Set speeds and accelerations.
-        if(ROSetParameter(FALSE, ulAxisArg, laHomeSpeed, OPERATIONAL_SPEED) == FAILURE)
-            return FAILURE;
-        if(ROSetParameter(FALSE, ulAxisArg, laHomeAccel, OPERATIONAL_ACCEL) == FAILURE)
-            return FAILURE;
-        if(ROSetParameter(FALSE, ulAxisArg, laHomeDecel, OPERATIONAL_DECEL) == FAILURE)
-            return FAILURE;
-    }
-
-    /* Also turn off S-curve profiling. */
-//    if(ROEnableSCurveProfile(ulAxisArg, laSCurves)==FAILURE)
-//        return FAILURE;
-
-    switch(ulAxisArg)
-    {
-        case RO_AXIS_T :
-            //Set appropriate gearing for the VAC514 robots if required
-            if((iDefineFlag & DFVAC514) && iGearingFlagArg)
-            {
-                if(ROElectronicGearingOFF() == FAILURE)
-                    return FAILURE;
-
-                if(ROElectronicGearingON('X', 'Y', VAC514_T_GEARING_RATIO, FALSE) == FAILURE)
-                    return FAILURE;
-            }
-        case RO_AXIS_t :
-            if(iFlagArg)
-				iReturn=GASendReceiveGalil(iCardNum, (char *)"FIX\r",  cpNull);
-            else
-				iReturn=GASendReceiveGalil(iCardNum, (char *)"FEX\r", cpNull);
-            if (iReturn == SUCCESS)
-                iReturn=GASendReceiveGalil(iCardNum, (char *)"BGX\r", cpNull);
-            break;
-        case RO_AXIS_R :
-            //Set appropriate gearing for the VAC514 robots if required
-            if((iDefineFlag & DFVAC514) && iGearingFlagArg)
-            {
-                if(ROElectronicGearingOFF() == FAILURE)
-                    return FAILURE;
-
-                if(ROElectronicGearingON('Y', 'X', VAC514_R_GEARING_RATIO, FALSE) == FAILURE)
-                    return FAILURE;
-            }
-        case RO_AXIS_r :
-            if(iFlagArg)
-				iReturn=GASendReceiveGalil(iCardNum, (char *)"FIY\r", cpNull);
-            else
-				iReturn=GASendReceiveGalil(iCardNum, (char  *)"FEY\r", cpNull);
-            if (iReturn == SUCCESS)
-				iReturn=GASendReceiveGalil(iCardNum, (char  *)"BGY\r", cpNull);
-            break;
-        case RO_AXIS_Z :
-        case RO_AXIS_z :
-            if(iFlagArg)
-				iReturn=GASendReceiveGalil(iCardNum, (char  *)"FIZ\r", cpNull);
-            else
-				iReturn=GASendReceiveGalil(iCardNum, (char  *)"FEZ\r", cpNull);
-            if (iReturn == SUCCESS)
-				iReturn=GASendReceiveGalil(iCardNum, (char  *)"BGZ\r", cpNull);
-            break;
-        case RO_AXIS_W :
-        case RO_AXIS_w :
-            if(iFlagArg)
-				iReturn=GASendReceiveGalil(iCardNum, (char *)"FIW\r", cpNull);
-            else
-				iReturn=GASendReceiveGalil(iCardNum, (char *)"FEW\r", cpNull);
-            if (iReturn == SUCCESS)
-				iReturn=GASendReceiveGalil(iCardNum, (char *)"BGW\r", cpNull);
-            break;
-        default:
-            iReturn = FAILURE;
-    }
-    /* If everything was successful, indicate that the axis is in motion. */
-    if (!GAGetGalilErrorFlag() && iReturn != FAILURE)
-    {
-        ulAMFlag &= ~ulAxisArg;
-    }
-
-    return iReturn;
-}
-
-
-/***************************************************************************
- *
- * Function Name:   ROSendMoveToHomeSwitch
- *
- * Description:     Moves specified axis to the Home Switch
- *
- * Parameter:       ulAxisArg   (in) The axis to move
- *
- * Returns:         SUCCESS or FAILURE.
- *
- ***************************************************************************/
-int ROSendMoveToHomeSwitch(ULONG ulAxisArg)
-{
-    return (ROSendMoveToHSorIP(ulAxisArg, 0, 0, TRUE));
-}
-
-/***************************************************************************
- *
- * Function Name:   ROSendMoveToIndexPulse
- *
- * Description:     Moves specified axis to the Index pulse
- *
- * Parameter:       ulAxisArg       (in) The axis to move
- *
- * Returns:         SUCCESS or FAILURE.
- *
- ***************************************************************************/
-int ROSendMoveToIndexPulse(ULONG ulAxisArg)
-{
-    return (ROSendMoveToHSorIP(ulAxisArg, 1, 0, FALSE));
-}
-/***************************************************************************
- *
- * Function Name:   ROSetSlowHomingSpeed
- *
- * Description:     Function sets the low hardcoded speed for the second phase of VAC514 homing,
- *                  it is called from action buffer
- *
- * Parameter:       ulAxisArg       (in) The axis to operate on
- *
- * Returns:         SUCCESS or FAILURE.
- *
- ***************************************************************************/
-int ROSetSlowHomingSpeed(unsigned long ulAxisArg)
-{
-    long laHomeSpeed[8];
-    long laHomeAccel[8];
-    long laHomeDecel[8];
-    int iCardNum, iFileType;
-    unsigned uGalilAxes;
-
-    if(ROValidAxis(ulAxisArg, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
-        return FAILURE;
-
-    if (ROGetParameter(FALSE, ulAxisArg, laHomeSpeed, OPERATIONAL_SPEED) == FAILURE)
-        return FAILURE;
-    if (ROGetParameter(FALSE, ulAxisArg, laHomeAccel, OPERATIONAL_ACCEL) == FAILURE)
-        return FAILURE;
-    if (ROGetParameter(FALSE, ulAxisArg, laHomeDecel, OPERATIONAL_DECEL) == FAILURE)
-        return FAILURE;
-
-    if(ulAxisArg == RO_AXIS_T)
-    {
-        laHomeSpeed[0] = (long)HOMING_SPEED_T;
-        laHomeAccel[0] = laHomeDecel[0] = (long)HOMING_ACCEL_T;
-    }
-    else if(ulAxisArg == RO_AXIS_R)
-    {
-        laHomeSpeed[1] = (long)HOMING_SPEED_R;
-        laHomeAccel[1] = laHomeDecel[1] = (long)HOMING_ACCEL_R;
-    }
-    else
-        return FAILURE;
-
-    if (ROSetParameter(FALSE, ulAxisArg, laHomeSpeed, OPERATIONAL_SPEED) == FAILURE)
-        return FAILURE;
-    if (ROSetParameter(FALSE, ulAxisArg, laHomeAccel, OPERATIONAL_ACCEL) == FAILURE)
-        return FAILURE;
-    if (ROSetParameter(FALSE, ulAxisArg, laHomeDecel, OPERATIONAL_DECEL) == FAILURE)
-        return FAILURE;
-
-    return SUCCESS;
-}
-/***************************************************************************
- *
- * Function Name:   ROSetJGSpeed
- *
- * Description:     Function executes the JG command for the second phase of VAC514 homing,
- *                  it is called from action buffer. It needs to be included in the sequence because the FI
- *                  GALIL command direction depends on the sign setting of JG command
- *
- * Parameter:       ulAxisArg       (in) The axis to move
- *
- * Returns:         SUCCESS or FAILURE.
- *
- ***************************************************************************/
-int ROSetJGSpeed(unsigned long ulAxisArg)
-{
-    int iCardNum, iFileType;
-    unsigned uGalilAxes;
-    long laValue[8]={0,0,0,0,0,0,0,0};
-
-    if(ROValidAxis(ulAxisArg, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
-        return FAILURE;
-
-    //So far function can be used only for the T and R axes on VAC514 robots
-    if((ulAxisArg != RO_AXIS_T) && (ulAxisArg != RO_AXIS_R) && (ulAxisArg != (RO_AXIS_T | RO_AXIS_R)))
-        return FAILURE;
-
-    if(ulAxisArg & RO_AXIS_T)
-        laValue[0] = (long)HOMING_JOG_SPEED;
-    if(ulAxisArg & RO_AXIS_R)
-        laValue[1] = (long)(HOMING_JOG_SPEED * (-1));
-
-    if(GASetValsLongDefined(iCardNum, JOG_SPEED, uGalilAxes, laValue) == FAILURE)
-        return FAILURE;
-
-    return SUCCESS;
-}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 
 // ROSendRQ is faster data recording for motion profile
 int ROSendRQ(unsigned long ulAxisArg, long lFlagArg)
 {
-<<<<<<< HEAD
     int iCardNum, iFileType;
     unsigned uGalilAxes;
     int rc;
-=======
-    int iCardNum, iFileType;
-    unsigned uGalilAxes;
-    int rc;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     char RC0command[10] = "RC 0";
     char RCTcommand[10] = "XQ#XRQT";
     char RCRcommand[10] = "XQ#XRQR";
@@ -3044,15 +1659,9 @@ int ROSendRQ(unsigned long ulAxisArg, long lFlagArg)
 
 int ROSendRC(unsigned long ulAxisArg, long lFlagArg)
 {
-<<<<<<< HEAD
     int iCardNum, iFileType;
     unsigned uGalilAxes;
     int rc;
-=======
-    int iCardNum, iFileType;
-    unsigned uGalilAxes;
-    int rc;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     char RC0command[10] = "RC 0";
     char RCTcommand[10] = "XQ#XRCT";
     char RCRcommand[10] = "XQ#XRCR";
@@ -3126,11 +1735,7 @@ int ROSendQU(unsigned long ulAxisArg)
     char *ReturnBuffer;
     char caCommand[40];
     char caResp[40];
-<<<<<<< HEAD
 /*
-=======
-/*
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     char QUTcommandT[20] = "QU TTDA[],,,1";
     char QUPcommandT[20] = "QU TPDA[],,,1";
     char QUTcommandR[20] = "QU TORR[],,,1";
@@ -3305,7 +1910,6 @@ void ROClearFrictionData(void)
 	wTTData[i] = 0; wTPData[i] = 0; wTPDataEU[i] = 0;
     }
 }
-<<<<<<< HEAD
 
 
 int RODumpRC(unsigned long ulAxisArg, long lFirstArg, long lLastArg)
@@ -3313,15 +1917,6 @@ int RODumpRC(unsigned long ulAxisArg, long lFirstArg, long lLastArg)
     int i, iCardNum, iFileType;
     int rc;
     unsigned uGalilAxes;
-=======
-
-
-int RODumpRC(unsigned long ulAxisArg, long lFirstArg, long lLastArg)
-{
-    int i, iCardNum, iFileType;
-    int rc;
-    unsigned uGalilAxes;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     int *TTBuffer;
     int *TPBuffer;
     char caString[40];
@@ -3377,22 +1972,15 @@ int RODumpRC(unsigned long ulAxisArg, long lFirstArg, long lLastArg)
     for (i = (int)lFirstArg; i <= (int)lLastArg; ++i)
     {
 	sprintf(caString, "%d, %d, %d\n\r", i, TTBuffer[i], TPBuffer[i]);
-<<<<<<< HEAD
         if( SERPutsTxBuff(iCmdPortNumber, caString) == FAILURE )
             return FAILURE;
     }
-=======
-        if( SERPutsTxBuff(iCmdPortNumber, caString) == FAILURE )
-            return FAILURE;
-    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return SUCCESS;
 }
 
 //
 // Read RC data from a file
 //
-<<<<<<< HEAD
 int ROReadRC()
 {
     FILE *iFP;
@@ -3771,386 +2359,6 @@ int ROWriteRC()
 
     return SUCCESS;
 }
-=======
-int ROReadRC()
-{
-    FILE *iFP;
-    int iTotalInt;
-
-    iFP = fopen(RCFILENAME, "r");
-    if( iFP == (FILE *)0 )
-    {
-        perror( "RC file Read Open Error " );
-    }
-    else
-    {
-        iTotalInt = fread( TTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 1 Read Error " );
-	}
-        iTotalInt = fread( TTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 2 Read Error " );
-	}
-        iTotalInt = fread( RTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 3 Read Error " );
-	}
-        iTotalInt = fread( RTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 4 Read Error " );
-	}
-        iTotalInt = fread( ZTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 5 Read Error " );
-	}
-        iTotalInt = fread( ZTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 6 Read Error " );
-	}
-        iTotalInt = fread( WTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 7 Read Error " );
-	}
-        iTotalInt = fread( WTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 8 Read Error " );
-	}
-        iTotalInt = fread( tTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 9 Read Error " );
-	}
-        iTotalInt = fread( tTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 10 Read Error " );
-	}
-        iTotalInt = fread( rTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 11 Read Error " );
-	}
-        iTotalInt = fread( rTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 12 Read Error " );
-	}
-        iTotalInt = fread( zTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 13 Read Error " );
-	}
-        iTotalInt = fread( zTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 14 Read Error " );
-	}
-        iTotalInt = fread( wTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 15 Read Error " );
-	}
-        iTotalInt = fread( wTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 16 Read Error " );
-	}
-        iTotalInt = fread( TDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 17 Read Error " );
-	}
-        iTotalInt = fread( RDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 18 Read Error " );
-	}
-        iTotalInt = fread( ZDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 19 Read Error " );
-	}
-        iTotalInt = fread( WDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 20 Read Error " );
-	}
-        iTotalInt = fread( tDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 21 Read Error " );
-	}
-        iTotalInt = fread( rDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 22 Read Error " );
-	}
-        iTotalInt = fread( zDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 23 Read Error " );
-	}
-        iTotalInt = fread( wDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 24 Read Error " );
-	}
-        iTotalInt = fread( TTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 25 Read Error " );
-	}
-        iTotalInt = fread( RTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 26 Read Error " );
-	}
-        iTotalInt = fread( ZTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 27 Read Error " );
-	}
-        iTotalInt = fread( WTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 28 Read Error " );
-	}
-        iTotalInt = fread( tTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 29 Read Error " );
-	}
-        iTotalInt = fread( rTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 30 Read Error " );
-	}
-        iTotalInt = fread( zTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 31 Read Error " );
-	}
-        iTotalInt = fread( wTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 32 Read Error " );
-	}
-        iTotalInt = fread( glMotorResolution, sizeof( long ), 8, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 33 Read Error " );
-	}
-        iTotalInt = fread( glEncoderResolution, sizeof( long ), 8, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 34 Read Error " );
-	}
-        /* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
-        fclose( iFP );
-    }
-
-    return SUCCESS;
-}
-
-// RC Data Write to a file
-int ROWriteRC()
-{
-    FILE *iFP;
-    int iTotalInt;
-    
-    iFP = fopen( RCFILENAME, "w");
-    if( iFP == (FILE *)0 )
-    {
-        perror( "RC File Write Open Error " );
-    }
-    else
-    {
-        iTotalInt = fwrite( TTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 1 write Error " );
-	}
-        iTotalInt = fwrite( TTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 2 write Error " );
-	}
-        iTotalInt = fwrite( RTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 3 write Error " );
-	}
-        iTotalInt = fwrite( RTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 4 write Error " );
-	}
-        iTotalInt = fwrite( ZTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 5 write Error " );
-	}
-        iTotalInt = fwrite( ZTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 6 write Error " );
-	}
-        iTotalInt = fwrite( WTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 7 write Error " );
-	}
-        iTotalInt = fwrite( WTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 8 write Error " );
-	}
-        iTotalInt = fwrite( tTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 9 write Error " );
-	}
-        iTotalInt = fwrite( tTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 10 write Error " );
-	}
-        iTotalInt = fwrite( rTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 11 write Error " );
-	}
-        iTotalInt = fwrite( rTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 12 write Error " );
-	}
-        iTotalInt = fwrite( zTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 13 write Error " );
-	}
-        iTotalInt = fwrite( zTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 14 write Error " );
-	}
-        iTotalInt = fwrite( wTTData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 15 write Error " );
-	}
-        iTotalInt = fwrite( wTPData, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 16 write Error " );
-	}
-        iTotalInt = fwrite( TDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 17 write Error " );
-	}
-        iTotalInt = fwrite( RDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 18 write Error " );
-	}
-        iTotalInt = fwrite( ZDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 19 write Error " );
-	}
-        iTotalInt = fwrite( WDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 20 write Error " );
-	}
-        iTotalInt = fwrite( tDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 21 write Error " );
-	}
-        iTotalInt = fwrite( rDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 22 write Error " );
-	}
-        iTotalInt = fwrite( zDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 23 write Error " );
-	}
-        iTotalInt = fwrite( wDFT, sizeof( double ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 24 write Error " );
-	}
-        iTotalInt = fwrite( TTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 25 write Error " );
-	}
-        iTotalInt = fwrite( RTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 26 write Error " );
-	}
-        iTotalInt = fwrite( ZTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 27 write Error " );
-	}
-        iTotalInt = fwrite( WTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 28 write Error " );
-	}
-        iTotalInt = fwrite( tTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 29 write Error " );
-	}
-        iTotalInt = fwrite( rTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 30 write Error " );
-	}
-        iTotalInt = fwrite( zTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 31 write Error " );
-	}
-        iTotalInt = fwrite( wTPDataEU, sizeof( long ), TTARRAYSIZE, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 32 write Error " );
-	}
-        iTotalInt = fwrite( glMotorResolution, sizeof( long ), 8, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 33 write Error " );
-	}
-        iTotalInt = fwrite( glEncoderResolution, sizeof( long ), 8, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "RC file 34 write Error " );
-	}
-        /* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
-        fclose( iFP );
-    }
-
-    return SUCCESS;
-}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 //
 // DFT fourier transformation function
@@ -4211,11 +2419,7 @@ void DFT_FID(int *iFromArrayArg, int iBeginArg, int iEndArg, int iResArg, int iC
 //long glMaxWaferPickCounter = 2000; // max wafer pick counter
 //int giFrictionAxis = 0;	// Axis tested for friction test
 //
-<<<<<<< HEAD
 void ROCheckIdle(void)
-=======
-void ROCheckIdle(void)
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 {
     long lCurrentTime;
     long lLapseTime;
@@ -4231,29 +2435,17 @@ void ROCheckIdle(void)
     long lCurrentPosition[8];
     long lCurrentSpeed[8];
     long lGetSpeed[8];
-<<<<<<< HEAD
     long lOperatingSpeed[8]={0,0,0,0,0,0,0,0};
     long lSoftwareNegLimit[8]={0,0,0,0,0,0,0,0};
     long lSoftwarePosLimit[8]={0,0,0,0,0,0,0,0};
     long lNegPos, lPosPos;
-=======
-    long lOperatingSpeed[8]={0,0,0,0,0,0,0,0};
-    long lSoftwareNegLimit[8]={0,0,0,0,0,0,0,0};
-    long lSoftwarePosLimit[8]={0,0,0,0,0,0,0,0};
-    long lNegPos, lPosPos;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     long lPosT, lPosR, lPosZ, lPosTrack, lPost, lPosr, lPosz;
     long lSpeedT, lSpeedR, lSpeedZ, lSpeedTrack, lSpeedt, lSpeedr, lSpeedz;
     long lPosition[8];
 
     // retract arm position
-<<<<<<< HEAD
     long lHome;
     long lCHome[8];
-=======
-    long lHome;
-    long lCHome[8];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // just counter to skip this check 
     if(++giCheckIdle < 175) return;
@@ -4275,20 +2467,12 @@ void ROCheckIdle(void)
 
     // is wafer on EE?
     iData = inb( IO_ROBOT_INPUT_F ) & 0x01; // check bit 0 for wafer detection
-<<<<<<< HEAD
     if(iData == 0) return;	// wafer detected on EE
-=======
-    if(iData == 0) return;	// wafer detected on EE
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // is safe position station taught? station 'x' (index 49) is safe position
     // station x coordinates must not contain 0
     if( FIOGetStnCoord(49, 0, &lSafePos[0])==FAILURE ||
-<<<<<<< HEAD
         FIOGetStnCoord(49, 1, &lSafePos[1])==FAILURE ||
-=======
-        FIOGetStnCoord(49, 1, &lSafePos[1])==FAILURE ||
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         FIOGetStnCoord(49, 2, &lSafePos[2])==FAILURE ) return;
 
     if( lSafePos[0]==0 || lSafePos[1]==0 || lSafePos[2]==0) return; // NOT TAUGHT
@@ -4322,13 +2506,8 @@ void ROCheckIdle(void)
     // Start with saving all the robot parameters
 
     // Save the current position T, R, Z
-<<<<<<< HEAD
     if( ROReadCurrentPosition(0x07, lCurrentPosition) == FAILURE )
         return;
-=======
-    if( ROReadCurrentPosition(0x07, lCurrentPosition) == FAILURE )
-        return;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     lPosT = lCurrentPosition[0];
     lPosR = lCurrentPosition[1];
     lPosZ = lCurrentPosition[2];
@@ -4336,13 +2515,8 @@ void ROCheckIdle(void)
     // Save the current position Track
     if (giNumOfAxes >= 4 && ulAxisTrack)
     {
-<<<<<<< HEAD
 	if( ROReadCurrentPosition(ulAxisTrack,lCurrentPosition) == FAILURE )
 	    return FAILURE;
-=======
-	if( ROReadCurrentPosition(ulAxisTrack,lCurrentPosition) == FAILURE )
-	    return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	// Save the current speed T, R, Z, W, t, r, z, w
 	if(ulAxisTrack == RO_AXIS_W)
 	    lPosTrack = lCurrentPosition[3];	// track W axis
@@ -4357,13 +2531,8 @@ void ROCheckIdle(void)
     // Save the current position t, r, z 
     if (giNumOfAxes > 4)
     {
-<<<<<<< HEAD
 	if( ROReadCurrentPosition(0x70, lCurrentPosition) == FAILURE )
 	    return;
-=======
-	if( ROReadCurrentPosition(0x70, lCurrentPosition) == FAILURE )
-	    return;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     	lPost = lCurrentPosition[4];
     	lPosr = lCurrentPosition[5];
     	lPosz = lCurrentPosition[6];
@@ -4374,13 +2543,8 @@ void ROCheckIdle(void)
     }
 
     // Save the current speed T, R, Z
-<<<<<<< HEAD
     if( ROGetParameter(FALSE, 0x07, lCurrentSpeed, OPERATIONAL_SPEED) == FAILURE )
         return;
-=======
-    if( ROGetParameter(FALSE, 0x07, lCurrentSpeed, OPERATIONAL_SPEED) == FAILURE )
-        return;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     lSpeedT = lCurrentSpeed[0];
     lSpeedR = lCurrentSpeed[1];
@@ -4389,13 +2553,8 @@ void ROCheckIdle(void)
     // Save the current speed Track
     if (giNumOfAxes >= 4 && ulAxisTrack)
     {
-<<<<<<< HEAD
     	if( ROGetParameter(FALSE, ulAxisTrack, lGetSpeed, OPERATIONAL_SPEED) == FAILURE )
 	    return FAILURE;
-=======
-    	if( ROGetParameter(FALSE, ulAxisTrack, lGetSpeed, OPERATIONAL_SPEED) == FAILURE )
-	    return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	// Save the current speed T, R, Z, W, t, r, z, w
 	if(ulAxisTrack == RO_AXIS_W)
 	    lCurrentSpeed[3] = lGetSpeed[3];	// track W axis
@@ -4406,13 +2565,8 @@ void ROCheckIdle(void)
     // save the prealigner speed t, r, z
     if (giNumOfAxes > 4)
     {
-<<<<<<< HEAD
     	if( ROGetParameter(FALSE, 0x70, lGetSpeed, OPERATIONAL_SPEED) == FAILURE )
 	    return;
-=======
-    	if( ROGetParameter(FALSE, 0x70, lGetSpeed, OPERATIONAL_SPEED) == FAILURE )
-	    return;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     	lCurrentSpeed[4] = lGetSpeed[4];
     	lCurrentSpeed[5] = lGetSpeed[5];
     	lCurrentSpeed[6] = lGetSpeed[6];
@@ -4607,21 +2761,12 @@ int ROGotoSafePos( long *lSafePosArg, unsigned long ulAxisTrack )
 
     // 1. RETRACT ARM FIRST
 
-<<<<<<< HEAD
     if( FIOGetParamVals(ROBOTFILE, CUSTOMIZED_HOME, lCHome) == FAILURE )
         return FAILURE;
 
     lHome = lCHome[1];
     if (RORetractR(lHome, 0) == FAILURE) // retract the radial 
         return FAILURE;
-=======
-    if( FIOGetParamVals(ROBOTFILE, CUSTOMIZED_HOME, lCHome) == FAILURE )
-        return FAILURE;
-
-    lHome = lCHome[1];
-    if (RORetractR(lHome, 0) == FAILURE) // retract the radial 
-        return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     
 
     TIDelay(100);
@@ -4649,11 +2794,7 @@ int ROGotoSafePos( long *lSafePosArg, unsigned long ulAxisTrack )
     for(i=0; i<8; ++i) lSafePos[i] = lSafePosArg[i];
     if (ROMoveToAbs( RO_AXIS_T, lSafePos) == FAILURE)
 	return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     TIDelay(500);
     ROUpdateTS(0);
 
@@ -4685,21 +2826,12 @@ int ROGotoPrevPos(unsigned long ulAxisArg, long *lPositionArg, unsigned long ulA
 
 
     // 1. RETRACT ARM FIRST
-<<<<<<< HEAD
     if( FIOGetParamVals(ROBOTFILE, CUSTOMIZED_HOME, lCHome) == FAILURE )
         return FAILURE;
 
     lHome = lCHome[1];
     if (RORetractR(lHome, 0) == FAILURE) // retract the radial 
         return FAILURE;
-=======
-    if( FIOGetParamVals(ROBOTFILE, CUSTOMIZED_HOME, lCHome) == FAILURE )
-        return FAILURE;
-
-    lHome = lCHome[1];
-    if (RORetractR(lHome, 0) == FAILURE) // retract the radial 
-        return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     TIDelay(100);
     ROUpdateTS(0);
@@ -4745,11 +2877,7 @@ int ROGotoPrevPos(unsigned long ulAxisArg, long *lPositionArg, unsigned long ulA
     for(i=0;i<8;++i) lCHome[i] = lPositionArg[i];
     if (ROMoveToAbs( RO_AXIS_R, lCHome) == FAILURE)
 	return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     TIDelay(500);
     ROUpdateTS(0);
 
@@ -4797,11 +2925,7 @@ int ROFrictionTest(unsigned long ulAxisArg)
     char caMGALcommand[40];
     char caMGRLcommand[40];
 
-<<<<<<< HEAD
     if( ROGetParameter(TRUE,ulAxisArg,lSoftwareNegLimit,SOFT_NEG_LIMIT) == FAILURE )
-=======
-    if( ROGetParameter(TRUE,ulAxisArg,lSoftwareNegLimit,SOFT_NEG_LIMIT) == FAILURE )
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         return FAILURE;
     if( ROGetParameter(TRUE,ulAxisArg,lSoftwarePosLimit,SOFT_POS_LIMIT) == FAILURE )
 	return FAILURE;
@@ -5015,11 +3139,7 @@ int ROFrictionTest(unsigned long ulAxisArg)
     // with current speed, move the axis to the starting pos
     if (ROMoveToAbs( ulAxisArg, lPosition) == FAILURE)
 	return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     TIDelay(500);
     ROUpdateTS(0);
 
@@ -5145,11 +3265,7 @@ int ROFrictionTest(unsigned long ulAxisArg)
     // with the friction speed, move the axis to the ending pos
     if (ROMoveToAbs( ulAxisArg, lPositionPos) == FAILURE)
 	return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     TIDelay(500);
     ROUpdateTS(0);
 
@@ -5168,11 +3284,7 @@ int ROFrictionTest(unsigned long ulAxisArg)
     // ending position reached, continue to back to starting position
     if (ROMoveToAbs( ulAxisArg, lPosition) == FAILURE)
 	return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     TIDelay(500);
     ROUpdateTS(0);
 
@@ -5214,11 +3326,7 @@ int RORestoreAxis(unsigned int ulAxisArg, long lPosArg, long *lCurrentSpeedArg)
     // ending position reached, continue to back to starting position
     if (ROMoveToAbs( ulAxisArg, lPosArg) == FAILURE)
 	return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     TIDelay(500);
     ROUpdateTS(0);
 
@@ -5458,7 +3566,6 @@ void ROGetMidPositions(long lStartTArg, long lStartRArg, long lFinalTArg, long l
     return;
 }
 
-<<<<<<< HEAD
 /****************************************************************
  *
  * Function:    ROMoveToCartesian
@@ -5478,27 +3585,6 @@ int ROMoveToCartesian(unsigned long ulEquipeAxisArg, long *lPositionArg)
     long laFinalPosition[8]={0,0,0,0,0,0,0,0};  /* The final position to move to. */
     int iCardNum, iFileType;
     unsigned uGalilAxes;
-=======
-/****************************************************************
- *
- * Function:    ROMoveToCartesian
- *
- * Returns:     SUCCESS or FAILURE
- *
- ***************************************************************/
-int ROMoveToCartesian(unsigned long ulEquipeAxisArg, long *lPositionArg)
-{
-    int i, iAxis;                  /* Temporary variable to loop through all axes. */
-    int iMechAxis;              /* The bit pattern of the axis being checked. */
-    long laPosSoftwareLimit[8]; /* Local copy of the positive software limit to check
-                                 * against requested movement position. */
-    long laNegSoftwareLimit[8]; /* Local copy of the negative software limit to check
-                                 * against requested movement position. */
-    long lStartPos[8];          /* Local variable of current position */
-    long laFinalPosition[8]={0,0,0,0,0,0,0,0};  /* The final position to move to. */
-    int iCardNum, iFileType;
-    unsigned uGalilAxes;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     long lPosition[8]={0,0,0,0,0,0,0,0};	// position in T & R
     long lPositionEC[8]={0,0,0,0,0,0,0,0};	// Encoder converted from lPosition
     char caLICmdStr[80], caResp[80];
@@ -5509,18 +3595,13 @@ int ROMoveToCartesian(unsigned long ulEquipeAxisArg, long *lPositionArg)
     long vX, vY;
     int rc;
 
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     // if Encoder Drift Alarm is ON, don't do anything
     if(giEncoderAlarm)
     {
 	return FAILURE;
     }
 
-<<<<<<< HEAD
     /* Check to see if the axis is ready to move, i.e. servoed on, homed,
      * not currently in motion, and not currently in an error state. */
     if (ROAxisReadyToMove(ulEquipeAxisArg, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
@@ -5567,54 +3648,6 @@ int ROMoveToCartesian(unsigned long ulEquipeAxisArg, long *lPositionArg)
     /* Scale the position from normal units to encoder counts. */
     if (ROUnscalePos(ulEquipeAxisArg, lPositionArg, laFinalPosition) == FAILURE)
         goto error_exit;
-=======
-    /* Check to see if the axis is ready to move, i.e. servoed on, homed,
-     * not currently in motion, and not currently in an error state. */
-    if (ROAxisReadyToMove(ulEquipeAxisArg, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
-        return FAILURE;
-
-    /* Get the start position to calculate a relative move and also for use
-     * in the WPOA and WPOR host commands. */
-
-    lStartPos[0] = lStartPos[1] = lStartPos[2] = lStartPos[3] = 0;
-    lStartPos[4] = lStartPos[5] = lStartPos[6] = lStartPos[7] = 0;
-    if (ROReadCurrentPosition(ulEquipeAxisArg, lStartPos) == FAILURE)
-        goto error_exit;
-
-    /* Get the software limits to check that the move doesn't exceed boundary limits. */
-    if(ROGetParameter(TRUE, ulEquipeAxisArg, laPosSoftwareLimit, SOFT_POS_LIMIT) == FAILURE)
-        goto error_exit;
-    if(ROGetParameter(TRUE, ulEquipeAxisArg, laNegSoftwareLimit, SOFT_NEG_LIMIT) == FAILURE)
-        goto error_exit;
-
-    /* Calculate a relative move and check the position against the software limits. */
-    for (iAxis=0; iAxis<8; iAxis++)
-    {
-        /* Get the bit pattern for each axis. */
-        iMechAxis = 1 << iAxis;
-        /* If the axis is requested to be moved... */
-        if (uGalilAxes & iMechAxis)
-        {
-
-            /* ...and check the position against the software limits. */
-            if ((lPositionArg[iAxis] < laNegSoftwareLimit[iAxis]) ||
-                (lPositionArg[iAxis] > laPosSoftwareLimit[iAxis]))
-            {
-                goto error_exit;
-            }
- 
-        }
-        /* If the axis is NOT requested to be moved, make sure it stays where it is. */
-        else
-        {
-            lPositionArg[iAxis] = lStartPos[iAxis];
-        }
-    }
-
-    /* Scale the position from normal units to encoder counts. */
-    if (ROUnscalePos(ulEquipeAxisArg, lPositionArg, laFinalPosition) == FAILURE)
-        goto error_exit;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     ROGetMidPositions(lStartPos[0], lStartPos[1], lPositionArg[0], lPositionArg[1], 
 	lMidTPos, lMidRPos, lMidWX, lMidWY, &nPoint);
@@ -5653,11 +3686,7 @@ int ROMoveToCartesian(unsigned long ulEquipeAxisArg, long *lPositionArg)
 	lPosition[1] = lMidRPos[i+1];
 	ROUnscalePos( RO_AXIS_R, lPosition, lPositionEC);
 	lMidR2 = lPositionEC[1];
-<<<<<<< HEAD
 	
-=======
-	
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	vX = lMidT2 - lMidT1;
 	vY = lMidR2 - lMidR1;
 
@@ -5675,7 +3704,6 @@ int ROMoveToCartesian(unsigned long ulEquipeAxisArg, long *lPositionArg)
     rc = GASendDMCCommand(ghDMC, caLICmdStr, caResp, 80);
     rc = GASendDMCCommand(ghDMC, "BGS", caResp, 80);
 
-<<<<<<< HEAD
     /* If everything was successful, indicate that the axis is in motion. */
     if (!GAGetGalilErrorFlag())
     {
@@ -5690,22 +3718,6 @@ int ROMoveToCartesian(unsigned long ulEquipeAxisArg, long *lPositionArg)
 
 error_exit:
     return FAILURE;
-=======
-    /* If everything was successful, indicate that the axis is in motion. */
-    if (!GAGetGalilErrorFlag())
-    {
-        ulAMFlag &= ~ulEquipeAxisArg;
-    }
-    else
-    {
-        goto error_exit;
-    }
-
-    return SUCCESS;
-
-error_exit:
-    return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 
 float ROGetSinTheta(long lThetaArg)
@@ -5735,25 +3747,15 @@ void ROConvertEfemToWorld(long lPosTArg, long lPosRArg, long *lWXArg, long *lWYA
 }
 
 
-<<<<<<< HEAD
 int ROMoveCartesianDirection(long lDirectionArg, long lDistanceArg)
 {
     unsigned long ulEquipeAxis = RO_AXIS_T | RO_AXIS_R | RO_AXIS_Z;
-=======
-int ROMoveCartesianDirection(long lDirectionArg, long lDistanceArg)
-{
-    unsigned long ulEquipeAxis = RO_AXIS_T | RO_AXIS_R | RO_AXIS_Z;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     long lStartPos[8]={0,0,0,0,0,0,0,0};	// position in T & R
     long wX1, wY1, eX1, eY1;
     long wX2, wY2, eX2, eY2;
     long startT, startR, finalT, finalR;
     long wX3, wY3, eX3, eY3, finalT2, finalR2; // mid point intermediary
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     // if Encoder Drift Alarm is ON, don't do anything
     if(giEncoderAlarm)
     {
@@ -5763,13 +3765,8 @@ int ROMoveCartesianDirection(long lDirectionArg, long lDistanceArg)
     if (ROReadCurrentPosition(ulEquipeAxis, lStartPos) == FAILURE)
     {
 	return FAILURE;
-<<<<<<< HEAD
     }
 
-=======
-    }
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     // convert robot to world
     startT = lStartPos[0];
     startR = lStartPos[1];
@@ -5857,10 +3854,6 @@ int ROMoveCartesianDirection(long lDirectionArg, long lDistanceArg)
     lStartPos[1] = finalR;
 
     ROMoveToCartesian(ulEquipeAxis, lStartPos);
-<<<<<<< HEAD
     return SUCCESS;
-=======
-    return SUCCESS;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 

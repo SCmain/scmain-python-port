@@ -1,9 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
- * Program:     Motion Control Test Routines (Diagnostics)
- * File:        GATest.h
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -29,7 +25,6 @@
  *
  * Program:     Motion Control Test Routines (Diagnostics)
  * File:        gatst.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   GATestGalil
  *              GATestLSHS
  *              GATestEncoder
@@ -55,7 +50,6 @@
 #include "roloc.h"
 #include "scintr.h"
 #include "fiog.h"
-<<<<<<< HEAD
 #include "sctim.h"
 #include "ser.h"
 #include "serm.h"
@@ -71,23 +65,6 @@ char caTSTresponse[MAXGASTR];
 extern HANDLEDMC ghDMC;
 
 
-=======
-#include "sctim.h"
-#include "ser.h"
-#include "serm.h"
-#include "scio.h"
-#include "scttr.h"
-#include "gaintr.h"
-#include "ro.h"
-#include "dmclnx.h"
-
-char cpNull[8];
-char caTSTcommand[64];
-char caTSTresponse[MAXGASTR];
-extern HANDLEDMC ghDMC;
-
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /****************************************************************\
  *
@@ -106,11 +83,7 @@ int GATestGalil( int iCardNoArg )
     char cSSStr[20];
     long lERPar[8];
     int iTempCardNum;
-<<<<<<< HEAD
     int iLimitSwitchVal;
-=======
-    int iLimitSwitchVal;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     int rc;
 
     TTPrintsAt( 1,1,"Testing GALIL..." );
@@ -133,11 +106,7 @@ int GATestGalil( int iCardNoArg )
         ulAxisIndex = ROAxisAllRobot();
 
         GASendReceiveGalil( iTempCardNum, (char *)"ST\r", cpNull );
-<<<<<<< HEAD
         TIDelay( 100 );
-=======
-        TIDelay( 100 );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         GASendReceiveGalil( iTempCardNum, (char *)"SH\r", cpNull );
         if( GAiUseGalil <= iTempCardNum )
         {
@@ -172,17 +141,10 @@ int GATestGalil( int iCardNoArg )
             if(ROElectronicGearingON('X', 'Y', VAC514_T_GEARING_RATIO, FALSE) == FAILURE)
                 return FAILURE;
         }
-<<<<<<< HEAD
 	// instead of disabling amplifier,
 	// we will use low torque to generate ER
 	sprintf(caTSTcommand, "TL 0.001");
     	rc = GASendDMCCommand(ghDMC, caTSTcommand, caTSTresponse, MAXGASTR);
-=======
-	// instead of disabling amplifier,
-	// we will use low torque to generate ER
-	sprintf(caTSTcommand, "TL 0.001");
-    	rc = GASendDMCCommand(ghDMC, caTSTcommand, caTSTresponse, MAXGASTR);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
         /* Mask off 4th bit of Galil's _TS (limit switch active). */
         if(iLimitSwitchVal & 0x08)
@@ -196,19 +158,11 @@ int GATestGalil( int iCardNoArg )
         GASendReceiveGalil( iTempCardNum, (char *)cSSStr, cpNull );
         sprintf( cSSStr, "BGX\r");
         GASendReceiveGalil( iTempCardNum, (char *)cSSStr, cpNull );
-<<<<<<< HEAD
 	// restore torque
 	sprintf(caTSTcommand, "TL 9.999");
     	rc = GASendDMCCommand(ghDMC, caTSTcommand, caTSTresponse, MAXGASTR);
         TIDelay( 1000 );
         ROUpdateTS(FALSE);
-=======
-	// restore torque
-	sprintf(caTSTcommand, "TL 9.999");
-    	rc = GASendDMCCommand(ghDMC, caTSTcommand, caTSTresponse, MAXGASTR);
-        TIDelay( 1000 );
-        ROUpdateTS(FALSE);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	
         if( ROGetERFlag() & ulAxisIndex )
         {
@@ -216,17 +170,10 @@ int GATestGalil( int iCardNoArg )
         }
         else
         {
-<<<<<<< HEAD
   	    	// instead of disabling amplifier,
 	    	// we will use low torque to generate ER
 	    	sprintf(caTSTcommand, "TL ,0.001");
     	    rc = GASendDMCCommand(ghDMC, caTSTcommand, caTSTresponse, MAXGASTR);
-=======
-  	    	// instead of disabling amplifier,
-	    	// we will use low torque to generate ER
-	    	sprintf(caTSTcommand, "TL ,0.001");
-    	    rc = GASendDMCCommand(ghDMC, caTSTcommand, caTSTresponse, MAXGASTR);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             /* Before making decision, test on the 2nd axis */
             /* Mask off 4th bit of Galil's _TS (limit switch active). */
             if(iLimitSwitchVal & 0x08)
@@ -239,7 +186,6 @@ int GATestGalil( int iCardNoArg )
             }
             GASendReceiveGalil( iTempCardNum, (char *)cSSStr, cpNull );
             sprintf( cSSStr, "BGY\r");
-<<<<<<< HEAD
             GASendReceiveGalil( iTempCardNum, (char *)cSSStr, cpNull );
 	    TIDelay(500);
 	    ROUpdateTS(FALSE);
@@ -247,15 +193,6 @@ int GATestGalil( int iCardNoArg )
 	    sprintf(caTSTcommand, "TL ,9.999");
     	    rc = GASendDMCCommand(ghDMC, caTSTcommand, caTSTresponse, MAXGASTR);
             TIDelay( 1000 );
-=======
-            GASendReceiveGalil( iTempCardNum, (char *)cSSStr, cpNull );
-	    TIDelay(500);
-	    ROUpdateTS(FALSE);
-  	    // restore torque
-	    sprintf(caTSTcommand, "TL ,9.999");
-    	    rc = GASendDMCCommand(ghDMC, caTSTcommand, caTSTresponse, MAXGASTR);
-            TIDelay( 1000 );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    ROUpdateTS(FALSE);
             if( ROGetERFlag() & ulAxisIndex )
             {
@@ -264,19 +201,11 @@ int GATestGalil( int iCardNoArg )
             else
                 TTPrintsAt( 1,1, "GALIL Not pass   " );
         }
-<<<<<<< HEAD
 
     }
 
 CANT_SERVO:
 
-=======
-
-    }
-
-CANT_SERVO:
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     GASendReceiveGalil( iTempCardNum, (char *)"MO\xD", cpNull );
 
     TIDelay( 1000 );
@@ -310,13 +239,8 @@ int GATestLSHS( int iCardNoArg, int iVacExistsArg )
     int  iMaxAxis = 3;
     int  iVacAxisMask;
 
-<<<<<<< HEAD
     iTempCardNum = iCardNoArg ? GA_CARD_1 : GA_CARD_0;
 	if (iTempCardNum == GA_CARD_1) goto preTest;
-=======
-    iTempCardNum = iCardNoArg ? GA_CARD_1 : GA_CARD_0;
-	if (iTempCardNum == GA_CARD_1) goto preTest;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (ROGetSpecialAxis(RO_DUAL_ARM))
     {
@@ -341,13 +265,8 @@ int GATestLSHS( int iCardNoArg, int iVacExistsArg )
         iDualArmCardNum = 0;
         iFlipperCardNum = 0;
         iTrackCardNum = 0;
-<<<<<<< HEAD
     }
 
-=======
-    }
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     // Turn on brake before Motor Off.
     ROServiceBrake(ROBOTFILE, FALSE);
 
@@ -410,17 +329,10 @@ int GATestLSHS( int iCardNoArg, int iVacExistsArg )
 	//if(ROGetSpecialAxis(RO_TRACK))
 	//	ROServiceBrake(AUXFILE, FALSE);
 
-<<<<<<< HEAD
     return SUCCESS;
 
 preTest:
 
-=======
-    return SUCCESS;
-
-preTest:
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (ROGetSpecialAxis(RO_TRACK))
     {
         if ((ROGetSpecialAxis(RO_TRACK) > RO_AXIS_W) && (iTempCardNum == GA_CARD_1))
@@ -473,11 +385,7 @@ preTest:
         TTPrintsAt( 1, 1, "t:" );
         TTPrintsAt( 2, 1, "r:" );
         TTPrintsAt( 3, 1, "z:" );
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if ((iTrackCardNum) || (iDualArmCardNum) || (iFlipperCardNum))
         {
             TTPrintsAt( 4, 1, "w:" );
@@ -579,17 +487,10 @@ int GATestEncoder( int iCardNoArg, int iVacExistsArg )
     int   iVacAxisMask;
     int   iBrakeToggle = 0;
 
-<<<<<<< HEAD
     iTempCardNum = iCardNoArg ? GA_CARD_1 : GA_CARD_0;
 
 	if (iTempCardNum == GA_CARD_1) goto preTest;
 
-=======
-    iTempCardNum = iCardNoArg ? GA_CARD_1 : GA_CARD_0;
-
-	if (iTempCardNum == GA_CARD_1) goto preTest;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (ROGetSpecialAxis(RO_DUAL_ARM))
     {
         iDualArmCardNum = GA_CARD_0;
@@ -652,11 +553,7 @@ int GATestEncoder( int iCardNoArg, int iVacExistsArg )
         GASendReceiveGalil(iTempCardNum, (char *)"TPABCD\r", cBuf);
         if( strcmp( cBuf, cBuf1 ) )
         {
-<<<<<<< HEAD
             strcpy( cBuf1, cBuf );
-=======
-            strcpy( cBuf1, cBuf );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             pCh = strtok( cBuf, "," );
             for( iAxisIndex=0; iAxisIndex < iMaxAxis; iAxisIndex++ )
             {
@@ -708,17 +605,10 @@ int GATestEncoder( int iCardNoArg, int iVacExistsArg )
 	//if(ROGetSpecialAxis(RO_TRACK))
 	//	ROServiceBrake(AUXFILE, TRUE);
 
-<<<<<<< HEAD
     return SUCCESS;
 
 preTest:
 
-=======
-    return SUCCESS;
-
-preTest:
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (ROGetSpecialAxis(RO_TRACK))
     {
         if ((ROGetSpecialAxis(RO_TRACK) > RO_AXIS_W))
@@ -794,11 +684,7 @@ preTest:
         GASendReceiveGalil(iTempCardNum, (char *)"TPEFGH\r", cBuf);
         if( strcmp( cBuf, cBuf1 ) )
         {
-<<<<<<< HEAD
             strcpy( cBuf1, cBuf );
-=======
-            strcpy( cBuf1, cBuf );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             pCh = strtok( cBuf, "," );
             for( iAxisIndex=0; iAxisIndex < iMaxAxis; iAxisIndex++ )
             {
@@ -897,15 +783,9 @@ int GASetupAMPBoard( int iCardNoArg )
     long lHomeSpeed[3];
     int  iTempCardNum;
 
-<<<<<<< HEAD
     iTempCardNum = iCardNoArg ? GA_CARD_1 : GA_CARD_0;
 
 	if (iTempCardNum == GA_CARD_1) goto preTest;
-=======
-    iTempCardNum = iCardNoArg ? GA_CARD_1 : GA_CARD_0;
-
-	if (iTempCardNum == GA_CARD_1) goto preTest;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     TTPrintsAt( 1,1,"Make sure all" );
     TTPrintsAt( 2,1,"amplifier modules" );
@@ -926,13 +806,8 @@ int GASetupAMPBoard( int iCardNoArg )
     TTPrintsAt( 4,1,  "Init. AMP. board  " );
     GAAmpInit();
     TIDelay( 500 );
-<<<<<<< HEAD
     iTint = inb( IO_ROBOT_INPUT_G );
 
-=======
-    iTint = inb( IO_ROBOT_INPUT_G );
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	iTint = 0;
 
     if( iTempCardNum == GA_CARD_1 )
@@ -1002,15 +877,9 @@ int GASetupAMPBoard( int iCardNoArg )
     IOWriteIO( -1, 0, IO_ROBOT_OUTPUT_B );
 
     return SUCCESS;
-<<<<<<< HEAD
 
 preTest:
 
-=======
-
-preTest:
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     TTPrintsAt( 1,1,"Make sure all" );
     TTPrintsAt( 2,1,"amplifier modules" );
     TTPrintsAt( 3,1,"OFF the board" );
@@ -1030,13 +899,8 @@ preTest:
     TTPrintsAt( 4,1,  "Init. AMP. board  " );
     GAAmpInit();
     TIDelay( 500 );
-<<<<<<< HEAD
     iTint = inb( IO_PRE_INPUT_G );
 
-=======
-    iTint = inb( IO_PRE_INPUT_G );
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	iTint = 0;
 
     iTint &= 0xFC;
@@ -1069,11 +933,7 @@ preTest:
 //                                      lHomeSpeed[1],
 //                                      lHomeSpeed[2]);
 //    GASendReceiveGalil( iTempCardNum, (char *)cBuf, cpNull );
-<<<<<<< HEAD
 //    GASendReceiveGalil( iTempCardNum, (char *)"BGXYZ\xD", cpNull );
-=======
-//    GASendReceiveGalil( iTempCardNum, (char *)"BGXYZ\xD", cpNull );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     TTPrintsAt( 4,1, "Move Axes" );
 
@@ -1106,11 +966,7 @@ preTest:
     IOWriteIO( -1, 0, IO_PRE_OUTPUT_B );
 
     return SUCCESS;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 
 
@@ -1144,15 +1000,9 @@ int GASetupAMPMode( int iCardNoArg, int iVacExistsArg )
     int   iMaxAxis = 3;
     int   iVacAxisMask;
 
-<<<<<<< HEAD
     iTempCardNum = iCardNoArg ? GA_CARD_1 : GA_CARD_0;
 
 	if (iTempCardNum == GA_CARD_1) goto preTest;
-=======
-    iTempCardNum = iCardNoArg ? GA_CARD_1 : GA_CARD_0;
-
-	if (iTempCardNum == GA_CARD_1) goto preTest;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (ROGetSpecialAxis(RO_DUAL_ARM))
     {
@@ -1182,15 +1032,9 @@ int GASetupAMPMode( int iCardNoArg, int iVacExistsArg )
     TTPrintsAt( 4,1, "Init. AMP. board" );
     GAAmpInit();
     TIDelay( 500 );
-<<<<<<< HEAD
     iTint = inb( IO_ROBOT_INPUT_G );
 
 	iTint = 0;
-=======
-    iTint = inb( IO_ROBOT_INPUT_G );
-
-	iTint = 0;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if( iTint )
     {
@@ -1328,15 +1172,9 @@ int GASetupAMPMode( int iCardNoArg, int iVacExistsArg )
     IOWriteIO( -1, 0, IO_ROBOT_OUTPUT_B );
 
     return SUCCESS;
-<<<<<<< HEAD
 
 preTest:
 
-=======
-
-preTest:
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (ROGetSpecialAxis(RO_TRACK))
     {
         if ((ROGetSpecialAxis(RO_TRACK) > RO_AXIS_W))
@@ -1361,15 +1199,9 @@ preTest:
     TTPrintsAt( 4,1, "Init. AMP. board" );
     GAAmpInit();
     TIDelay( 500 );
-<<<<<<< HEAD
     iTint = inb( IO_PRE_INPUT_G );
 
 	iTint = 0;
-=======
-    iTint = inb( IO_PRE_INPUT_G );
-
-	iTint = 0;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iTint &= 0xFC;
     if( iTint )
     {
@@ -1531,9 +1363,5 @@ preTest:
     IOWriteIO( -1, 0, IO_PRE_OUTPUT_B );
 
     return SUCCESS;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }

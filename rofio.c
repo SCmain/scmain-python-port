@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-/****************************************************************
- *
- * Program:     Controller firmware
- * File:        megetset.c
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -31,7 +25,6 @@
  *
  * Program:     Controller firmware
  * File:        rofio.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   MEGetXXXXXXX() - To allow the Mechanism's customer to get
  *                                     the parameters from Mechanism module
  *              MESetXXXXXXX() - To allow the Mechanism's customer to put
@@ -120,15 +113,9 @@ int ROGetParameter(int iGetFromParamFileArg, unsigned long ulEquipeAxisArg, long
             /* Scale the number from encoder counts to normal units. */
             ROScaleSpd(ulEquipeAxisArg, laTempParameter, lParameterValueArg);
         }
-<<<<<<< HEAD
         else if((iParameterTypeArg == TORQUE_LIMIT) ||
 				(iParameterTypeArg == FEED_FORWARD_ACCEL) ||
 				(iParameterTypeArg == JERK) ||
-=======
-        else if((iParameterTypeArg == TORQUE_LIMIT) ||
-				(iParameterTypeArg == FEED_FORWARD_ACCEL) ||
-				(iParameterTypeArg == JERK) ||
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 				(iParameterTypeArg == IT_SCURVE) )
         {
             /* The motion module already puts the 4th axis data in the 4th element of the array. */
@@ -182,11 +169,7 @@ int ROSetParameter(int iSaveToParamFileArg, unsigned long ulEquipeAxisArg, long 
      * also sets up the correct file type and Galil axes for the Equipe axes requested. */
     if(ROValidAxis(ulEquipeAxisArg, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
         return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if ((iParameterTypeArg == OPERATIONAL_SPEED) || (iParameterTypeArg == OPERATIONAL_ACCEL) ||
         (iParameterTypeArg == JERK) || (iParameterTypeArg == OPERATIONAL_DECEL) ||
@@ -194,17 +177,10 @@ int ROSetParameter(int iSaveToParamFileArg, unsigned long ulEquipeAxisArg, long 
         (iParameterTypeArg == IT_SCURVE) || (iParameterTypeArg == PROPORTIONAL_GAIN))
     {
         /* Operating speed can NOT be set if the axis is currently in motion. */
-<<<<<<< HEAD
         if((ulAMFlag&ulEquipeAxisArg) != ulEquipeAxisArg)
 	{
 //printf("AMFlag=%d axis=%d\n",ulAMFlag, ulEquipeAxisArg);
             return FAILURE;
-=======
-        if((ulAMFlag&ulEquipeAxisArg) != ulEquipeAxisArg)
-	{
-//printf("AMFlag=%d axis=%d\n",ulAMFlag, ulEquipeAxisArg);
-            return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  	}
     }
 
@@ -222,7 +198,6 @@ int ROSetParameter(int iSaveToParamFileArg, unsigned long ulEquipeAxisArg, long 
         {
             /* In the case of a W or w axis, the data must be transferred from the
              * fourth element of the array where it remains from the previous copy
-<<<<<<< HEAD
              * operation. The datafile routine only overwrites the first 3 elements. */
 //printf("W before = ");
 //for(i=0;i<8;++i) printf("%d, ",laTempParameter[i]);
@@ -230,15 +205,6 @@ int ROSetParameter(int iSaveToParamFileArg, unsigned long ulEquipeAxisArg, long 
             ROArrangeSetArrayForW(ulEquipeAxisArg, laTempParameter);
 //printf("W after = ");
 //for(i=0;i<8;++i) printf("%d, ",laTempParameter[i]);
-=======
-             * operation. The datafile routine only overwrites the first 3 elements. */
-//printf("W before = ");
-//for(i=0;i<8;++i) printf("%d, ",laTempParameter[i]);
-//printf("\n");
-            ROArrangeSetArrayForW(ulEquipeAxisArg, laTempParameter);
-//printf("W after = ");
-//for(i=0;i<8;++i) printf("%d, ",laTempParameter[i]);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("\n");
 
         }
@@ -247,7 +213,6 @@ int ROSetParameter(int iSaveToParamFileArg, unsigned long ulEquipeAxisArg, long 
             /* Other axes must be copied indiviually from the master copy that was passed in
              * to the local copy. A request for A or a will actually copy all the values over.
              * This way, for a single axis request, the other values will be preserved. */
-<<<<<<< HEAD
             if (ulEquipeAxisArg&RO_AXIS_T) 
 				laTempParameter[0] = lParameterValueArg[0];
             if (ulEquipeAxisArg&RO_AXIS_R) 
@@ -263,23 +228,6 @@ int ROSetParameter(int iSaveToParamFileArg, unsigned long ulEquipeAxisArg, long 
             if (ulEquipeAxisArg&RO_AXIS_z) 
 				laTempParameter[6] = lParameterValueArg[6];
             if (ulEquipeAxisArg&RO_AXIS_w) 
-=======
-            if (ulEquipeAxisArg&RO_AXIS_T) 
-				laTempParameter[0] = lParameterValueArg[0];
-            if (ulEquipeAxisArg&RO_AXIS_R) 
-				laTempParameter[1] = lParameterValueArg[1];
-            if (ulEquipeAxisArg&RO_AXIS_Z) 
-				laTempParameter[2] = lParameterValueArg[2];
-            if (ulEquipeAxisArg&RO_AXIS_W) 
-				laTempParameter[3] = lParameterValueArg[3];
-            if (ulEquipeAxisArg&RO_AXIS_t) 
-				laTempParameter[4] = lParameterValueArg[4];
-            if (ulEquipeAxisArg&RO_AXIS_r) 
-				laTempParameter[5] = lParameterValueArg[5];
-            if (ulEquipeAxisArg&RO_AXIS_z) 
-				laTempParameter[6] = lParameterValueArg[6];
-            if (ulEquipeAxisArg&RO_AXIS_w) 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 				laTempParameter[7] = lParameterValueArg[7];
         }
 
@@ -296,7 +244,6 @@ int ROSetParameter(int iSaveToParamFileArg, unsigned long ulEquipeAxisArg, long 
         ROUnscaleSpd(ulEquipeAxisArg, lParameterValueArg, laTempParameter);
 
         /* Don't allow values between -5 and +5 to be set. It might result in 0 speed. */
-<<<<<<< HEAD
         if ((ulEquipeAxisArg & RO_AXIS_T) && 
 			(laTempParameter[0] < 5) && (laTempParameter[0] > -5))
             return FAILURE;
@@ -320,42 +267,13 @@ int ROSetParameter(int iSaveToParamFileArg, unsigned long ulEquipeAxisArg, long 
 			(laTempParameter[6] < 5) && (laTempParameter[6] > -5))
             return FAILURE;
         if ((ulEquipeAxisArg & RO_AXIS_w) && 
-=======
-        if ((ulEquipeAxisArg & RO_AXIS_T) && 
-			(laTempParameter[0] < 5) && (laTempParameter[0] > -5))
-            return FAILURE;
-        if ((ulEquipeAxisArg & RO_AXIS_R) && 
-			(laTempParameter[1] < 5) && (laTempParameter[1] > -5))
-            return FAILURE;
-        if ((ulEquipeAxisArg & RO_AXIS_Z) && 
-			(laTempParameter[2] < 5) && (laTempParameter[2] > -5))
-            return FAILURE;
-        if ((ulEquipeAxisArg & RO_AXIS_W) && 
-			(laTempParameter[3] < 5) && (laTempParameter[3] > -5))
-            return FAILURE;
-
-        if ((ulEquipeAxisArg & RO_AXIS_t) && 
-			(laTempParameter[4] < 5) && (laTempParameter[4] > -5))
-            return FAILURE;
-        if ((ulEquipeAxisArg & RO_AXIS_r) && 
-			(laTempParameter[5] < 5) && (laTempParameter[5] > -5))
-            return FAILURE;
-        if ((ulEquipeAxisArg & RO_AXIS_z) && 
-			(laTempParameter[6] < 5) && (laTempParameter[6] > -5))
-            return FAILURE;
-        if ((ulEquipeAxisArg & RO_AXIS_w) && 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			(laTempParameter[7] < 5) && (laTempParameter[7] > -5))
             return FAILURE;
         iReturn = GASetValsLongDefined(iCardNum, iParameterTypeArg, uGalilAxes, laTempParameter);
         if (iReturn == FAILURE)
             return FAILURE;
     }
-<<<<<<< HEAD
     else if((iParameterTypeArg == TORQUE_LIMIT) || (iParameterTypeArg == FEED_FORWARD_ACCEL)
-=======
-    else if((iParameterTypeArg == TORQUE_LIMIT) || (iParameterTypeArg == FEED_FORWARD_ACCEL)
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			|| (iParameterTypeArg == JERK) || (iParameterTypeArg == IT_SCURVE))
     {
         /* Don't forget, the normal units must be divided by 1000. */
@@ -364,15 +282,9 @@ int ROSetParameter(int iSaveToParamFileArg, unsigned long ulEquipeAxisArg, long 
         if (iReturn == FAILURE)
             return FAILURE;
     }
-<<<<<<< HEAD
     else if ((iParameterTypeArg == ERROR_LIMIT) || 
       	(iParameterTypeArg == DERIVATIVE_GAIN) || (iParameterTypeArg == PROPORTIONAL_GAIN) ||
         (iParameterTypeArg == INTEGRAL_GAIN))
-=======
-    else if ((iParameterTypeArg == ERROR_LIMIT) || 
-      	(iParameterTypeArg == DERIVATIVE_GAIN) || (iParameterTypeArg == PROPORTIONAL_GAIN) ||
-        (iParameterTypeArg == INTEGRAL_GAIN))
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     {
         iReturn = GASetValsLongDefined(iCardNum, iParameterTypeArg, uGalilAxes, lParameterValueArg);
         if (iReturn == FAILURE)

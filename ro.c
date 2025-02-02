@@ -1,7 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -25,7 +23,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  *
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Program:     Robot mechanism module
  * File:        ro.c
  * Functions:   A lot of functions assimilated from
@@ -59,15 +56,9 @@
 \***************************************************************/
 #include <sys/io.h>
 
-<<<<<<< HEAD
 #include <stdlib.h>
 #include <time.h>
 #include <pthread.h>
-=======
-#include <stdlib.h>
-#include <time.h>
-#include <pthread.h>
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <math.h>
 #include <string.h>
 #include "sck.h"
@@ -87,17 +78,10 @@
 #include "scintr.h"
 #include "scmac.h"
 #include "scio.h"
-<<<<<<< HEAD
 #include "otf.h"
 #include "fiol.h"
 #include "dmclnx.h"
 #include "pdio.h"
-=======
-#include "otf.h"
-#include "fiol.h"
-#include "dmclnx.h"
-#include "pdio.h"
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //#include "serl.h"
 
 /********** VARIABLES USED LOCALLY (within Mechanism module) and EXTERNED **********/
@@ -109,11 +93,7 @@ unsigned long ulHoming = 0;     /* 1 = in the process of homing; bitwise by axis
 unsigned long ulHomed = 0;      /* 1 = axis has previously homed; bitwise by axis */
 unsigned long ulServoFlag = 0xFF;   /* 1 = servo off; 0 = servo on; bitwise by axis */
 unsigned long ulERFlag = 0;     /* 1 = position error on axis; bitwise by axis */
-<<<<<<< HEAD
 unsigned long ulAMFlag = 0xFF;  /* 1 = motion completed on axis; bitwise by axis */
-=======
-unsigned long ulAMFlag = 0xFF;  /* 1 = motion completed on axis; bitwise by axis */
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 unsigned long ulAMIPFlag = 0xFF;/* 1 = motion complete by InPosition */
 unsigned long ulLMPosFlag = 0;  /* 1 = pos limit sw now on; bitwise by axis */
 unsigned long ulLMNegFlag = 0;  /* 1 = neg limit sw now on; bitwise by axis */
@@ -135,15 +115,9 @@ BOOL bCommandedGearingMode = TRUE;  // variable holds the current setting for th
 int iNumAxes = 0;               /* The total number of axes in the system. */
 unsigned uaAxisMap[8][4];       /* The local axis mapping matrix copied during initialization. */
 int iNumGalilCards = 1;         /* The total number of Galil cards in the system, either 1 or 2. */
-<<<<<<< HEAD
 
 extern int giNumOfAxes;
 
-=======
-
-extern int giNumOfAxes;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 unsigned uAbortAxis = 0;
 //int iPowerDisconnected = TRUE;
 int iPowerDisconnected = FALSE;
@@ -151,7 +125,6 @@ int iEMOWasSet = FALSE;
 //double dMechRatioVAC514 = 13563.36805556; CK:06022000 Steve's request for new constant
 double dMechRatioVAC514 = 21541.81985294;
 
-<<<<<<< HEAD
 char cpNull[8];
 
 extern HANDLEDMC ghDMC;
@@ -475,331 +448,6 @@ void RORaiseAlarm(unsigned int uAlarmBitArg)
     rc = GASendDMCCommand(ghDMC, caSTcommand, ReturnBuffer, MAXGASTR);
     
     MASetMacroIntegerVars(MR_DER_INTERRUPT, TRUE);
-=======
-char cpNull[8];
-
-extern HANDLEDMC ghDMC;
-extern CONTROLLERINFO gControllerInfo;
-
-void GAGalilWriteIO(int, int);
-
-extern int giVersionPA;
-extern int giSysCfgNum;
-extern int giMapTest;
-extern int giMapIORunning;
-
-int giTimerGA;
-
-int giIPW[8];
-int giIPWenc[8];
-int giIPWFlag[8];
-int giIPWDirection[8];
-int giIPWDestination[8];
-char TScommand[4] = "TS";
-char TPcommand[4] = "TP";
-char HXcommand[4] = "HX";
-char HX2command[10] = "VMTC=0";
-char HOMDcommand[10] = "MG VHMD";
-char HOMGcommand[10] = "MG VHMG";
-
-// LATCH related Galil commands
-char caALAcommand[10] = "MG _ALA";
-char caALBcommand[10] = "MG _ALB";
-char caALCcommand[10] = "MG _ALC";
-char caALDcommand[10] = "MG _ALD";
-char caALEcommand[10] = "MG _ALE";
-char caALFcommand[10] = "MG _ALF";
-char caALGcommand[10] = "MG _ALG";
-char caALHcommand[10] = "MG _ALH";
-char caRLAcommand[10] = "MG _RLA";
-char caRLBcommand[10] = "MG _RLB";
-char caRLCcommand[10] = "MG _RLC";
-char caRLDcommand[10] = "MG _RLD";
-char caRLEcommand[10] = "MG _RLE";
-char caRLFcommand[10] = "MG _RLF";
-char caRLGcommand[10] = "MG _RLG";
-char caRLHcommand[10] = "MG _RLH";
-char caTPAcommand[5] = "TPA";
-char caTPBcommand[5] = "TPB";
-char caTPCcommand[5] = "TPC";
-char caTPDcommand[5] = "TPD";
-char caTPEcommand[5] = "TPE";
-char caTPFcommand[5] = "TPF";
-char caTPGcommand[5] = "TPG";
-char caTPHcommand[5] = "TPH";
-char caARAcommand[5] = "ALA";
-char caARBcommand[5] = "ALB";
-char caARCcommand[5] = "ALC";
-char caARDcommand[5] = "ALD";
-char caAREcommand[5] = "ALE";
-char caARFcommand[5] = "ALF";
-char caARGcommand[5] = "ALG";
-char caARHcommand[5] = "ALH";
-
-char caSTcommand[5] = "ST"; // to stop all axes motion
-
-extern long glPDCalTable[8][2][5]; // 0(min), 1(max), 2(ave), 3(user), 4(notused)
-extern long glLatchData[8][2][500];
-extern long glLatchDataEU[8][2][500];
-extern long glLatchPtr [8][2][2];
-
-int giTPCount = 0;
-int giTSCount = 0;
-int giLACount = 0;
-int giROCount = 0;
-
-int giTOTFlag;
-
-extern int iOTFFirstTime;
-extern int giOTFNullCount;
-extern int iOTFAligning;
-
-int giEncoderDriftFlag = 0;
-int giEncoderDriftDetector = 0;
-int giDisableLatch = 1;
-int giEncoderAlarm = 0;
-
-int giPrevERFlag[8] = {0,0,0,0,0,0,0,0};
-int giPrevPLFlag[8] = {0,0,0,0,0,0,0,0};
-int giPrevNLFlag[8] = {0,0,0,0,0,0,0,0};
-
-long glTSArray[8];
-char glTSReturnBuffer[MAXGASTR];
-
-extern int iERRInterrupt;
-extern int iLMMInterrupt;
-extern int iDERInterrupt;
-
-extern unsigned char iInputG;
-
-void RODisableLatch(int iFlagArg)
-{
-    int rc;
-    char caResp[MAXGASTR];
-
-    if(iFlagArg) // Disable the latch for drift detection
-    {
-	// This will latch all armed axes.
-	// Thus, all axes are now un-armed.
-	rc = GASendDMCCommand(ghDMC, "CN,,1", caResp, MAXGASTR);
-	rc = GASendDMCCommand(ghDMC, "CN,,-1", caResp, MAXGASTR);
-	giDisableLatch = 1;
-    }
-    else	// Enable the latch for drifit detection
-    {
-	rc = GASendDMCCommand(ghDMC, "CN,,-1", caResp, MAXGASTR);
-	rc = GASendDMCCommand(ghDMC, "CN,,1", caResp, MAXGASTR);
-	if(giNumOfAxes <= 4)
-	    rc = GASendDMCCommand(ghDMC, "ALABCD", caResp, MAXGASTR);
-	else
-	    rc = GASendDMCCommand(ghDMC, "ALABCDEFGH", caResp, MAXGASTR);
-	giDisableLatch = 0;
-    }
-
-}
-
-void ConvertStrToL(char* strBuf, int iNumAxesArg, long* lTSArray)
-{
-    int i, j, k;
-    int iDone;
-    char aNum[40];
-
-    for(i=0;i<8; i++) lTSArray[i]=0;
-
-    i=j=k=iDone=0;
-    while (!iDone)
-    {
-	aNum[i] = strBuf[k];
-	if ((aNum[i] == ',') || (strBuf[k] == NULL))
-	{
-	    aNum[i] = '\0';
-	    if(i>0)
-	    {
-		lTSArray[j] = atol(aNum);
-	    }
-	    else
-	    {
-		lTSArray[j] = 0;
-	    }
-	    j++;
-	    i=0;
-	    if (j >= iNumAxesArg || strBuf[k] == NULL) iDone = 1;
-	    k++;
-	}
-	else
-	{
-	    i++; 
-	    k++;
-	}
-    }
-}
-  
-int ConvertStrToi(char* strBufArg, int iMaxArg, int* iArrayArg)
-{
-    int i, j, iTemp;
-    int iDone;
-    char *aNum;
-
-    i = 0;
-    iArrayArg[i++] = atoi( strtok(strBufArg, ",") );
-
-    iDone = 0;
-    while (!iDone)
-    {
-	aNum = strtok(NULL, ",");
-	if (aNum == NULL)
-	    iArrayArg[i++] = 0;
-	else
-	    iArrayArg[i++] = atoi( aNum );
-
-	if (i >= iMaxArg)
-	    iDone = 1;
-    }
-
-    return i;
-
-}
-    
-int ROActionStatus(void)
-{
-    int rc, iTemp;
-    char caResp[MAXGASTR];
-    char caTBcommand[5] = "TB\xD";
-
-    rc = GASendDMCCommand(ghDMC, caTBcommand, caResp, MAXGASTR);
-
-    iTemp = atoi(caResp);
-    iTemp &= 0x80;
-    if (iTemp) return 1;
-    return 0;
-}
-
-
-void ROUpdateTP(int iFlagArg)
-{
-    int i, rc;
-    long lTemp, lTPArray[8];
-    char ReturnBuffer[MAXGASTR];
-
-    // Make sure that ROUpdateTP(FALSE) gets Executed no matter!!!
-    //
-    if(iFlagArg && iOTFFirstTime) return; // don't bother Galil during OTF
-
-    if(iFlagArg && (++giTPCount < 3)) return;// iFlagArg 0 will update no matter!!!
-    giTPCount = 0;
-
-//    ulAMIPFlag = ulAMFlag;
-
-    rc = GASendDMCCommand(ghDMC, TPcommand, ReturnBuffer, MAXGASTR);
-
-    // If galil timeout error, just return.
-    if(rc != SUCCESS) 
-    {
-//printf("ROUpdateTP DMC failure=%d\n",rc);
-	return;
-    }
-
-    lTemp = strlen(ReturnBuffer);
-    ReturnBuffer[lTemp++] = ',';
-    ReturnBuffer[lTemp] = '\0';
-
-    ConvertStrToL(ReturnBuffer, 8, lTPArray);
-
-    for (i = 0; i < 4; i++)
-    {
-	if (giIPWFlag[i])
-	{
-	    // check if In Position is set if in motion
-//	    if (ulAMFlag & ~uaAxisMap[i][EQUIPE_AXIS] == 0)
-//	    ulAMIPFlag = ulAMFlag;
-	    // if axis is in motion, check its position 
-	    // if position is within IPW, set IPW motion complete
-	    // otherwise, set it to not complete.
-	    if ((ulAMFlag & (1<<i)) != (1<<i))
-	    {
-		if (giIPWDirection[i] == 1)
-		{   // positive direction
-		    if (giIPWDestination[i] <= lTPArray[i])
-		    {
-			if((ulAMIPFlag & (1<<i)) != (1<<i))
-			{
-			    ulAMIPFlag |= uaAxisMap[i][EQUIPE_AXIS];
-//printf("pos dir dest=%d curTP=%d axis=%d flag=%d\n",giIPWDestination[i], lTPArray[i], i, ulAMIPFlag);
-			}
-		    }
-		    else
-		    {
-			ulAMIPFlag &= ~uaAxisMap[i][EQUIPE_AXIS];
-		    }
-
-		}
-		else
-		{   // negative direction
-		    if (giIPWDestination [i] >= lTPArray[i])
-		    {
-			if((ulAMIPFlag & (1<<i)) != (1<<i))
-			{
-			    ulAMIPFlag |= uaAxisMap[i][EQUIPE_AXIS];
-//printf("neg dir dest=%d curTP=%d axis=%d flag=%d\n",giIPWDestination[i], lTPArray[i], i, ulAMIPFlag);
-			}
-		    }
-		    else
-		    {
-			ulAMIPFlag &= ~uaAxisMap[i][EQUIPE_AXIS];
-		    }
-		}
-	    }
-	}
-    }
-}
-
-
-void ROTurnLight(int iLightNoArg, int iFlagArg)
-{
-    int iDat;
-
-    switch(iLightNoArg)
-    {
-	case 0:
-	    iDat = inb(IO_PRE_OUTPUT_L);
-	    if(iFlagArg == 1)
-		iDat |= 0x80;
-	    else
-		iDat &= 0x7F;
-	    outb(iDat, IO_PRE_OUTPUT_L);
-	    break;
-
-	case 1:
- 	    iDat = inb(IO_PRE_OUTPUT_B);
-	    if(iFlagArg == 1)
-		iDat |= 0x40;
-	    else
-		iDat &= 0xBF;
-	    outb(iDat, IO_PRE_OUTPUT_B);
-	    break;
-    }
-  
-    return;
-}
-
-void RORaiseAlarm(unsigned int uAlarmBitArg)
-{
-    int iDat;
-    int iFP;
-    int iCount;
-    int rc;
-    char ReturnBuffer[MAXGASTR];
-
-    // Save this portion for later use
-    giEncoderAlarm |= uAlarmBitArg;
-    ROEmergencyOff(FALSE);
-    iDat = inb(IO_PRE_OUTPUT_L);
-    iDat |= 0x80;
-    outb(iDat, IO_PRE_OUTPUT_L);
-    rc = GASendDMCCommand(ghDMC, caSTcommand, ReturnBuffer, MAXGASTR);
-    
-    MASetMacroIntegerVars(MR_DER_INTERRUPT, TRUE);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     iFP = fopen( ALFILENAME, "w");
     if( iFP == (FILE *)0 )
@@ -807,22 +455,15 @@ void RORaiseAlarm(unsigned int uAlarmBitArg)
         perror( "Alarm File Open Error " );
     }
     else
-<<<<<<< HEAD
     {
         iCount = fwrite(&giEncoderAlarm, sizeof(int), 1, iFP);
         if (iCount <= 0) 
-=======
-    {
-        iCount = fwrite(&giEncoderAlarm, sizeof(int), 1, iFP);
-        if (iCount <= 0) 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         {
             perror( "Alarm File Write Error " );
         }
         
         /* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
         fclose( iFP );
-<<<<<<< HEAD
     }
 }
 
@@ -836,21 +477,6 @@ void ROClearAlarm( void )
     iDat = inb(IO_PRE_OUTPUT_L);
     iDat &= 0x7F;
     outb(iDat, IO_PRE_OUTPUT_L);
-=======
-    }
-}
-
-void ROClearAlarm( void )
-{
-    int iDat;
-    FILE *iFP;
-    int iCount;
-
-    giEncoderAlarm = 0;
-    iDat = inb(IO_PRE_OUTPUT_L);
-    iDat &= 0x7F;
-    outb(iDat, IO_PRE_OUTPUT_L);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     
     iFP = fopen( ALFILENAME, "w");
     if( iFP == (FILE *)0 )
@@ -858,22 +484,15 @@ void ROClearAlarm( void )
         perror( "Alarm File Open Error " );
     }
     else
-<<<<<<< HEAD
     {
         iCount = fwrite(&giEncoderAlarm, sizeof(int), 1, iFP);
         if (iCount <= 0) 
-=======
-    {
-        iCount = fwrite(&giEncoderAlarm, sizeof(int), 1, iFP);
-        if (iCount <= 0) 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         {
             perror( "Alarm File Write Error " );
         }
         
         /* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
         fclose( iFP );
-<<<<<<< HEAD
     }
 }
 
@@ -1486,620 +1105,6 @@ void ROUpdateTS(int iFlagArg)
 }
 
 
-=======
-    }
-}
-
-void ROCheckLatch(int iFlagArg)
-{
-    int iLatch, rc, iDat;
-    long lTemp, lTP;
-    char ReturnBuffer[MAXGASTR];
-    FILE *iFP;
-    int iCount;
-
-    if(giDisableLatch) return;
-
-    if(giSysCfgNum == 30) // 30 = I2AXO special 
-    {
-	if ((~ulHomed) & 0x0F) return;
-    }
-    else
-    {
-    	if ((~ulHomed) & 0xFF) return;
-    }
-
-    if(iFlagArg && iOTFAligning) return; // don't bother Galil during OTF
-
-    if(iFlagArg && (++giLACount < 23)) return;
-    giLACount = 0;
-
-    // axis A
-    rc = GASendDMCCommand(ghDMC, caALAcommand, ReturnBuffer, MAXGASTR);
-
-    // If galil timeout error, just return.
-    if(rc != SUCCESS) 
-    {
-//printf("ROCheckLatch A DMC failure=%d\n",rc);
-	return;
-    }
-
-    iLatch = atoi(ReturnBuffer);
-    if(!iLatch) // Active Low
-    {
-    	giEncoderDriftDetector = 1;
-	rc = GASendDMCCommand(ghDMC, caRLAcommand, ReturnBuffer, MAXGASTR);
-	lTemp = atol(ReturnBuffer);
-	rc = GASendDMCCommand(ghDMC, caTPAcommand, ReturnBuffer, MAXGASTR);
-	lTP = atol(ReturnBuffer);
-	if(lTP > lTemp) // + direction motion
-	{
-	    glLatchData[0][0][glLatchPtr[0][0][0]] = lTemp; 	// current ptr
-	    ROEncoderToEU(RO_AXIS_T, lTemp, &glLatchDataEU[0][0][glLatchPtr[0][0][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(0, 0, glLatchPtr[0][0][0]))
-	    {
-		RORaiseAlarm(1);
-	    }
-	    glLatchPtr[0][0][0]++; // increment current ptr
-	    glLatchPtr[0][0][1]++; // total counts accumulated forever
-	    if(glLatchPtr[0][0][0] > 499)
-		glLatchPtr[0][0][0] = 0;
-	}
-	else		// - direction motion
-	{
-	    glLatchData[0][1][glLatchPtr[0][1][0]] = lTemp; 	// current ptr
-	    ROEncoderToEU(RO_AXIS_T, lTemp, &glLatchDataEU[0][1][glLatchPtr[0][1][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(0, 1, glLatchPtr[0][1][0]))
-	    {
-		RORaiseAlarm(1);
-	    }
-	    glLatchPtr[0][1][0]++; // increment current ptr
-	    glLatchPtr[0][1][1]++; // total counts accumulated forever
-	    if(glLatchPtr[0][1][0] > 499)
-		glLatchPtr[0][1][0] = 0;
-	}
-	// re-arm it
-	rc = GASendDMCCommand(ghDMC, caARAcommand, ReturnBuffer, MAXGASTR);
-    }
-
-    // axis B
-// COMMENTED OUT FOR OTF TEST 110104   
-    rc = GASendDMCCommand(ghDMC, caALBcommand, ReturnBuffer, MAXGASTR);
-
-    // If galil timeout error, just return.
-    if(rc != SUCCESS) 
-    {
-//printf("ROCheckLatch B DMC failure=%d\n",rc);
-	return;
-    }
-
-    iLatch = atoi(ReturnBuffer);
-    if(!iLatch)
-    {
-    	giEncoderDriftDetector = 1;
-	rc = GASendDMCCommand(ghDMC, caRLBcommand, ReturnBuffer, MAXGASTR);
-	lTemp = atol(ReturnBuffer);
-	rc = GASendDMCCommand(ghDMC, caTPBcommand, ReturnBuffer, MAXGASTR);
-	lTP = atol(ReturnBuffer);
-	if(lTP > lTemp) // + direction motion
-	{
-	    glLatchData[1][0][glLatchPtr[1][0][0]] = lTemp; 	// current ptr
-	    ROEncoderToEU(RO_AXIS_R, lTemp, &glLatchDataEU[1][0][glLatchPtr[1][0][0]]);
-//printf("Rlatch: enc=%d eu=%d ptr=%d\n",lTemp,glLatchDataEU[1][0][glLatchPtr[1][0][0]],glLatchPtr[1][0][0]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(1, 0, glLatchPtr[1][0][0]))
-	    {
-		RORaiseAlarm(2);
-	    }
-	    glLatchPtr[1][0][0]++; // increment current ptr
-	    glLatchPtr[1][0][1]++; // total counts accumulated forever
-	    if(glLatchPtr[1][0][0] > 499)
-		glLatchPtr[1][0][0] = 0;
-	}
-	else		// - direction motion
-	{
-	    glLatchData[1][1][glLatchPtr[1][1][0]] = lTemp; 	// current ptr
-	    ROEncoderToEU(RO_AXIS_R, lTemp, &glLatchDataEU[1][1][glLatchPtr[1][1][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(1, 1, glLatchPtr[1][1][0]))
-	    {
-		RORaiseAlarm(2);
-	    }
-	    glLatchPtr[1][1][0]++; // increment current ptr
-	    glLatchPtr[1][1][1]++; // total counts accumulated forever
-	    if(glLatchPtr[1][1][0] > 499)
-		glLatchPtr[1][1][0] = 0;
-	}
-	// re-arm it
-	rc = GASendDMCCommand(ghDMC, caARBcommand, ReturnBuffer, MAXGASTR);
-    }
-
-    // axis C
-    rc = GASendDMCCommand(ghDMC, caALCcommand, ReturnBuffer, MAXGASTR);
-
-    // If galil timeout error, just return.
-    if(rc != SUCCESS) 
-    {
-//printf("ROCheckLatch C DMC failure=%d\n",rc);
-	return;
-    }
-
-    iLatch = atoi(ReturnBuffer);
-    if(!iLatch)
-    {
-    	giEncoderDriftDetector = 1;
-	rc = GASendDMCCommand(ghDMC, caRLCcommand, ReturnBuffer, MAXGASTR);
-	lTemp = atol(ReturnBuffer);
-	rc = GASendDMCCommand(ghDMC, caTPCcommand, ReturnBuffer, MAXGASTR);
-	lTP = atol(ReturnBuffer);
-	if(lTP > lTemp) // + direction motion
-	{
-	    glLatchData[2][0][glLatchPtr[2][0][0]] = lTemp; 	// current ptr
-	    ROEncoderToEU(RO_AXIS_Z, lTemp, &glLatchDataEU[2][0][glLatchPtr[2][0][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(2, 0, glLatchPtr[2][0][0]))
-	    {
-		RORaiseAlarm(4);
-	    }
-	    glLatchPtr[2][0][0]++; // increment current ptr
-	    glLatchPtr[2][0][1]++; // total counts accumulated forever
-	    if(glLatchPtr[2][0][0] > 499)
-		glLatchPtr[2][0][0] = 0;
-	}
-	else		// - direction motion
-	{
-	    glLatchData[2][1][glLatchPtr[2][1][0]] = lTemp; 	// current ptr
-	    ROEncoderToEU(RO_AXIS_Z, lTemp, &glLatchDataEU[2][1][glLatchPtr[2][1][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(2, 1, glLatchPtr[2][1][0]))
-	    {
-		RORaiseAlarm(4);
-	    }
-	    glLatchPtr[2][1][0]++; // increment current ptr
-	    glLatchPtr[2][1][1]++; // total counts accumulated forever
-	    if(glLatchPtr[2][1][0] > 499)
-		glLatchPtr[2][1][0] = 0;
-	}
-	// re-arm it
-	rc = GASendDMCCommand(ghDMC, caARCcommand, ReturnBuffer, MAXGASTR);
-    }
-
-    // axis D
-    rc = GASendDMCCommand(ghDMC, caALDcommand, ReturnBuffer, MAXGASTR);
-
-    // If galil timeout error, just return.
-    if(rc != SUCCESS) 
-    {
-//printf("ROCheckLatch D DMC failure=%d\n",rc);
-	return;
-    }
-
-    iLatch = atoi(ReturnBuffer);
-    if(!iLatch)
-    {
-    	giEncoderDriftDetector = 1;
-	rc = GASendDMCCommand(ghDMC, caRLDcommand, ReturnBuffer, MAXGASTR);
-	lTemp = atol(ReturnBuffer);
-	rc = GASendDMCCommand(ghDMC, caTPDcommand, ReturnBuffer, MAXGASTR);
-	lTP = atol(ReturnBuffer);
-	if(lTP > lTemp) // + direction motion
-	{
-	    glLatchData[3][0][glLatchPtr[3][0][0]] = lTemp; 	// current ptr
-	    ROEncoderToEU(RO_AXIS_W, lTemp, &glLatchDataEU[3][0][glLatchPtr[3][0][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(3, 0, glLatchPtr[3][0][0]))
-	    {
-		RORaiseAlarm(8);
-	    }
-	    glLatchPtr[3][0][0]++; // increment current ptr
-	    glLatchPtr[3][0][1]++; // total counts accumulated forever
-	    if(glLatchPtr[3][0][0] > 499)
-		glLatchPtr[3][0][0] = 0;
-	}
-	else		// - direction motion
-	{
-	    glLatchData[3][1][glLatchPtr[3][1][0]] = lTemp; 	// current ptr
-	    ROEncoderToEU(RO_AXIS_W, lTemp, &glLatchDataEU[3][1][glLatchPtr[3][1][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(3, 1, glLatchPtr[3][1][0]))
-	    {
-		RORaiseAlarm(8);
-	    }
-	    glLatchPtr[3][1][0]++; // increment current ptr
-	    glLatchPtr[3][1][1]++; // total counts accumulated forever
-	    if(glLatchPtr[3][1][0] > 499)
-		glLatchPtr[3][1][0] = 0;
-	}
-	// re-arm it
-	rc = GASendDMCCommand(ghDMC, caARDcommand, ReturnBuffer, MAXGASTR);
-    }
-
-    if(giNumOfAxes <= 4) // If only 4 axes, no need to go further.
-	return;
-
-    // axis E
-    rc = GASendDMCCommand(ghDMC, caALEcommand, ReturnBuffer, MAXGASTR);
-
-    // If galil timeout error, just return.
-    if(rc != SUCCESS) 
-    {
-//printf("ROCheckLatch E DMC failure=%d\n",rc);
-	return;
-    }
-
-    iLatch = atoi(ReturnBuffer);
-    if(!iLatch)
-    {
-    	giEncoderDriftDetector = 1;
-	rc = GASendDMCCommand(ghDMC, caRLEcommand, ReturnBuffer, MAXGASTR);
-	lTemp = atol(ReturnBuffer);
-	rc = GASendDMCCommand(ghDMC, caTPEcommand, ReturnBuffer, MAXGASTR);
-	lTP = atol(ReturnBuffer);
-	if(lTP > lTemp) // + direction motion
-	{
-	    glLatchData[4][0][glLatchPtr[4][0][0]] = lTemp; 	// current ptr
-	    ROEncoderToEU(RO_AXIS_t, lTemp, &glLatchDataEU[4][0][glLatchPtr[4][0][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(4, 0, glLatchPtr[4][0][0]))
-	    {
-		RORaiseAlarm(16);
-	    }
-	    glLatchPtr[4][0][0]++; // increment current ptr
-	    glLatchPtr[4][0][1]++; // total counts accumulated forever
-	    if(glLatchPtr[4][0][0] > 499)
-		glLatchPtr[4][0][0] = 0;
-	}
-	else		// - direction motion
-	{
-	    glLatchData[4][1][glLatchPtr[4][1][0]++] = lTemp; 	// current ptr
-	    ROEncoderToEU(RO_AXIS_t, lTemp, &glLatchDataEU[4][1][glLatchPtr[4][1][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(4, 1, glLatchPtr[4][1][0]))
-	    {
-		RORaiseAlarm(16);
-	    }
-	    glLatchPtr[4][1][0]++; // increment current ptr
-	    glLatchPtr[4][1][1]++; // total counts accumulated forever
-	    if(glLatchPtr[4][1][0] > 499)
-		glLatchPtr[4][1][0] = 0;
-	}
-	// re-arm it
-	rc = GASendDMCCommand(ghDMC, caAREcommand, ReturnBuffer, MAXGASTR);
-    }
-
-    // axis F
-    rc = GASendDMCCommand(ghDMC, caALFcommand, ReturnBuffer, MAXGASTR);
-
-    // If galil timeout error, just return.
-    if(rc != SUCCESS) 
-    {
-//printf("ROCheckLatch F DMC failure=%d\n",rc);
-	return;
-    }
-
-    iLatch = atoi(ReturnBuffer);
-    if(!iLatch)
-    {
-    	giEncoderDriftDetector = 1;
-	rc = GASendDMCCommand(ghDMC, caRLFcommand, ReturnBuffer, MAXGASTR);
-	lTemp = atol(ReturnBuffer);
-	rc = GASendDMCCommand(ghDMC, caTPFcommand, ReturnBuffer, MAXGASTR);
-	lTP = atol(ReturnBuffer);
-	if(lTP > lTemp) // + direction motion
-	{
-	    glLatchData[5][0][glLatchPtr[5][0][0]] = lTemp; 	// current ptr
-	    ROEncoderToEU(RO_AXIS_r, lTemp, &glLatchDataEU[5][0][glLatchPtr[5][0][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(5, 0, glLatchPtr[5][0][0]))
-	    {
-		RORaiseAlarm(32);
-	    }
-	    glLatchPtr[5][0][0]++; // increment current ptr
-	    glLatchPtr[5][0][1]++; // total counts accumulated forever
-	    if(glLatchPtr[5][0][0] > 499)
-		glLatchPtr[5][0][0] = 0;
-	}
-	else		// - direction motion
-	{
-	    glLatchData[5][1][glLatchPtr[5][1][0]] = lTemp; 	// current ptr
-	    ROEncoderToEU(RO_AXIS_t, lTemp, &glLatchDataEU[5][1][glLatchPtr[5][1][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(5, 1, glLatchPtr[5][1][0]))
-	    {
-		RORaiseAlarm(32);
-	    }
-	    glLatchPtr[5][1][0]++; // increment current ptr
-	    glLatchPtr[5][1][1]++; // total counts accumulated forever
-	    if(glLatchPtr[5][1][0] > 499)
-		glLatchPtr[5][1][0] = 0;
-	}
-	// re-arm it
-	rc = GASendDMCCommand(ghDMC, caARFcommand, ReturnBuffer, MAXGASTR);
-    }
-
-    // axis G
-    rc = GASendDMCCommand(ghDMC, caALGcommand, ReturnBuffer, MAXGASTR);
-
-    // If galil timeout error, just return.
-    if(rc != SUCCESS) 
-    {
-//printf("ROCheckLatch G DMC failure=%d\n",rc);
-	return;
-    }
-
-    iLatch = atoi(ReturnBuffer);
-    if(!iLatch)
-    {
-    	giEncoderDriftDetector = 1;
-	rc = GASendDMCCommand(ghDMC, caRLGcommand, ReturnBuffer, MAXGASTR);
-	lTemp = atol(ReturnBuffer);
-	rc = GASendDMCCommand(ghDMC, caTPGcommand, ReturnBuffer, MAXGASTR);
-	lTP = atol(ReturnBuffer);
-	if(lTP > lTemp) // + direction motion
-	{
-	    glLatchData[6][0][glLatchPtr[6][0][0]] = lTemp; 	// current ptr data
-	    ROEncoderToEU(RO_AXIS_z, lTemp, &glLatchDataEU[6][0][glLatchPtr[6][0][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(6, 0, glLatchPtr[6][0][0]))
-	    {
-		RORaiseAlarm(64);
-	    }
-	    glLatchPtr[6][0][0]++; // increment current ptr
-	    glLatchPtr[6][0][1]++; // total counts accumulated forever
-	    if(glLatchPtr[6][0][0] > 499)
-		glLatchPtr[6][0][0] = 0;
-	}
-	else		// - direction motion
-	{
-	    glLatchData[6][1][glLatchPtr[6][1][0]] = lTemp; 	// current ptr data
-	    ROEncoderToEU(RO_AXIS_z, lTemp, &glLatchDataEU[6][1][glLatchPtr[6][1][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(6, 1, glLatchPtr[6][1][0]))
-	    {
-		RORaiseAlarm(64);
-	    }
-	    glLatchPtr[6][1][0]++; // increment current ptr
-	    glLatchPtr[6][1][1]++; // total counts accumulated forever
-	    if(glLatchPtr[6][1][0] > 499)
-		glLatchPtr[6][1][0] = 0;
-	}
-	// re-arm it
-	rc = GASendDMCCommand(ghDMC, caARGcommand, ReturnBuffer, MAXGASTR);
-    }
-
-    // axis H
-    rc = GASendDMCCommand(ghDMC, caALHcommand, ReturnBuffer, MAXGASTR);
-
-    // If galil timeout error, just return.
-    if(rc != SUCCESS) 
-    {
-//printf("ROCheckLatch H DMC failure=%d\n",rc);
-	return;
-    }
-
-    iLatch = atoi(ReturnBuffer);
-    if(!iLatch)
-    {
-    	giEncoderDriftDetector = 1;
-	rc = GASendDMCCommand(ghDMC, caRLHcommand, ReturnBuffer, MAXGASTR);
-	lTemp = atol(ReturnBuffer);
-	rc = GASendDMCCommand(ghDMC, caTPHcommand, ReturnBuffer, MAXGASTR);
-	lTP = atol(ReturnBuffer);
-	if(lTP > lTemp) // + direction motion
-	{
-	    glLatchData[7][0][glLatchPtr[7][0][0]] = lTemp; 	// current ptr data
-	    ROEncoderToEU(RO_AXIS_w, lTemp, &glLatchDataEU[7][0][glLatchPtr[7][0][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(7, 0, glLatchPtr[7][0][0]))
-	    {
-		RORaiseAlarm(128);
-	    }
-	    glLatchPtr[7][0][0]++; // increment current ptr
-	    glLatchPtr[7][0][1]++; // total counts accumulated forever
-	    if(glLatchPtr[7][0][0] > 499)
-		glLatchPtr[7][0][0] = 0;
-	}
-	else		// - direction motion
-	{
-	    glLatchData[7][1][glLatchPtr[7][1][0]] = lTemp; 	// current ptr data
-	    ROEncoderToEU(RO_AXIS_w, lTemp, &glLatchDataEU[7][1][glLatchPtr[7][1][0]]);
-	    // Do a range-check on this latch pos
-	    if(PDOutOfRange(7, 1, glLatchPtr[7][1][0]))
-	    {
-		RORaiseAlarm(128);
-	    }
-	    glLatchPtr[7][1][0]++; // increment current ptr
-	    glLatchPtr[7][1][1]++; // total counts accumulated forever
-	    if(glLatchPtr[7][1][0] > 499)
-		glLatchPtr[7][1][0] = 0;
-	}
-	// re-arm it
-	rc = GASendDMCCommand(ghDMC, caARHcommand, ReturnBuffer, MAXGASTR);
-    }
-
-}
-
-void ROUpdateTS(int iFlagArg)
-{
-    int i, rc, iLEDStatus;
-    long lTemp;
-    char ReturnBuffer[MAXGASTR];
-
-    if(iFlagArg && iOTFFirstTime)
-    {
-	if(++giOTFNullCount < 19999) 
-	    return; // don't bother Galil during OTF
-	else
-	{
-//printf("giOTFNullCount reached! = %d\n",giOTFNullCount);
- 	}
-    }
-    if(iFlagArg && (++giTSCount < 7)) return;
-    giTSCount = 0;
-
-
-    rc = GASendDMCCommand(ghDMC, TScommand, glTSReturnBuffer, MAXGASTR);
-
-    // If galil timeout error, just return.
-    if(rc != SUCCESS) 
-    {
-//printf("ROUpdateTS DMC failure=%d\n",rc);
-	return;
-    }
-
-    lTemp = strlen(glTSReturnBuffer);
-    glTSReturnBuffer[lTemp++] = ',';
-    glTSReturnBuffer[lTemp] = '\0';
-
-    ConvertStrToL(glTSReturnBuffer, 8, glTSArray);
-
-    for (i = 0; i < iNumAxes; i++)
-    {
-//    	if (i == 0)
-// 	    // Initialize the lTemp pointer to the first entry
-//       	    lTemp = atol( strtok(ReturnBuffer, ",") );
-//	else
-//	    lTemp = atol( strtok(NULL, ",") );
-
-	// motion checking
-	if (glTSArray[i] & 0x80)
-	{
-	    ulAMFlag &= ~uaAxisMap[i][EQUIPE_AXIS]; // axis in motion
-	}
-	else
-	{
-	    // motion complete if not homing
-	    rc = GASendDMCCommand(ghDMC, HOMGcommand, ReturnBuffer, MAXGASTR);
-	    ulHoming = atol(ReturnBuffer);
-	    if (ulHoming & uaAxisMap[i][EQUIPE_AXIS])
-	    {
-		ulAMFlag = ulAMFlag;
-////printf("motion not complete due to homing...\n");
-	    }
-	    else
-		ulAMFlag |= uaAxisMap[i][EQUIPE_AXIS]; // axis motion complete
-	}
-
-	// ER checking
-	if (glTSArray[i] & 0x40)
-	{
-		ulERFlag |= uaAxisMap[i][EQUIPE_AXIS]; // axis ER
-		if (giPrevERFlag[i] == 0)
-		{	// raise ERR Interrupt
-			iERRInterrupt = TRUE;
-			giPrevERFlag[i] = 1;
-			rc = GASendDMCCommand(ghDMC, HXcommand, ReturnBuffer, MAXGASTR);
-			rc = GASendDMCCommand(ghDMC, HX2command, ReturnBuffer, MAXGASTR);
-			if (i==2)
-			{
-				ROServiceBrake(ROBOTFILE, FALSE);
-			}
-		}
-	}
-	else
-	{
-		ulERFlag &= ~uaAxisMap[i][EQUIPE_AXIS]; // axis ER clear
-		giPrevERFlag[i] = 0;
-	}
-
-	// SH checking
-	if (glTSArray[i] & 0x20)
-	{
-////printf("servo off axis=%d TS=%d\n",i,glTSArray[i]);
-		ulServoFlag |= uaAxisMap[i][EQUIPE_AXIS]; // servo off
-		// turn on red LED light
-		iLEDStatus = inb(IO_PRE_OUTPUT_L);
-		iLEDStatus &= 0xF7;	// 4th bit OFF to turn on RED
-		outb(iLEDStatus, IO_PRE_OUTPUT_L);
-	}
-	else
-	{
-		ulServoFlag &= ~uaAxisMap[i][EQUIPE_AXIS]; // servo on
-	}
-
-	if(ulServoFlag == 0)
-	{
-		// turn off red LED light
-		iLEDStatus = inb(IO_PRE_OUTPUT_L);
-		iLEDStatus |= 0x08;	// 4th bit ON to turn off RED
-		outb(iLEDStatus, IO_PRE_OUTPUT_L);
-	}
-
-	// Limit checking		
-	if (i != 1)		// skip for R-axis limit checking
-	{
-	    if (glTSArray[i] & 0x08)
-	    {
-		ulLMPosFlag &= ~uaAxisMap[i][EQUIPE_AXIS]; // pos LM clear
-		giPrevPLFlag[i] = 0;
-	    }
-	    else
-	    {
-		ulLMPosFlag |= uaAxisMap[i][EQUIPE_AXIS]; // pos LM
-		if (giPrevPLFlag[i] == 0 && ulHomed & (1<<i))
-		{
-			iLMMInterrupt = TRUE;
-			giPrevPLFlag[i] = 1;
-		}
-	    }
-
-	    if (glTSArray[i] & 0x04)
-	    {
-		ulLMNegFlag &= ~uaAxisMap[i][EQUIPE_AXIS]; // neg LM clear
-		giPrevNLFlag[i] = 0;
-	    }
-	    else
-	    {
-		ulLMNegFlag |= uaAxisMap[i][EQUIPE_AXIS]; // neg LM
-		if(giPrevNLFlag[i] == 0 && ulHomed & (1<<i))
-		{
-			iLMMInterrupt = TRUE;
-			giPrevNLFlag[i] = 1;
-		}
-	    }
-/*********************************************************
-/* HOME Flag check should be something else
-	    if (glTSArray[i] & 0x02)
-	    {
-		ulLMNegFlag &= ~uaAxisMap[i][EQUIPE_AXIS]; // neg LM clear (home swith = Neg LM)
-		giPrevNLFlag[i] = 0;
-	    }
-	    else
-	    {
-		ulLMNegFlag |= uaAxisMap[i][EQUIPE_AXIS]; // neg LM (home switch = Neg LM
-		if(giPrevNLFlag[i] == 0 && ulHomed & (1<<i))
-		{
-			iLMMInterrupt = TRUE;
-			giPrevNLFlag[i] = 1;
-		}
-	    }
-*/
-	}
-    }
-
-    if(giSysCfgNum == 30) // 30 = I2AXO special 
-    {
-	if ((~ulHomed) & 0x0F)
-    	{
-	    rc = GASendDMCCommand(ghDMC, HOMDcommand, ReturnBuffer, MAXGASTR);
-	    ulHomed = atol(ReturnBuffer);
-     	}
-    }
-    else
-    {
-    	if ((~ulHomed) & 0xFF)
-    	{
-	    rc = GASendDMCCommand(ghDMC, HOMDcommand, ReturnBuffer, MAXGASTR);
-	    ulHomed = atol(ReturnBuffer);
-    	}
-    }
-////printf("Homed:%x  AM:%x  Servo:%x  ER:%x  pLM:%x  nLM:%x\n",ulHomed, ulAMFlag, ulServoFlag, ulERFlag, ulLMPosFlag, ulLMNegFlag);
-}
-
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /****************************************************************
  *
@@ -2141,11 +1146,7 @@ int ROInit(int iNumAxesArg, int *iaMechTypeArg, int *iaEquipeAxisArg, int *iaGal
     int iPreExists = FALSE;     /* If a pre-aligner exists, this flag reads in the datafile and inits the Galil card. */
     int iAuxExists = FALSE;     /* If auxilliary components exist, this flag reads in the datafile and inits the Galil card. */
     int iOTFFlag;               /* Feature configuration file for OTF active. */
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     FILE *iFP;
     int iCount;
 
@@ -2168,13 +1169,8 @@ int ROInit(int iNumAxesArg, int *iaMechTypeArg, int *iaEquipeAxisArg, int *iaGal
         uaAxisMap[iAxis][GALIL_AXIS] = iaGalilAxisArg[iAxis];
         uaAxisMap[iAxis][SPECIAL_AXIS] = iaSpecialAxisArg[iAxis];
 
-<<<<<<< HEAD
 //printf("uaAxisMap[%d][galil]=%d\n",iAxis,iaGalilAxisArg[iAxis]);
 
-=======
-//printf("uaAxisMap[%d][galil]=%d\n",iAxis,iaGalilAxisArg[iAxis]);
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         /* Possibly add in the current axis to the A (all robot axes) mask. */
         if ((iaEquipeAxisArg[iAxis] >= RO_AXIS_T) &&
             (iaEquipeAxisArg[iAxis] <= RO_AXIS_Z))
@@ -2285,7 +1281,6 @@ int ROInit(int iNumAxesArg, int *iaMechTypeArg, int *iaEquipeAxisArg, int *iaGal
     /* Pre-aligner */
     if (iPreExists)
     {
-<<<<<<< HEAD
         FIOReadParam(PREALIGNFILE);
 	if(giSysCfgNum == 30) // 30 = I2AXO special 
 	{
@@ -2298,20 +1293,6 @@ int ROInit(int iNumAxesArg, int *iaMechTypeArg, int *iaEquipeAxisArg, int *iaGal
     	        return FAILURE;
     	    FIOReadWafer();
     	    FIOReadCalibTable();
-=======
-        FIOReadParam(PREALIGNFILE);
-	if(giSysCfgNum == 30) // 30 = I2AXO special 
-	{
-            if (ROInitGalil(PREALIGNFILE) == FAILURE)
-            	return FAILURE;
-	}
-	else
-	{
-            if (ROInitGalil(PREALIGNFILE) == FAILURE)
-    	        return FAILURE;
-    	    FIOReadWafer();
-    	    FIOReadCalibTable();
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	}
     }
     /* Auxilliary components */
@@ -2335,41 +1316,25 @@ int ROInit(int iNumAxesArg, int *iaMechTypeArg, int *iaEquipeAxisArg, int *iaGal
     {
        FIOReadOTFFile();
     }
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iFP = fopen( ALFILENAME, "r");
     if( iFP == (FILE *)0 )
     {
 	perror( "Alarm File Read Open Error " );
     }
     else
-<<<<<<< HEAD
     {
         iCount = fread(&giEncoderAlarm, sizeof(int), 1, iFP);
 	if (iCount <= 0) 
-=======
-    {
-        iCount = fread(&giEncoderAlarm, sizeof(int), 1, iFP);
-	if (iCount <= 0) 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	{
 	    perror( "Alarm File Read Error " );
 	}
         
       	/* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
        	fclose( iFP );
-<<<<<<< HEAD
     }
 
 ////printf("iNumAxes: %d   ulAxisALLRbt: %x    ulAxisallPre: %x\n", iNumAxes, ulAxisALLRbt, ulAxisallPre);
-=======
-    }
-
-////printf("iNumAxes: %d   ulAxisALLRbt: %x    ulAxisallPre: %x\n", iNumAxes, ulAxisALLRbt, ulAxisallPre);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return SUCCESS;
 }
@@ -2431,17 +1396,10 @@ int ROStartGalilMode(int iCardNumArg)
 //    int iGAChar;                        /* The character read from the Galil card. */
     int iQuitLoop = FALSE;              /* Quits Galil mode on a ctrl-I key press. */
     int iStatus, iUseGalil, iGalilError, iEcho, iCmdPort, iNumCharsLeft;  /* Temporary variables. */
-<<<<<<< HEAD
     char sBuf[MAXGASTR];
     char cpRespStr[MAXGASTR];
     char cpCommand[MAXGASTR];
     int iCardNum;
-=======
-    char sBuf[MAXGASTR];
-    char cpRespStr[MAXGASTR];
-    char cpCommand[MAXGASTR];
-    int iCardNum;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     int iRet, nChar;
 
     /* Translate the card number passed in (0 or 1) into the motion module card designation. */
@@ -2453,24 +1411,16 @@ int ROStartGalilMode(int iCardNumArg)
     iStatus = SSReadStatusBits(CTRL_ERR);
     /* Initialize variables used in this module. */
     iCmdPort = SERGetCmdPort();
-<<<<<<< HEAD
     if (SERGetCommVals(iCmdPort, ECHO_MODE, &iEcho) == FAILURE) goto error_exit;
     if (iCmdPort == SERGetTTPort())
     {
         if (SERSetCommVals(iCmdPort, ECHO_MODE, TRUE) == FAILURE) goto error_exit;
-=======
-    if (SERGetCommVals(iCmdPort, ECHO_MODE, &iEcho) == FAILURE) goto error_exit;
-    if (iCmdPort == SERGetTTPort())
-    {
-        if (SERSetCommVals(iCmdPort, ECHO_MODE, TRUE) == FAILURE) goto error_exit;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if (TTSetEchoMode(TRUE) == FAILURE) goto error_exit;
     }
 
     /* Put out a prompt to get started */
     if (SERPutsTxBuff(iCmdPort, ":") == FAILURE) goto error_exit;
     if (SERFlushTxBuff(iCmdPort) == FAILURE) goto error_exit;
-<<<<<<< HEAD
 
     nChar = 0;
     while (!iQuitLoop)
@@ -2514,58 +1464,12 @@ int ROStartGalilMode(int iCardNumArg)
 	    }
 	}
     }
-=======
-
-    nChar = 0;
-    while (!iQuitLoop)
-    {
-	iRet = DMCGetUnsolicitedResponse(ghDMC, cpRespStr, MAXGASTR);
- 
-    	iRet =COReadChar(iCmdPort, &cIOChar, &iNumCharsLeft, &iStatus);
-
-        /* Check for character from user */
-        if (iRet == FAILURE) goto error_exit;
-     	if (iRet == 0)
-	{
-//	    if(iEcho)
-//	    {
-//                sBuf[0] = cIOChar;
-//                sBuf[1] = 0;
-//                if (SERPutsTxBuff(iCmdPort, sBuf) == FAILURE) goto error_exit;
-//	    }
-	
-	    if (cIOChar == END_TALK)
-	    {
-		iQuitLoop = TRUE;
-	    }
-	    else
-	    {
-
-		cpCommand[nChar++] = cIOChar;
-		if (cIOChar == '\r' )
-		{ 
-		    cpCommand[nChar] = '\0';
-		    nChar = 0;
-		    iRet = GASendDMCCommand(ghDMC, cpCommand, cpRespStr, MAXGASTR);
-		    if (iRet != 0)
-		    {
-			  //printf("GASendDMCCommand cpCommand error: %s %s %d\n", cpCommand, cpRespStr, iRet);
-			  DMCClear(ghDMC);
-		    }
-		    if (SERPutsTxBuff(iCmdPort, cpRespStr) == FAILURE) goto error_exit;
-		    if (SERFlushTxBuff(iCmdPort) == FAILURE) goto error_exit;
-		}
-	    }
-	}
-    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 
     /* Restore saved settings. */
     GASetGalilErrorFlag(iGalilError);
     GASetUseGalilFlag(iUseGalil);
     SSSetStatusWord(CTRL_ERR, iStatus);
-<<<<<<< HEAD
 
     if (iCmdPort == SERGetTTPort())
     {
@@ -2573,15 +1477,6 @@ int ROStartGalilMode(int iCardNumArg)
         if (SERSetCommVals(iCmdPort, ECHO_MODE, iEcho) == FAILURE) goto error_exit;
     }
     if (SERSetCommVals(iCmdPort, ECHO_MODE, iEcho) == FAILURE) goto error_exit;
-=======
-
-    if (iCmdPort == SERGetTTPort())
-    {
-	iEcho = FALSE;
-        if (SERSetCommVals(iCmdPort, ECHO_MODE, iEcho) == FAILURE) goto error_exit;
-    }
-    if (SERSetCommVals(iCmdPort, ECHO_MODE, iEcho) == FAILURE) goto error_exit;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return SUCCESS;
 
@@ -2690,7 +1585,6 @@ int ROReadInPositionWindow(unsigned long ulEquipeAxisArg, long *lPositionArg)
 
     /* Get the in position window with the Galil "ID" command. */
 //    iReturn = GAGetValsLong(iCardNum, OPT_INTR_POS_COMMAND, uGalilAxes, laPosition);
-<<<<<<< HEAD
 
     if (ulEquipeAxisArg & RO_AXIS_ALL)
 		for (i=0; i<3; ++i)	lPositionArg[i] = giIPW[i];
@@ -2703,20 +1597,6 @@ int ROReadInPositionWindow(unsigned long ulEquipeAxisArg, long *lPositionArg)
     else if (ulEquipeAxisArg & RO_AXIS_W)
 		lPositionArg[3] = giIPW[3];
 
-=======
-
-    if (ulEquipeAxisArg & RO_AXIS_ALL)
-		for (i=0; i<3; ++i)	lPositionArg[i] = giIPW[i];
-    else if (ulEquipeAxisArg & RO_AXIS_T)
-		lPositionArg[0] = giIPW[0];
-    else if (ulEquipeAxisArg & RO_AXIS_R)
-		lPositionArg[1] = giIPW[1];
-    else if (ulEquipeAxisArg & RO_AXIS_Z)
-		lPositionArg[2] = giIPW[2];
-    else if (ulEquipeAxisArg & RO_AXIS_W)
-		lPositionArg[3] = giIPW[3];
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Scale the position from encoder counts to normal units. */
 //    ROScalePos(ulEquipeAxisArg, laPosition, lPositionArg);
 
@@ -2933,15 +1813,9 @@ int ROReadSCurveProfile(unsigned long ulEquipeAxisArg, long *lOnOffArg)
 
 /****************************************************************
  *
-<<<<<<< HEAD
  * Function:    ROReadITValue
  *
  * Abstract:    Gets the independent time constants
-=======
- * Function:    ROReadITValue
- *
- * Abstract:    Gets the independent time constants
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *      This RIT command complements the IT commands.
  *
  * Parameters:
@@ -2955,11 +1829,7 @@ int ROReadITValue(unsigned long ulEquipeAxisArg, long *lValueArg)
 {
     int iReturn;
     int iCardNum, iFileType;
-<<<<<<< HEAD
     unsigned uGalilAxes;
-=======
-    unsigned uGalilAxes;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	double dTempParameter[8];
 
     /* Validate that the axis exists in the system. */
@@ -2967,11 +1837,7 @@ int ROReadITValue(unsigned long ulEquipeAxisArg, long *lValueArg)
         return FAILURE;
 
     iReturn = GAGetValsDoubleDefined(iCardNum, IT_SCURVE, uGalilAxes, dTempParameter);
-<<<<<<< HEAD
     ROGetMilScale(dTempParameter, lValueArg);
-=======
-    ROGetMilScale(dTempParameter, lValueArg);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return iReturn;
 }
@@ -3012,7 +1878,6 @@ int ROSetInPositionWindow(unsigned long ulEquipeAxisArg, long *lPositionArg)
     /* Not allowed while moving. */
 //    if ((ulAMFlag&ulEquipeAxisArg) != ulEquipeAxisArg)
 //        return FAILURE;
-<<<<<<< HEAD
 
     if (ulEquipeAxisArg == RO_AXIS_ALL)
 		for (i=0; i<3; ++i)	giIPW[i] = lPositionArg[i];
@@ -3043,38 +1908,6 @@ int ROSetInPositionWindow(unsigned long ulEquipeAxisArg, long *lPositionArg)
 	for (i=0; i<8; ++i) giIPWFlag[i] = (giIPW[i] > 0) ? 1 : 0;
 
 
-=======
-
-    if (ulEquipeAxisArg == RO_AXIS_ALL)
-		for (i=0; i<3; ++i)	giIPW[i] = lPositionArg[i];
-    else if (ulEquipeAxisArg & RO_AXIS_T)
-		giIPW[0] = lPositionArg[0];
-    else if (ulEquipeAxisArg & RO_AXIS_R)
-		giIPW[1] = lPositionArg[1];
-    else if (ulEquipeAxisArg & RO_AXIS_Z)
-		giIPW[2] = lPositionArg[2];
-    else if (ulEquipeAxisArg & RO_AXIS_W)
-		giIPW[3] = lPositionArg[3];
-
-    /* Unscale the position from normal units to encoder counts. */
-    if (ROUnscalePos(ulEquipeAxisArg, lPositionArg, laPosition) == FAILURE)
-        return FAILURE;
-
-    if (ulEquipeAxisArg == RO_AXIS_ALL)
-		for (i=0; i<3; ++i)	giIPWenc[i] = laPosition[i];
-    else if (ulEquipeAxisArg & RO_AXIS_T)
-		giIPWenc[0] = laPosition[0];
-    else if (ulEquipeAxisArg & RO_AXIS_R)
-		giIPWenc[1] = laPosition[1];
-    else if (ulEquipeAxisArg & RO_AXIS_Z)
-		giIPWenc[2] = laPosition[2];
-    else if (ulEquipeAxisArg & RO_AXIS_W)
-		giIPWenc[3] = laPosition[3];
-
-	for (i=0; i<8; ++i) giIPWFlag[i] = (giIPW[i] > 0) ? 1 : 0;
-
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Set the in position window with the Galil "ID" command. */
 //    iReturn = GASetValsLong(iCardNum, OPT_INTR_POS_COMMAND, uGalilAxes, laPosition);
 
@@ -3130,19 +1963,11 @@ int ROQuitScan()
 int ROSetHomeFlag(unsigned long ulEquipeAxisArg, long *lValueArg)
 {
     int iCardNum, iFileType;
-<<<<<<< HEAD
     unsigned uGalilAxes;
     int rc;
     char caCommand[20];
     char caResp[80];
 
-=======
-    unsigned uGalilAxes;
-    int rc;
-    char caCommand[20];
-    char caResp[80];
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Validate that the axis exists in the system. */
     if (ROValidAxis(ulEquipeAxisArg, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
         return FAILURE;
@@ -3189,17 +2014,10 @@ int ROSetHomeFlag(unsigned long ulEquipeAxisArg, long *lValueArg)
     {
         if (lValueArg[7]) ulHomed |= RO_AXIS_w;
         else ulHomed &= ~RO_AXIS_w;
-<<<<<<< HEAD
     }
 
     sprintf(caCommand,"VHMD = %d",(int)ulHomed);
     rc = GASendDMCCommand(ghDMC, caCommand, caResp, MAXGASTR);
-=======
-    }
-
-    sprintf(caCommand,"VHMD = %d",(int)ulHomed);
-    rc = GASendDMCCommand(ghDMC, caCommand, caResp, MAXGASTR);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 //    SSSetStatusWord(HOME_NOT_EXED, (int)(~ulHomed & ulAllAMFlag));
 
@@ -3224,21 +2042,12 @@ int ROSetHomeFlag(unsigned long ulEquipeAxisArg, long *lValueArg)
 int ROAbortMotion(void)
 {
     int iReturn;
-<<<<<<< HEAD
     int rc;
     char caTempCmd[20];
     char caResp[80];
 
 	giMapTest = 0;		// mapping IO stopped
 	giMapIORunning = 0;
-=======
-    int rc;
-    char caTempCmd[20];
-    char caResp[80];
-
-	giMapTest = 0;		// mapping IO stopped
-	giMapIORunning = 0;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* The Abort Motion command de-servos the system. So we have to activate the brake. */
     if (!iPreOnly)
@@ -3265,15 +2074,9 @@ int ROAbortMotion(void)
 
     /* Abort any homing. */
     ulHoming = 0;
-<<<<<<< HEAD
     sprintf(caTempCmd, "VHMG=%d",ulHoming);
     rc = GASendDMCCommand(ghDMC, caTempCmd, caResp, MAXGASTR);
 
-=======
-    sprintf(caTempCmd, "VHMG=%d",ulHoming);
-    rc = GASendDMCCommand(ghDMC, caTempCmd, caResp, MAXGASTR);
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Indicate that servo is off and motion is complete on all system axes. */
     ulAMFlag = ulAllAMFlag;
     ulServoFlag = ulAllAMFlag;
@@ -3330,11 +2133,7 @@ int ROEnableSCurveProfile(unsigned long ulEquipeAxisArg, long *lOnOffArg)
  *
  * Function:    ROSetITValue
  *
-<<<<<<< HEAD
  * Abstract:    Tells the motion control card to set IT. 
-=======
- * Abstract:    Tells the motion control card to set IT. 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *				This IT command complements the RIT command.
  *
  * Parameters:
@@ -3991,11 +2790,7 @@ int ROStopMotion(unsigned long ulEquipeAxisArg)
 {
 //    unsigned long ulEquipeMask; /* The bit pattern for the assembled Equipe axes. */
 //    int iCounterIndex;
-<<<<<<< HEAD
 //    struct timespec tv;
-=======
-//    struct timespec tv;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Do stop motion, 2nd argument=0 */
     if (ROProcessMotion(ulEquipeAxisArg, 0) == FAILURE)
@@ -4006,7 +2801,6 @@ int ROStopMotion(unsigned long ulEquipeAxisArg)
     if (ulEquipeAxisArg != 0)
         ulEquipeMask = ulEquipeAxisArg;
     else
-<<<<<<< HEAD
         ulEquipeMask = ulAllAMFlag;
     tv.tv_sec = 0;
     tv.tv_nsec = 10000;
@@ -4015,16 +2809,6 @@ int ROStopMotion(unsigned long ulEquipeAxisArg)
 	ROUpdateTS(FALSE);
 	TIRefreshWD();
 	nanosleep(&tv, NULL);
-=======
-        ulEquipeMask = ulAllAMFlag;
-    tv.tv_sec = 0;
-    tv.tv_nsec = 10000;
-    while (!TICountExpired(iCounterIndex) && ((ulAMFlag&ulEquipeMask) != ulEquipeMask))
-    {
-	ROUpdateTS(FALSE);
-	TIRefreshWD();
-	nanosleep(&tv, NULL);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     TIReturnCounter(iCounterIndex);
 */
@@ -4062,7 +2846,6 @@ int ROStopMotionLocal(unsigned long ulEquipeAxisArg)
     unsigned uGalilAxes;
     int iNoAxes, iShifter;  //, iAxis;  /* Temporary variables. */
     int iStopMotionComplete = 0;
-<<<<<<< HEAD
     long lCurrSwitches[8];          /* The limit switch values returned from the Galil card. */
     char caTempCmd[20];
     int rc;
@@ -4078,23 +2861,6 @@ int ROStopMotionLocal(unsigned long ulEquipeAxisArg)
 	giMapTest = 0;		// mapping IO stopped
 	giMapIORunning = 0;
 
-=======
-    long lCurrSwitches[8];          /* The limit switch values returned from the Galil card. */
-    char caTempCmd[20];
-    int rc;
-    char caResp[80];
-
-
-//    struct timespec tv;
-
-//int i=0;
-//    tv.tv_sec = 0;
-//    tv.tv_nsec = 200000000;
-
-	giMapTest = 0;		// mapping IO stopped
-	giMapIORunning = 0;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Initialize locally used values to first Galil card and no limit switches trigered. */
     iShifter = 0;
     iNoAxes = 0;
@@ -4118,7 +2884,6 @@ int ROStopMotionLocal(unsigned long ulEquipeAxisArg)
 
     /* Abort any homing. */
     ulHoming &= ~ulEquipeAxisArg;
-<<<<<<< HEAD
 
     sprintf(caTempCmd, "VHMG=%d",ulHoming);
     rc = GASendDMCCommand(ghDMC, caTempCmd, caResp, MAXGASTR);
@@ -4132,21 +2897,6 @@ int ROStopMotionLocal(unsigned long ulEquipeAxisArg)
         if (GAGetValsLong(iCardNum, TELL_SWITCHES_COMMAND, uGalilAxes, lCurrSwitches) == FAILURE)
              return FAILURE;
 ++i;
-=======
-
-    sprintf(caTempCmd, "VHMG=%d",ulHoming);
-    rc = GASendDMCCommand(ghDMC, caTempCmd, caResp, MAXGASTR);
-
-
-    iNoAxes = GAGetGLNumAxis(iCardNum);
-/*
-    while (!iStopMotionComplete)
-    {
-//        if (GAGetValsLong(iCardNum, TELL_SWITCHES_COMMAND, (unsigned)(iNoAxes), lCurrSwitches) == FAILURE)
-        if (GAGetValsLong(iCardNum, TELL_SWITCHES_COMMAND, uGalilAxes, lCurrSwitches) == FAILURE)
-             return FAILURE;
-++i;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("i = %d TS: %d %d %d %d %d %d %d %d\n", i, lCurrSwitches[0], lCurrSwitches[1],lCurrSwitches[2],lCurrSwitches[3],lCurrSwitches[4],lCurrSwitches[5],lCurrSwitches[6],lCurrSwitches[7]);
         iStopMotionComplete = 1;
         if (uGalilAxes & RO_AXIS_T)
@@ -4173,15 +2923,9 @@ int ROStopMotionLocal(unsigned long ulEquipeAxisArg)
         if (uGalilAxes & RO_AXIS_w)
             if (lCurrSwitches[7] & INMOTION)
                 iStopMotionComplete = 0;
-<<<<<<< HEAD
 	nanosleep(&tv, NULL);
     }
 */
-=======
-	nanosleep(&tv, NULL);
-    }
-*/
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return SUCCESS;
 }
@@ -4340,13 +3084,8 @@ int ROServoMCOn(unsigned long ulEquipeAxisArg)
  ***************************************************************/
 int ROServoMCOnLocal(unsigned long ulEquipeAxisArg)
 {
-<<<<<<< HEAD
 //    long lMotorType[8] = {-1,-1,-1,-1,-1,-1,-1,-1}; 
     long lMotorType[8] = {1,1,1,-1,1,1,1,-1}; 
-=======
-//    long lMotorType[8] = {-1,-1,-1,-1,-1,-1,-1,-1}; 
-    long lMotorType[8] = {1,1,1,-1,1,1,1,-1}; 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 									/* Set the motor type, i.e. positive amp reference voltage
                                      * turns the motor clockwise or counter-clockwise. */
     long lZAxisBrake[8] = {0,0,0,0,0,0,0,0};  /* The datafile Z brake values. */
@@ -4382,17 +3121,10 @@ int ROServoMCOnLocal(unsigned long ulEquipeAxisArg)
         if (TIDelay(30) == FAILURE)
             return FAILURE;
     }
-<<<<<<< HEAD
 
 	iInputG = inb(IO_ROBOT_INPUT_G);
 //	if (iInputG & (EMO | LOOP_CHECK | POWER_CHECK) ) goto exit_point;
 	if (iInputG & (LOOP_CHECK | POWER_CHECK) ) goto exit_point;
-=======
-
-	iInputG = inb(IO_ROBOT_INPUT_G);
-//	if (iInputG & (EMO | LOOP_CHECK | POWER_CHECK) ) goto exit_point;
-	if (iInputG & (LOOP_CHECK | POWER_CHECK) ) goto exit_point;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Initialize the amplifiers. This takes 200 to 300ms with older amps. It only takes
      * 170 ms on newer solid state amps. A 350ms wait is safe for the amps to juice up.
@@ -4411,13 +3143,8 @@ int ROServoMCOnLocal(unsigned long ulEquipeAxisArg)
     else if (iCardNum == GA_CARD_1) iRet = inb(IO_PRE_INPUT_G);
     else iRet = inb(IO_ROBOT_INPUT_G) | inb(IO_PRE_INPUT_G);
 
-<<<<<<< HEAD
     /* Error out on a power supply failure. */
 //  WE NEED THIS CODE BACK WHEN WE IMPLEMENT INPUT G I/O
-=======
-    /* Error out on a power supply failure. */
-//  WE NEED THIS CODE BACK WHEN WE IMPLEMENT INPUT G I/O
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iRet = 0;
     if (iRet & 0xFF)
         return FAILURE;
@@ -4433,11 +3160,7 @@ int ROServoMCOnLocal(unsigned long ulEquipeAxisArg)
 //    lMotorType[0]=lMotorType[1]=lMotorType[2]=lMotorType[3]=-1;
 //    if (ulEquipeAxisArg == (ROGetSpecialAxis(RO_FLIPPER)))
 //        lMotorType[3] = 2;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iRet = SUCCESS;
     /* Set the motor type with the Galil "MT" command. */
 //    if (iRet == SUCCESS)
@@ -4448,11 +3171,7 @@ int ROServoMCOnLocal(unsigned long ulEquipeAxisArg)
 
     /* Turn off the brake on the Z axis */
     if (ulEquipeAxisArg & RO_AXIS_Z)
-<<<<<<< HEAD
     {
-=======
-    {
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if ((iRet=ROServiceBrake(ROBOTFILE, TRUE)) == FAILURE) goto exit_point;
     }
 
@@ -4534,23 +3253,14 @@ exit_point:
 int ROIsAxisMotionInProgress(unsigned long ulEquipeAxisArg, int iTOTFlagArg, int *iKeepCheckingArg)
 {
     char caInMotionMsg[50], caInMotionResp[50];
-<<<<<<< HEAD
     char *caXYZW[8] = {"A", "B", "C", "D", "E", "F", "G", "H" };
-=======
-    char *caXYZW[8] = {"A", "B", "C", "D", "E", "F", "G", "H" };
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     char caMTCRcommand[10] = "MG VMTC";
     int i, iReturn;
     unsigned long ulAMFlagTemp;
     int iCardNum, iFileType;
     unsigned uGalilAxes;
-<<<<<<< HEAD
     int iAxisCnt;
     int k, m;
-=======
-    int iAxisCnt;
-    int k, m;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Validate that the axis exists in the system. */
 //    if (ROValidAxis(ulEquipeAxisArg, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
@@ -4568,7 +3278,6 @@ int ROIsAxisMotionInProgress(unsigned long ulEquipeAxisArg, int iTOTFlagArg, int
      * was necessary because without it the compiler causes a bug.
      * If the motion is complete on the selcted axis, return TRUE if TOTFlag is not ON,
      * otherwise, continue to polling galil for motion complete. */
-<<<<<<< HEAD
 
     // check if motion complete by IP and not forced "motion complete"
     // ulAMIPFlag is updated by IP
@@ -4640,79 +3349,6 @@ keep_check:
         }
 //printf("force WMO complete - iTOT=%d AM=%d axis=%d\n",iTOTFlagArg, ulAMFlag, ulEquipeAxisArg);
     }
-=======
-
-    // check if motion complete by IP and not forced "motion complete"
-    // ulAMIPFlag is updated by IP
-    // 3 conditions: (1) wmo not forced, (2) ipw set, (3) amIPflag set
-    ROUpdateTP(0);
-
-    iAxisCnt = 0;
-
-    if (!iTOTFlagArg)
-    {
-	for (i=0; i<4; ++i)
-	{
-	    if((ulEquipeAxisArg & (1<<i)) == (1<<i) )
-	    {
-//printf("wmo chk amipflag=%d axis=%d i=%d\n",ulAMIPFlag, ulEquipeAxisArg, i);
-		if(giIPWFlag[i] == 0)
-		    goto keep_check;
-//k=ulAMIPFlag & (1<<i);
-//m=1<<i;
-//printf("wmo ch2 k=%d m=%d\n",k, m);
-		if((ulAMIPFlag & (1<<i)) != (1<<i))
-		{
-//printf("wmo not amipflag=%d axis=%d i=%d\n",ulAMIPFlag, ulEquipeAxisArg, i);
-		    goto keep_check;
-		}
-	    }
-	    else
-	    {
-		++iAxisCnt;
-	    }
-	}
-
-	if(iAxisCnt >= 4) 
-	    goto keep_check;
-
-//printf("wmo amipflag=%d axis=%d i=%d\n",ulAMIPFlag, ulEquipeAxisArg, i);
-    	*iKeepCheckingArg = FALSE;
-	return SUCCESS;
-    }
-
-keep_check:
-
-    // check motion complete flag, just return until it's complete
-    // AM flag is updated by TS
-    //
-    //ulAMFlagTemp = ulAMFlag;
-    if (~ulAMFlag & ulEquipeAxisArg)
-    {
-////printf("k1 - iTOT=%d AM=%d axis=%d\n",iTOTFlagArg, ulAMFlag, ulEquipeAxisArg);
-        return SUCCESS;
-    }
-
-    // check if MTCR is running. if it is, just return until it's complete
-    iReturn = GASendDMCCommand(ghDMC, caMTCRcommand, caInMotionResp, 50);
-    i = atoi(caInMotionResp);
-    if (i) return SUCCESS;
-
-
-    // We'll check if the motion is really completed (not just in the in-position window).
-    // The axis specified can be any of T,R,Z,W,t,r,z,w,A,or a.
-
-    if(iTOTFlagArg) // force WMO from Galil TS
-    {
-	ROUpdateTS(0);
-	if (~ulAMFlag & ulEquipeAxisArg)
-    	{
-//printf("force WMO not complete - iTOT=%d AM=%d axis=%d\n",iTOTFlagArg, ulAMFlag, ulEquipeAxisArg);
-             return SUCCESS;
-        }
-//printf("force WMO complete - iTOT=%d AM=%d axis=%d\n",iTOTFlagArg, ulAMFlag, ulEquipeAxisArg);
-    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 //    for (i = 0; i < 8; i++) // for all the possible axes
 //    {
@@ -5051,13 +3687,8 @@ int ROScaleSpd(unsigned long ulEquipeAxisArg, long *lSpeedArg, long *lScaledSpee
     if (FIOGetParamVals(iFileType, MECHANICAL_RATIO, lMechRatio) == FAILURE)
         return FAILURE;
 
-<<<<<<< HEAD
     /* T axis. */
 	if ((ulEquipeAxisArg & RO_AXIS_T) && (lSpeedArg[0] != 0))
-=======
-    /* T axis. */
-	if ((ulEquipeAxisArg & RO_AXIS_T) && (lSpeedArg[0] != 0))
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     {
         if(iDefineFlag & DFVAC514)
             dScaleTemp1 = dMechRatioVAC514 / 1.0e5;
@@ -5074,11 +3705,7 @@ int ROScaleSpd(unsigned long ulEquipeAxisArg, long *lSpeedArg, long *lScaledSpee
         lScaledSpeedArg[0] = 0;
     }
 
-<<<<<<< HEAD
     /* t axis. */
-=======
-    /* t axis. */
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if ((ulEquipeAxisArg & RO_AXIS_t) && (lSpeedArg[4] != 0))
     {
         dScaleTemp1 = (double)(lMechRatio[0]) / 1.0e5;
@@ -5192,11 +3819,7 @@ int ROScaleSpd(unsigned long ulEquipeAxisArg, long *lSpeedArg, long *lScaledSpee
     if ((ulEquipeAxisArg & RO_AXIS_w) && (lSpeedArg[7] != 0))
     {
         dScaleTemp1 = (double)(lMechRatio[1]) / 1.0e5;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         dScaleTemp2 = 0.1 * (double)(lSpeedArg[7]);
         dScaleTemp3 = dScaleTemp1 * dScaleTemp2;
 
@@ -5392,11 +4015,7 @@ int ROUnscaleSpd(unsigned long ulEquipeAxisArg, long *lSpeedArg, long *lUnscaled
     if ((ulEquipeAxisArg & RO_AXIS_w) && (lSpeedArg[7] != 0))
     {
         dUnscaleTemp1 = (double)(lMechRatio[1]) / 1.0e5;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         dUnscaleTemp2 = 0.1 * dUnscaleTemp1;
         dUnscaleTemp3 = 1.0 / dUnscaleTemp2;
 
@@ -5512,11 +4131,7 @@ int ROScalePos(unsigned long ulEquipeAxisArg, long *lPositionArg, long *lScaledP
         dTemp2 = dTemp1 / 1.0e9;
         dTemp3 = sin(dTemp2);
         dTemp4 = (double)(lArmLength[1]) * dTemp3;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if (lPositionArg[1] < 0)
         {
             dPosOffset = -0.5;
@@ -5786,11 +4401,7 @@ int ROUnscalePos(unsigned long ulEquipeAxisArg, long *lPositionArg, long *lUnsca
         dTemp1 = 1.0e9 / (double)(lMechRatio[1]);
         dTemp2 = asin(dInvAngle);
         dTemp3 = dTemp1 * dTemp2;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if (lPositionArg[1] < 0)
         {
             dPosOffset = -0.5;
@@ -5812,11 +4423,7 @@ int ROUnscalePos(unsigned long ulEquipeAxisArg, long *lPositionArg, long *lUnsca
     {
         dTemp1 = 1.0e5 / (double)(lMechRatio[1]);
         dTemp3 = dTemp1 * (double)(lPositionArg[5]);
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if (lPositionArg[5] < 0)
         {
             dPosOffset = -0.5;
@@ -6025,11 +4632,7 @@ int ROInitGalilLocal(unsigned long ulEquipeAxesArg)
     if (ROValidAxis(ulEquipeAxesArg, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
         return FAILURE;
 
-<<<<<<< HEAD
     /* Galil "OE" command. Axes de-servo if the error limit is surpassed. */
-=======
-    /* Galil "OE" command. Axes de-servo if the error limit is surpassed. */
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	for (i=0; i<8; ++i) lValues[i] = 1;
 //    lValues[0] = lValues[1] = lValues[2] = lValues[3] = lValues[4] = 1;
     if (GASetValsLong(iCardNum, OFF_ON_ERROR_COMMAND, uGalilAxes, lValues) == FAILURE)
@@ -6117,19 +4720,11 @@ int ROInitGalilLocal(unsigned long ulEquipeAxesArg)
 //    lValues[0] = lValues[1] = lValues[2] = -1;
 //    if (ulEquipeAxesArg & (ROGetSpecialAxis(RO_FLIPPER)))
 //        lValues[3] = 2;
-<<<<<<< HEAD
 //    else
 //	{
         	lValues[3] = -1;
         	lValues[7] = -1;
 //	}
-=======
-//    else
-//	{
-        	lValues[3] = -1;
-        	lValues[7] = -1;
-//	}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     
     /* Delay is needed for 2 Galil card systems when this command doesn't go through. */
     if (TIDelay(50) == FAILURE)
@@ -6168,11 +4763,7 @@ int ROInitGalilLocal(unsigned long ulEquipeAxesArg)
         }
     }
 
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (iFileType == ROBOTFILE)
     {
         /* Gets Z brake and gain offset values from the datafile. */
@@ -6344,17 +4935,10 @@ int ROCheckSwitches(int iCardArg)
 int ROCheckLimitSwitches()
 {
     unsigned uAllLM;
-<<<<<<< HEAD
 
     //ROUpdateTS(FALSE);
 
     ROCheckSwitches(GA_CARD_0);
-=======
-
-    //ROUpdateTS(FALSE);
-
-    ROCheckSwitches(GA_CARD_0);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Find out if  recorded a change in the limit switch values. */
     uAllLM = (unsigned)(ulLMNegChanged | ulLMPosChanged) & 0xFF;
@@ -6476,17 +5060,10 @@ int ROReadLimitSwitches(unsigned long *ulSwitchesArg)
 //        if(ROCheckSwitches(GA_CARD_1) == FAILURE)
 //            return FAILURE;
 //    }
-<<<<<<< HEAD
 
 	ROUpdateTS(FALSE);
 //printf("TS: %d,%d,%d,%d,%d,%d,%d,%d\n",glTSArray[0],glTSArray[1],glTSArray[2],glTSArray[3],glTSArray[4],glTSArray[5],glTSArray[6],glTSArray[7]);
 //printf("TSbuf: %s\n",glTSReturnBuffer);
-=======
-
-	ROUpdateTS(FALSE);
-//printf("TS: %d,%d,%d,%d,%d,%d,%d,%d\n",glTSArray[0],glTSArray[1],glTSArray[2],glTSArray[3],glTSArray[4],glTSArray[5],glTSArray[6],glTSArray[7]);
-//printf("TSbuf: %s\n",glTSReturnBuffer);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Add in the positive limit switch values as the lowest 8 bits. */
     *ulSwitchesArg = ulLMPosFlag&0x00FF;
@@ -6551,13 +5128,8 @@ void ROEmergencyOff( int iSw )
 
     if( !iSw )
     {
-<<<<<<< HEAD
     	ROStopMotion(0);
 	TIDelay(500);
-=======
-    	ROStopMotion(0);
-	TIDelay(500);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
         /* Send abort motion which stops motion, kills homing, clears
          * the action buffer, and set appropriate flags for all axes.*/
@@ -6597,37 +5169,23 @@ void ROEmergencyOff( int iSw )
  *
  ***************************************************************/
 void RODisconnectPower()
-<<<<<<< HEAD
 {
     char caSTCommand[10] = "ST";
     char caABCommand[10] = "AB";
     char caMOCommand[10] = "MO";
     char caResp[MAXGASTR];
     long rc;
-=======
-{
-    char caSTCommand[10] = "ST";
-    char caABCommand[10] = "AB";
-    char caMOCommand[10] = "MO";
-    char caResp[MAXGASTR];
-    long rc;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Sets flags to indicate re-homing is required. */
     if( !iEMOWasSet || (inb( IO_ROBOT_INPUT_G) & (POWER_CHECK | LOOP_CHECK) ))
     {
 //        ulHomed &= 0x0F << (4*(iCardNumArg - 1));
-<<<<<<< HEAD
         ulHomed = 0;
-=======
-        ulHomed = 0;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         SSSetStatusWord(HOME_NOT_EXED, TRUE);
     }
 
     /* Stop motion, kill homing, clear the action buffer, and
      * set all appropriate flags for all axes. */
-<<<<<<< HEAD
     rc = GASendDMCCommand(ghDMC, caSTCommand, caResp, MAXGASTR);
 
     giTimerGA = TIGetCounter();
@@ -6638,18 +5196,6 @@ void RODisconnectPower()
     TIReturnCounter(giTimerGA);
 
     rc = GASendDMCCommand(ghDMC, caABCommand, caResp, MAXGASTR);
-=======
-    rc = GASendDMCCommand(ghDMC, caSTCommand, caResp, MAXGASTR);
-
-    giTimerGA = TIGetCounter();
-//printf("timer start:%d\n", giTimerGA);
-    TISetCounter(giTimerGA, 1000);
-    while (!TICountExpired(giTimerGA));
-//printf("timer end:\n");
-    TIReturnCounter(giTimerGA);
-
-    rc = GASendDMCCommand(ghDMC, caABCommand, caResp, MAXGASTR);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    ROStopMotion(0);
 
     /* For the IO card the cable was disconnected on. */
@@ -6658,17 +5204,10 @@ void RODisconnectPower()
 //    ROServoMCOff(RO_AXIS_W);
 //    ROServoMCOff(RO_AXIS_t|RO_AXIS_r|RO_AXIS_z);
 //    ROServoMCOff(RO_AXIS_w);
-<<<<<<< HEAD
     rc = GASendDMCCommand(ghDMC, caMOCommand, caResp, MAXGASTR);
     ulServoFlag = 0;
     ulAMFlag = 0xFF;
 
-=======
-    rc = GASendDMCCommand(ghDMC, caMOCommand, caResp, MAXGASTR);
-    ulServoFlag = 0;
-    ulAMFlag = 0xFF;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iPowerDisconnected = TRUE;
 }
 
@@ -6821,11 +5360,7 @@ int ROWriteGalilPort(int iCardNo, int iBitNum, int iData)
 //    else
 //        return FAILURE;
 
-<<<<<<< HEAD
 //    return GAWriteGalilInputOutputPort(iCardNum, iBitNum, iData);
-=======
-//    return GAWriteGalilInputOutputPort(iCardNum, iBitNum, iData);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return 0;
 }
 
@@ -6992,11 +5527,7 @@ unsigned long ROGetServoFlag()
  *
  ***************************************************************/
 unsigned long ROGetAMFlag()
-<<<<<<< HEAD
 {
-=======
-{
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    ROUpdateTS(FALSE);
     return ulAMFlag;
 }
@@ -7316,7 +5847,6 @@ int ROGetInterruptPositionCommand(unsigned long ulEquipeAxisArg, long *plValueAr
 
     /* Galil "ID" command. ??? */
 //    iReturn = GAGetValsLong(iCardNum, OPT_INTR_POS_COMMAND, uGalilAxes, laPosition);
-<<<<<<< HEAD
 
     if (ulEquipeAxisArg & RO_AXIS_ALL)
 		for (i=0; i<3; ++i)	plValueArg[i] = giIPW[i];
@@ -7328,19 +5858,6 @@ int ROGetInterruptPositionCommand(unsigned long ulEquipeAxisArg, long *plValueAr
 		plValueArg[2] = giIPW[2];
     else if (ulEquipeAxisArg & RO_AXIS_W)
 		plValueArg[3] = giIPW[3];
-=======
-
-    if (ulEquipeAxisArg & RO_AXIS_ALL)
-		for (i=0; i<3; ++i)	plValueArg[i] = giIPW[i];
-    else if (ulEquipeAxisArg & RO_AXIS_T)
-		plValueArg[0] = giIPW[0];
-    else if (ulEquipeAxisArg & RO_AXIS_R)
-		plValueArg[1] = giIPW[1];
-    else if (ulEquipeAxisArg & RO_AXIS_Z)
-		plValueArg[2] = giIPW[2];
-    else if (ulEquipeAxisArg & RO_AXIS_W)
-		plValueArg[3] = giIPW[3];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Scale the position from encoder counts to normal units. */
 //    ROScalePos(ulEquipeAxisArg, laPosition, plValueArg);
 
@@ -7370,7 +5887,6 @@ int ROSetInterruptPositionCommand(unsigned long ulEquipeAxisArg, long *plValueAr
 
     /* Validate that the axis exists in the system. */
     if (ROValidAxis(ulEquipeAxisArg, &iCardNum, &iFileType, &uGalilAxes) == FAILURE)
-<<<<<<< HEAD
         return FAILURE;
 
     if (ulEquipeAxisArg & RO_AXIS_ALL)
@@ -7401,38 +5917,6 @@ int ROSetInterruptPositionCommand(unsigned long ulEquipeAxisArg, long *plValueAr
 
 	for (i=0; i<8; ++i) giIPWFlag[i] = (giIPW[i] > 0) ? 1 : 0;
 
-=======
-        return FAILURE;
-
-    if (ulEquipeAxisArg & RO_AXIS_ALL)
-		for (i=0; i<3; ++i)	giIPW[i] = plValueArg[i];
-    else if (ulEquipeAxisArg & RO_AXIS_T)
-		giIPW[0] = plValueArg[0];
-    else if (ulEquipeAxisArg & RO_AXIS_R)
-		giIPW[1] = plValueArg[1];
-    else if (ulEquipeAxisArg & RO_AXIS_Z)
-		giIPW[2] = plValueArg[2];
-    else if (ulEquipeAxisArg & RO_AXIS_W)
-		giIPW[3] = plValueArg[3];
-
-    /* Unscale the position from normal units to encoder counts. */
-    if (ROUnscalePos(ulEquipeAxisArg, plValueArg, laPosition) == FAILURE)
-        return FAILURE;
-
-    if (ulEquipeAxisArg & RO_AXIS_ALL)
-		for (i=0; i<3; ++i)	giIPWenc[i] = laPosition[i];
-    else if (ulEquipeAxisArg & RO_AXIS_T)
-		giIPWenc[0] = laPosition[0];
-    else if (ulEquipeAxisArg & RO_AXIS_R)
-		giIPWenc[1] = laPosition[1];
-    else if (ulEquipeAxisArg & RO_AXIS_Z)
-		giIPWenc[2] = laPosition[2];
-    else if (ulEquipeAxisArg & RO_AXIS_W)
-		giIPWenc[3] = laPosition[3];
-
-	for (i=0; i<8; ++i) giIPWFlag[i] = (giIPW[i] > 0) ? 1 : 0;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Galil "ID" command. ??? */
 //    iReturn = GASetValsLong(iCardNum, OPT_INTR_POS_COMMAND, uGalilAxes, laPosition);
 
@@ -7712,15 +6196,9 @@ int ROServiceBrake(int iParamFileArg, int iOnOffArg)
 {
 //    long lZAxisBrake[8] = {0,0,0,0,0,0,0,0};
 //    int  iVacIndex;
-<<<<<<< HEAD
 //	char cpBuf[16];
     int iValue;
 
-=======
-//	char cpBuf[16];
-    int iValue;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (iParamFileArg == ROBOTFILE)
     {
@@ -7730,7 +6208,6 @@ int ROServiceBrake(int iParamFileArg, int iOnOffArg)
 //        if (lZAxisBrake[0] > 0)
 //        {
             /* ...activate the Z brake. */
-<<<<<<< HEAD
             /* WARNING: In ME domain card number 0 is GA_CARD_0. */
 //			if (iOnOffArg)
 //				GASendReceiveGalil( GA_CARD_1, (char *)"SB3\xD", cpBuf );
@@ -7744,21 +6221,6 @@ int ROServiceBrake(int iParamFileArg, int iOnOffArg)
 //	    iValue &= 0xEF;	      // off
 	outb(iValue, IO_ROBOT_OUTPUT_A);
 
-=======
-            /* WARNING: In ME domain card number 0 is GA_CARD_0. */
-//			if (iOnOffArg)
-//				GASendReceiveGalil( GA_CARD_1, (char *)"SB3\xD", cpBuf );
-//			else
-//				GASendReceiveGalil( GA_CARD_1, (char *)"CB3\xD", cpBuf );
-	iValue = inb(IO_ROBOT_OUTPUT_A);
-	iValue &= 0xCF;
-	if (iOnOffArg)
-	    iValue |= 0x10;       // 5th bit on
-//	else
-//	    iValue &= 0xEF;	      // off
-	outb(iValue, IO_ROBOT_OUTPUT_A);
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //            ROWriteGalilPort(0, (int)lZAxisBrake[0], iOnOffArg);
  //       }
     }
@@ -7767,15 +6229,9 @@ int ROServiceBrake(int iParamFileArg, int iOnOffArg)
         /* Get the brake values from the datafile. */
 //        FIOGetParamVals(PREALIGNFILE, H_VALUE, lZAxisBrake);
 //		if (iOnOffArg)
-<<<<<<< HEAD
 //			GASendReceiveGalil( GA_CARD_1, (char *)"SB4\xD", cpBuf );
 //		else
 //			GASendReceiveGalil( GA_CARD_1, (char *)"CB4\xD", cpBuf );
-=======
-//			GASendReceiveGalil( GA_CARD_1, (char *)"SB4\xD", cpBuf );
-//		else
-//			GASendReceiveGalil( GA_CARD_1, (char *)"CB4\xD", cpBuf );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //        for (iVacIndex=1; iVacIndex<=2; iVacIndex++)
 //        {
 //            /* If a brake activation is required... */
@@ -7789,7 +6245,6 @@ int ROServiceBrake(int iParamFileArg, int iOnOffArg)
 //    }
     else if (iParamFileArg == AUXFILE)
     {
-<<<<<<< HEAD
 	iValue = inb(IO_ROBOT_OUTPUT_B);
 	if (iOnOffArg)
 	    iValue |= 0x22;       // 2nd and 6th bits on (disengages brake)
@@ -7798,16 +6253,6 @@ int ROServiceBrake(int iParamFileArg, int iOnOffArg)
 
 	outb(iValue, IO_ROBOT_OUTPUT_B);
 
-=======
-	iValue = inb(IO_ROBOT_OUTPUT_B);
-	if (iOnOffArg)
-	    iValue |= 0x22;       // 2nd and 6th bits on (disengages brake)
-	else
-	    iValue &= 0xDD;	  // 2nd and 6th bits off (engage brake)
-
-	outb(iValue, IO_ROBOT_OUTPUT_B);
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         /* Get the track brake values from the datafile. */
  //       FIOGetParamVals(AUXFILE, H_VALUE, lZAxisBrake);
         /* If a track brake activation is required... */
@@ -7823,15 +6268,9 @@ int ROServiceBrake(int iParamFileArg, int iOnOffArg)
 			//	return FAILURE;
 
 //			if (iOnOffArg)
-<<<<<<< HEAD
 //				GASendReceiveGalil( GA_CARD_1, (char *)"SB5\xD", cpBuf );
 //			else
 //				GASendReceiveGalil( GA_CARD_1, (char *)"CB5\xD", cpBuf );
-=======
-//				GASendReceiveGalil( GA_CARD_1, (char *)"SB5\xD", cpBuf );
-//			else
-//				GASendReceiveGalil( GA_CARD_1, (char *)"CB5\xD", cpBuf );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //			if(iCardNum==2)
 //				ROWriteGalilPort(1, (int)lZAxisBrake[0]-40, iOnOffArg);
 //			else
@@ -7931,15 +6370,9 @@ long ROSetGalilModulo(long lModuloArg)
 
     return SUCCESS;
 }
-<<<<<<< HEAD
 
 
 
-=======
-
-
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int ROEncoderToEU(unsigned long ulEquipeAxisArg, long lEncoderArg, long *lScaledPositionArg)
 {
     long lMechRatio[3], lArmLength[3];
@@ -8006,11 +6439,7 @@ int ROEncoderToEU(unsigned long ulEquipeAxisArg, long lEncoderArg, long *lScaled
         dTemp2 = dTemp1 / 1.0e9;
         dTemp3 = sin(dTemp2);
         dTemp4 = (double)(lArmLength[1]) * dTemp3;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if (lEncoderArg < 0)
         {
             dPosOffset = -0.5;
@@ -8138,17 +6567,10 @@ int ROEncoderToEU(unsigned long ulEquipeAxisArg, long lEncoderArg, long *lScaled
 
     return SUCCESS;
 }
-<<<<<<< HEAD
 
 //
 // ROEUToEncoder
 //
-=======
-
-//
-// ROEUToEncoder
-//
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int ROEUToEncoder(unsigned long ulEquipeAxisArg, long lPositionArg, long *lUnscaledPositionArg)
 {
     long lMechRatio[3], lArmLength[3];
@@ -8208,11 +6630,7 @@ int ROEUToEncoder(unsigned long ulEquipeAxisArg, long lPositionArg, long *lUnsca
 
         dTemp1 = dTemp2 + dPosOffset;
         *lUnscaledPositionArg = (long)(dTemp1);
-<<<<<<< HEAD
     }
-=======
-    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     else if ((ulEquipeAxisArg & RO_AXIS_R ) && (lPositionArg != 0))
     {
         dInvAngleTemp = 1.0 / (double)(lArmLength[1]);
@@ -8235,11 +6653,7 @@ int ROEUToEncoder(unsigned long ulEquipeAxisArg, long lPositionArg, long *lUnsca
         dTemp1 = 1.0e9 / (double)(lMechRatio[1]);
         dTemp2 = asin(dInvAngle);
         dTemp3 = dTemp1 * dTemp2;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if (lPositionArg < 0)
         {
             dPosOffset = -0.5;
@@ -8256,11 +6670,7 @@ int ROEUToEncoder(unsigned long ulEquipeAxisArg, long lPositionArg, long *lUnsca
     {
         dTemp1 = 1.0e5 / (double)(lMechRatio[1]);
         dTemp3 = dTemp1 * (double)(lPositionArg);
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if (lPositionArg < 0)
         {
             dPosOffset = -0.5;
@@ -8363,11 +6773,7 @@ int ROEUToEncoder(unsigned long ulEquipeAxisArg, long lPositionArg, long *lUnsca
             dTemp1 = dTemp2 + dPosOffset;
             *lUnscaledPositionArg = (long)(dTemp1);
         }
-<<<<<<< HEAD
     }
-=======
-    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     else if ((ulEquipeAxisArg & RO_AXIS_w) && (lPositionArg != 0))
     {
         dTemp1 = 1.0e5 / (double)(lMechRatio[1]);

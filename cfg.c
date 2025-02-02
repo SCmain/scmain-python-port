@@ -1,6 +1,5 @@
 /***************************************************************\
  *
- * File:        configgen.c
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -99,22 +98,14 @@ void FIOInitConfig()
      * This cannot be determined by checking the define flag because the
      * define flag hasn't been sent into this module yet. It gets set later
      * in FIOInitParamModule. */
-<<<<<<< HEAD
 
 //    strcpy(sCfgTbl.m_caSysCfgString, "I3A1");
     strcpy(sCfgTbl.m_caSysCfgString, "I2AXO");
 
-=======
-
-//    strcpy(sCfgTbl.m_caSysCfgString, "I3A1");
-    strcpy(sCfgTbl.m_caSysCfgString, "I2AXO");
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    for (iIndex=0; iIndex<MAXFEATURECONFIG; iIndex++)
 //    {
 //        sCfgTbl.m_iaFeatureFlags[iIndex] = 1;
 //    }
-<<<<<<< HEAD
 	sCfgTbl.m_iaFeatureFlags[SECS_HOST] = 1;
 	sCfgTbl.m_iaFeatureFlags[SECS_DEVICE] = 0;
 	sCfgTbl.m_iaFeatureFlags[TOT] = 1;
@@ -127,20 +118,6 @@ void FIOInitConfig()
 	sCfgTbl.m_iaFeatureFlags[EQUIPE_BUS] = 0;
 	sCfgTbl.m_iaFeatureFlags[FAST_ALIGN] = 0;
 	sCfgTbl.m_iaFeatureFlags[SYSCFG] = 0;
-=======
-	sCfgTbl.m_iaFeatureFlags[SECS_HOST] = 1;
-	sCfgTbl.m_iaFeatureFlags[SECS_DEVICE] = 0;
-	sCfgTbl.m_iaFeatureFlags[TOT] = 1;
-	sCfgTbl.m_iaFeatureFlags[OTF] = 1;
-	sCfgTbl.m_iaFeatureFlags[MULTI_CHIP_ALIGN] = 0;
-	sCfgTbl.m_iaFeatureFlags[COM3_SUPPORT] = 1;
-	sCfgTbl.m_iaFeatureFlags[INTELLIPICK] = 0;
-	sCfgTbl.m_iaFeatureFlags[SQUARE_WAFER_ALIGN] = 0;
-	sCfgTbl.m_iaFeatureFlags[SCANNER] = 1;
-	sCfgTbl.m_iaFeatureFlags[EQUIPE_BUS] = 0;
-	sCfgTbl.m_iaFeatureFlags[FAST_ALIGN] = 0;
-	sCfgTbl.m_iaFeatureFlags[SYSCFG] = 0;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return;
 }
@@ -191,26 +168,16 @@ int FIOWriteConfig()
 
     return SUCCESS;
 }
-<<<<<<< HEAD
 
 /***************************************************************************
  * Function Name:   ex_SCFG
  * Description:     Set configuration
  *			0 = drift check OK
  *			1 = drift check Disabled
-=======
-
-/***************************************************************************
- * Function Name:   ex_SCFG
- * Description:     Set configuration
- *			0 = drift check OK
- *			1 = drift check Disabled
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_SENL(instr_ptr instr)
-<<<<<<< HEAD
 {
     int iDat;
     FILE *iFP;
@@ -218,21 +185,11 @@ int ex_SENL(instr_ptr instr)
 
     CMDoperand_ptr Optr;
     long lAlarm, lNum;
-=======
-{
-    int iDat;
-    FILE *iFP;
-    int iCount;
-
-    CMDoperand_ptr Optr;
-    long lAlarm, lNum;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     Optr=instr->opr_ptr;         /* if there is an operand */
     if (Optr)
     {
         if( CMDgetValue(Optr, &lNum) == FAILURE )  /* complex number */
-<<<<<<< HEAD
             return FAILURE;
 
 	if(lNum != 313) return FAILURE;
@@ -257,41 +214,11 @@ int ex_SENL(instr_ptr instr)
  * Description:     Reads Drift-detect Enable/Disable Status
  *			0 = drift check OK
  *			1 = drift check Disabled
-=======
-            return FAILURE;
-
-	if(lNum != 313) return FAILURE;
-
-    	Optr=Optr->next;         /* if there is a second operand */
-	if(!Optr) return FAILURE;
-
-        if( CMDgetValue(Optr, &lAlarm) == FAILURE )  /* alarm code */
-            return FAILURE;
-	
-	if(lAlarm == 0 || lAlarm == 1)
-	    giDisableLatch = (int)lAlarm;
-	else
-	    return FAILURE;
-
-    	return SUCCESS;
-    }
-    return FAILURE;
-}
-/***************************************************************************
- * Function Name:   ex_RENL
- * Description:     Reads Drift-detect Enable/Disable Status
- *			0 = drift check OK
- *			1 = drift check Disabled
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_RENL(instr_ptr instr)
 {
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return CMDReadParam(instr->opr_ptr, giDisableLatch);
 }

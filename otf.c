@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -30,7 +28,6 @@
  * Rev      ECO#    Date    Author          Brief Description
  *
 \***************************************************************/
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <string.h>
 #include <sys/io.h>
 #include <math.h>
@@ -47,7 +44,6 @@
 #include "fiog.h"
 #include "mapio.h"
 #include "scintr.h"
-<<<<<<< HEAD
 #include "romain.h"
 #include "ro.h"
 #include "rofio.h"
@@ -115,75 +111,6 @@ long glValidRPos = 0;
 long glR200mm = 0;
 int  giSmap[9] = {0,0,0,0,0,0,0,0,0};
 
-=======
-#include "romain.h"
-#include "ro.h"
-#include "rofio.h"
-#include "scio.h"
-#include "fiol.h"
-#include "scmem.h"
-#include "dmclnx.h"
-#include "gag.h"
-
-#define NUMBER_OF_CTR_POINTS  6
-
-extern HANDLEDMC ghDMC;
-
-int	giOTFnum = 0;
-int	iOTFFirstTime = FALSE;
-int 	giOTFNullCount = 0;
-
-//int NN[10][4] = { {4,0,0,2}, {5,1,1,2}, {0,2,2,3}, {1,2,2,3}, {2,3,3,5}, 
-//		  {2,3,3,4}, {3,4,4,1}, {3,5,5,1}, {3,4,4,0} };
-//int NN[10][4] = { {4,0,0,2}, {0,2,2,3}, {1,2,2,3}, 
-//		  {2,3,3,4}, {3,4,4,1}, {3,4,4,0} };
-//int NN[10][4] = { {4,0,0,2}, {5,1,1,2}, {0,2,2,3}, {1,2,2,3}, {2,3,3,5}, 
-//		  {2,3,3,4}, {3,4,4,1}, {3,5,5,1}, {3,4,4,0} };
-int NN[10][4] = { {0,2,2,5}, {5,3,3,0}, {1,2,2,5}, 
-		  {3,4,4,0}, {1,2,2,3}, {3,4,4,1},
-		  {3,4,4,1}, {3,5,5,1}, {3,4,4,0} };
-int NS[10][4] = { {0,2,2,5}, {5,3,3,0}, {0,2,2,3}, 
-		  {3,4,4,0}, {2,3,3,5}, {3,4,4,1},
-		  {3,4,4,1}, {3,5,5,1}, {3,4,4,0} };
-
-extern int 	giOTFCounter;
-extern int	giSensorCount;
-extern long 	glOTFData[MAX_OTF_INTERRUPTS];
-extern int 	aiPortsMap[MAX_OTF_INTERRUPTS];
-extern int	giPrevTint;
-extern int	giPrevSensor;
-extern int	giSensorMap[MAX_OTF_INTERRUPTS];
-
-int MPConvertOTFData( );
-
-char caXQOTFcommand[10] = "XQ#OTF3,7";
-char caHXcommand[10]    = "HX7";
-char caVCNTcommand[10]  = "MG VCNT";
-char caVPS1command[10]  = "MG VPS1";
-char caVPS2command[10]  = "MG VPS2";
-char caVPS3command[10]  = "MG VPS3";
-char caVPS4command[10]  = "MG VPS4";
-char caVPS5command[10]  = "MG VPS5";
-char caVPS6command[10]  = "MG VPS6";
-char caVPS7command[10]  = "MG VPS7";
-char caVPS8command[10]  = "MG VPS8";
-char caVPS9command[10]  = "MG VPS9";
-char caVP10command[10]  = "VPS1=0";
-char caVP20command[10]  = "VPS2=0";
-char caVP30command[10]  = "VPS3=0";
-char caVP40command[10]  = "VPS4=0";
-char caVP50command[10]  = "VPS5=0";
-char caVP60command[10]  = "VPS6=0";
-char caVP70command[10]  = "VPS7=0";
-char caVP80command[10]  = "VPS8=0";
-char caVP90command[10]  = "VPS9=0";
-char caVC00command[10]  = "VCNT=0";
-
-long glValidRPos = 0;
-long glR200mm = 0;
-int  giSmap[9] = {0,0,0,0,0,0,0,0,0};
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 psOTFStation pstHeadOTFStationsList = NULL;
 psOTFStation pstOTFCurrentStation = NULL;
@@ -192,11 +119,7 @@ long fplOTFPosition[MAX_OTF_INTERRUPTS * 4];
 int  fpiOTFSensorsBitmap[MAX_OTF_INTERRUPTS * 4];
 float fComputedCentersX[10], fComputedCentersY[10];
 float Xd[6], Yd[6];
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 /****************************************************************\
  *
  * Function:    MPSetOTFPositions
@@ -519,11 +442,7 @@ void MPBitMapInit(int *piSenArg, int iBitMapArg)
         {
             piSenArg[iCounter] = 1;
             iBitMapArg -= (int)1 << iCounter;
-<<<<<<< HEAD
         }
-=======
-        }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("i=%d iBitMap=%d iSen[i]=%d\n",iCounter, iBitMapArg, piSenArg[iCounter]);
     }
 }
@@ -667,13 +586,8 @@ static	float x, y;
 static  float fAverageCenterX, fAverageCenterY;
 //static	float aa, bb;
 static	float xc, yc;
-<<<<<<< HEAD
 static	double t0, r0, x01, y01, Xdd, Ydd, Xf, Yf;
 static  double xx01, Yf2, yy01;
-=======
-static	double t0, r0, x01, y01, Xdd, Ydd, Xf, Yf;
-static  double xx01, Yf2, yy01;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 static int iConfidence;
 static float fDistanceBetweenCenters, fMaxOffDistanceForCenter;
@@ -699,22 +613,13 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
     long *lXPos = fplOTFPosition;
     int *iSensorMap = fpiOTFSensorsBitmap;
     int iMask, a, m, n, q, p1, p2, p3, p4;
-<<<<<<< HEAD
     float x1, y1, x2, y2, x3, y3, x4, y4, aa1, aa2, b1, b2;
-=======
-    float x1, y1, x2, y2, x3, y3, x4, y4, aa1, aa2, b1, b2;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     float dx1, dy1, dx2, dy2, ddxy, dxy;
     double dEELength, dWaferRadiusSqr;
     int iChanged, iSlotIndex, iIndex, iSlotNum;
     long lWaferSize;
-<<<<<<< HEAD
 //printf("iCalib=%d ToffDest=%f RoffDest=%f ToffSource=%f source=%c shift=%d\n",iCalibrateArg, dTOffsetDestinationArg, dROffsetDestinationArg, dTOffsetSourceArg, cSourceStationNameArg, iIOShiftArg);
 
-=======
-//printf("iCalib=%d ToffDest=%f RoffDest=%f ToffSource=%f source=%c shift=%d\n",iCalibrateArg, dTOffsetDestinationArg, dROffsetDestinationArg, dTOffsetSourceArg, cSourceStationNameArg, iIOShiftArg);
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     cSourceStationNameArg = ((int)cSourceStationNameArg < 'a') ? ((int)cSourceStationNameArg - 'A') : ((int)cSourceStationNameArg - 'a' + 26);
 
@@ -725,21 +630,12 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
         return SUCCESS;
     }
 
-<<<<<<< HEAD
     if (MPConvertOTFData() == FAILURE) 
     {
         pstOTFCurrentStation->m_lROffset = pstOTFCurrentStation->m_lOTFFinalCorrection[iSlotNum][2] = -3;
 	return SUCCESS;
     }
 
-=======
-    if (MPConvertOTFData() == FAILURE) 
-    {
-        pstOTFCurrentStation->m_lROffset = pstOTFCurrentStation->m_lOTFFinalCorrection[iSlotNum][2] = -3;
-	return SUCCESS;
-    }
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     // user access slots from 1 to NOFSLOTS
     // internally we use array from 0 to NOFSLOTS-1
     iSlotNum = (int) pstOTFCurrentStation->m_lSlotNumber - 1;
@@ -771,7 +667,6 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
 //    {
 //       if (iSensorMap[n] == 0)
 //        break;
-<<<<<<< HEAD
 //    }
 
     // can assume iOTFInterruptsCounter is the # of valid data
@@ -779,15 +674,6 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
 
     // maximum distance the center can be off
     fMaxOffDistanceForCenter = (float)pstOTFCurrentStation->m_lOTFReserved[2];
-=======
-//    }
-
-    // can assume iOTFInterruptsCounter is the # of valid data
-    n = iOTFInterruptsCounter;
-
-    // maximum distance the center can be off
-    fMaxOffDistanceForCenter = (float)pstOTFCurrentStation->m_lOTFReserved[2];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 
     // get the X, Y coordinates of the points, roughly calculate center,
@@ -806,11 +692,7 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
         iSensorMap[m] &= 7;
         MPBitMapInit(iSen, (iSensorMap[m]^iMask));
         iMask = iSensorMap[m];
-<<<<<<< HEAD
 //printf("m=%d iSmap[m]=%d iMask=%d\n",m,iSensorMap[m],iMask);
-=======
-//printf("m=%d iSmap[m]=%d iMask=%d\n",m,iSensorMap[m],iMask);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
         for (q = 0; q < 3; q++)
         {
@@ -838,11 +720,7 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
                 Yd[a] = y;
                 fAverageCenterX += x;
                 fAverageCenterY += y;
-<<<<<<< HEAD
                 a++;
-=======
-                a++;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("m=%d a=%d q=%d sen=%d x=%f y=%f\n",m,a,q,iSen[q],x,y);
             }
         }
@@ -858,24 +736,15 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
     // compute the average, rough center
     fAverageCenterX /= a;
     fAverageCenterY /= a;
-<<<<<<< HEAD
 //printf("aveCenterX=%f aveCenterY=%f\n",fAverageCenterX,fAverageCenterY);
-=======
-//printf("aveCenterX=%f aveCenterY=%f\n",fAverageCenterX,fAverageCenterY);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // Sorting the points in order by the angle
     for (n = 0; n < NUMBER_OF_OTF_POINTS; n++)
     {
         lAngle[n] = (long)(atan2(Yd[n] - fAverageCenterY, Xd[n] - fAverageCenterX)*180/PIDEF);
 //        lAngle[n] = (long)(atan2(Yd[n] - fAverageCenterY, fAverageCenterX - Xd[n])*180/PIDEF); // retracting positive direction
-<<<<<<< HEAD
         No[n] = n;
 //		ulTimeStartOld = ulTimeStart;
-=======
-        No[n] = n;
-//		ulTimeStartOld = ulTimeStart;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("n=%d Yd=%f Xd=%f Ang=%d\n",n,Yd[n],Xd[n],lAngle[n]);
     }
 
@@ -897,11 +766,7 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
         }
         if (!iChanged) break;
     }
-<<<<<<< HEAD
     // Sorting finished
-=======
-    // Sorting finished
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("sorted: No[n] = %d %d %d %d %d %d\n",No[0],No[1],No[2],No[3],No[4],No[5]);
 
     //  iCalibrateArg == 1 we are calibrating the first slot, we clear the Sensor Compensation for all the slots
@@ -922,7 +787,6 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
     for(n = 0 ; n < NUMBER_OF_OTF_POINTS ; n++)
     {
         XXXd[No[n]] = Xd[No[n]] - pstOTFCurrentStation->m_fOTFSensorComp[iSlotNum][No0[n]];
-<<<<<<< HEAD
 //        XXXd[No[n]] = Xd[No[n]];
         YYYd[No[n]] = Yd[No[n]];
     }
@@ -937,27 +801,10 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
     // calculate the centers
     // 0-1, 1-3, ... chords make center, we compute 6 centers
     if(giOTFnum == 0) // Original Center finding computation
-=======
-//        XXXd[No[n]] = Xd[No[n]];
-        YYYd[No[n]] = Yd[No[n]];
-    }
-
-//printf("SensorCompensated\n");
-//for (n=0; n<6; ++n)
-//  printf("    Xd[%d]=%f Yd[%d]=%f\n",n, XXXd[n], n, YYYd[n]);
-
-    fAverageCenterX = 0.0f;
-    fAverageCenterY = 0.0f;
-
-    // calculate the centers
-    // 0-1, 1-3, ... chords make center, we compute 6 centers
-    if(giOTFnum == 0) // Original Center finding computation
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     {
 	for (n = 0; n < NUMBER_OF_CTR_POINTS; n++)
     	{
 //            p1 = No[n % NUMBER_OF_CTR_POINTS];
-<<<<<<< HEAD
 //            p2 = No[(n+1) % NUMBER_OF_CTR_POINTS];
 //            p3 = No[(n+1) % NUMBER_OF_CTR_POINTS];
 //            p4 = No[(n+2) % NUMBER_OF_CTR_POINTS];
@@ -977,27 +824,6 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
 	    	p4 = NN[n][3];
 	    }
 
-=======
-//            p2 = No[(n+1) % NUMBER_OF_CTR_POINTS];
-//            p3 = No[(n+1) % NUMBER_OF_CTR_POINTS];
-//            p4 = No[(n+2) % NUMBER_OF_CTR_POINTS];
-
-	    if(lXPos[1] == lXPos[2])
-	    {
-	    	p1 = NS[n][0];
-	    	p2 = NS[n][1];
-	    	p3 = NS[n][2];
-	    	p4 = NS[n][3];
-	    }
-	    else
-	    {
-	    	p1 = NN[n][0];
-	    	p2 = NN[n][1];
-	    	p3 = NN[n][2];
-	    	p4 = NN[n][3];
-	    }
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             x1 = XXXd[p1];
             y1 = YYYd[p1];
             x2 = XXXd[p2];
@@ -1039,7 +865,6 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
 
             // RC stores the coordinates for each computed center
             fComputedCentersX[n] = xc;
-<<<<<<< HEAD
             fComputedCentersY[n] = yc;
 //printf("CenterComp: n=%d p1=%d p2=%d p3=%d p4=%d xc=%f yc=%f\n",n,p1,p2,p3,p4,xc,yc);
         }
@@ -1071,39 +896,6 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
 //dxy  = -1.0/ddxy;
 //printf("p1=%d p2=%d slope p1 to p2 = %f, inverse = %f\n", p1, p2, ddxy, dxy);
 
-=======
-            fComputedCentersY[n] = yc;
-//printf("CenterComp: n=%d p1=%d p2=%d p3=%d p4=%d xc=%f yc=%f\n",n,p1,p2,p3,p4,xc,yc);
-        }
-    }
-    else // new center finding computation
-    {
-     	for (n = 0; n < NUMBER_OF_CTR_POINTS; n++)
-    	{
-//            p1 = No[n % NUMBER_OF_CTR_POINTS];
-//            p2 = No[(n+1) % NUMBER_OF_CTR_POINTS];
-//            p3 = No[(n+1) % NUMBER_OF_CTR_POINTS];
-//            p4 = No[(n+2) % NUMBER_OF_CTR_POINTS];
-
-	    p1 = NN[n][0];
-	    p2 = NN[n][1];
-	    p3 = NN[n][2];
-	    p4 = NN[n][3];
-
-            x1 = (XXXd[p1] + XXXd[p2]) / 2;
-            y1 = (YYYd[p1] + YYYd[p2]) / 2;
-            x2 = (XXXd[p3] + XXXd[p4]) / 2;
-            y2 = (YYYd[p3] + YYYd[p4]) / 2;
-	    dy1 = XXXd[p2] - XXXd[p1];
-	    dx1 = YYYd[p1] - YYYd[p2];
-	    dy2 = XXXd[p4] - XXXd[p3];
-	    dx2 = YYYd[p3] - YYYd[p4];
-
-//ddxy = (YYYd[p1] - YYYd[p2])/(XXXd[p1] - XXXd[p2]);
-//dxy  = -1.0/ddxy;
-//printf("p1=%d p2=%d slope p1 to p2 = %f, inverse = %f\n", p1, p2, ddxy, dxy);
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             if ((x1 != x2) && (x3 != x4))
             {
                 aa1 = (y1 - y2)/(x2 - x1);
@@ -1130,7 +922,6 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
             	b2 = (x3 + x4)/2 - (y3 - y4)*(y3 + y4)/(2*(x4 - x3));
             	xc = aa2*yc + b2;
             }
-<<<<<<< HEAD
 
 	    ddxy = dx1*dy2 - dy1*dx2;
    	    if (ddxy != 0.0)
@@ -1142,19 +933,6 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
 	    if (dxy != 0.0)
 	    	yc = (xc - x1) * dy1 / dxy;
 	    else
-=======
-
-	    ddxy = dx1*dy2 - dy1*dx2;
-   	    if (ddxy != 0.0)
-	    	xc = (y1*dx1*dx2 + x2*dx1*dy2 - x1*dy1*dx2 - y2*dx1*dx2) / ddxy;
-	    else
-	    	xc = 9999999.99;
-
-	    dxy = dx1 + y1;
-	    if (dxy != 0.0)
-	    	yc = (xc - x1) * dy1 / dxy;
-	    else
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    	yc = 9999999.99;
 
             fAverageCenterX += xc;
@@ -1163,34 +941,20 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
             // RC stores the coordinates for each computed center
             fComputedCentersX[n] = xc;
             fComputedCentersY[n] = yc;
-<<<<<<< HEAD
         }
     }
 
 //int i;
 //for (i=0; i<NUMBER_OF_CTR_POINTS; ++i)
-=======
-        }
-    }
-
-//int i;
-//for (i=0; i<NUMBER_OF_CTR_POINTS; ++i)
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    printf("center=%d, (%f, %f)\n",i, fComputedCentersX[i], fComputedCentersY[i]);
 
     // if iCalibrate != 0 we are calibrating
     if (iCalibrateArg !=0 )
     {
         pstOTFCurrentStation->m_fOTFRef[iSlotNum][0] = fAverageCenterX/NUMBER_OF_CTR_POINTS;
-<<<<<<< HEAD
         pstOTFCurrentStation->m_fOTFRef[iSlotNum][1] = fAverageCenterY/NUMBER_OF_CTR_POINTS;
 
 //printf("oRefT=%f oRefR=%f\n",pstOTFCurrentStation->m_fOTFRef[iSlotNum][0],pstOTFCurrentStation->m_fOTFRef[iSlotNum][1]);
-=======
-        pstOTFCurrentStation->m_fOTFRef[iSlotNum][1] = fAverageCenterY/NUMBER_OF_CTR_POINTS;
-
-//printf("oRefT=%f oRefR=%f\n",pstOTFCurrentStation->m_fOTFRef[iSlotNum][0],pstOTFCurrentStation->m_fOTFRef[iSlotNum][1]);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
         if (iCalibrateArg)
         {
@@ -1211,13 +975,8 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
                 if (fabs(a1) < fabs(a2))
                     pstOTFCurrentStation->m_fOTFSensorComp[iSlotNum][No0[n]] = (float)a1;
                 else
-<<<<<<< HEAD
                     pstOTFCurrentStation->m_fOTFSensorComp[iSlotNum][No0[n]] = (float)a2;
 //printf("sComp n=%d No0=%d b=%f dWrad=%f a1=%f a2=%f\n",n, No0[n], b, dWaferRadiusSqr, a1, a2);
-=======
-                    pstOTFCurrentStation->m_fOTFSensorComp[iSlotNum][No0[n]] = (float)a2;
-//printf("sComp n=%d No0=%d b=%f dWrad=%f a1=%f a2=%f\n",n, No0[n], b, dWaferRadiusSqr, a1, a2);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("      x=%f y=%f xc=%f yc=%f\n",x,y,xc,yc);
            }
         }
@@ -1262,7 +1021,6 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
                     if (fDistanceBetweenCenters < fMaxOffDistanceForCenter)
                     {
                         iSen[n]++;
-<<<<<<< HEAD
                         iConfidence++;
 //printf("n=%d m=%d iSen[n]=%d iConfid=%d\n",n,m,iSen[n],iConfidence);
                     }
@@ -1270,15 +1028,6 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
 		    {
 //printf("n=%d m=%d xn=%f xm=%f yn=%f ym=%f fmax=%f fDis=%f\n",n,m,fComputedCentersX[n],fComputedCentersX[m],fComputedCentersY[n],fComputedCentersY[m],fMaxOffDistanceForCenter,fDistanceBetweenCenters);
 		    }
-=======
-                        iConfidence++;
-//printf("n=%d m=%d iSen[n]=%d iConfid=%d\n",n,m,iSen[n],iConfidence);
-                    }
-		    else
-		    {
-//printf("n=%d m=%d xn=%f xm=%f yn=%f ym=%f fmax=%f fDis=%f\n",n,m,fComputedCentersX[n],fComputedCentersX[m],fComputedCentersY[n],fComputedCentersY[m],fMaxOffDistanceForCenter,fDistanceBetweenCenters);
-		    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                 }
             }
         }
@@ -1303,13 +1052,8 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
 
         // if we couldn't find average center, return error
         if (m == 0)
-<<<<<<< HEAD
         {
 //printf("conf=%d sen=%d %d %d %d %d %d\n",iConfidence,iSen[0],iSen[1],iSen[2],iSen[3],iSen[4],iSen[5]);
-=======
-        {
-//printf("conf=%d sen=%d %d %d %d %d %d\n",iConfidence,iSen[0],iSen[1],iSen[2],iSen[3],iSen[4],iSen[5]);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
             pstOTFCurrentStation->m_lROffset = pstOTFCurrentStation->m_lOTFFinalCorrection[iSlotNum][2] = -1;
             return SUCCESS;
@@ -1324,7 +1068,6 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
         if (r0 != 0)
             t0 = atan2(fAverageCenterY - pstOTFCurrentStation->m_fOTFRef[iSlotNum][1], fAverageCenterX - pstOTFCurrentStation->m_fOTFRef[iSlotNum][0]);
         else
-<<<<<<< HEAD
             t0 = 0.0f;
 
 //printf("r0=%f maxOff=%f\n", r0, fMaxOffDistanceForCenter);
@@ -1342,39 +1085,15 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
 //        Ydd = (dROffsetDestinationArg-dEELength) * sin((dTOffsetDestinationArg-dTOffsetSourceArg) * PIDEF / 18000);
 //	}
 //	else
-=======
-            t0 = 0.0f;
-
-//printf("r0=%f maxOff=%f\n", r0, fMaxOffDistanceForCenter);
-//printf("fAveX=%f fAveY=%f r0=%f t0=%f\n",fAverageCenterX, fAverageCenterY, r0, t0);
-
-        pstOTFCurrentStation->m_lROffset = pstOTFCurrentStation->m_lOTFFinalCorrection[iSlotNum][2] = (long)r0;
-
-/********** ORIGINAL COMPUTATION FOR FINDING FINAL POS ***********************/
-
-//        if(dROffsetDestinationArg < 0.0) // needed to check if taught R pos is negative
-//        {
-//        y01 = r0 * sin((dTOffsetDestinationArg-dTOffsetSourceArg)*PIDEF/18000 - t0);
-//        x01 = r0 * cos((dTOffsetDestinationArg-dTOffsetSourceArg)*PIDEF/18000 - t0);
-//        Xdd = (dROffsetDestinationArg-dEELength) * cos((dTOffsetDestinationArg-dTOffsetSourceArg) * PIDEF / 18000);
-//        Ydd = (dROffsetDestinationArg-dEELength) * sin((dTOffsetDestinationArg-dTOffsetSourceArg) * PIDEF / 18000);
-//	}
-//	else
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //	{
         y01 = r0 * sin((dTOffsetDestinationArg-dTOffsetSourceArg)*PIDEF/18000 - t0);
         x01 = r0 * cos((dTOffsetDestinationArg-dTOffsetSourceArg)*PIDEF/18000 - t0);
         Xdd = (dROffsetDestinationArg+dEELength) * cos((dTOffsetDestinationArg-dTOffsetSourceArg) * PIDEF / 18000);
-<<<<<<< HEAD
         Ydd = (dROffsetDestinationArg+dEELength) * sin((dTOffsetDestinationArg-dTOffsetSourceArg) * PIDEF / 18000);
-=======
-        Ydd = (dROffsetDestinationArg+dEELength) * sin((dTOffsetDestinationArg-dTOffsetSourceArg) * PIDEF / 18000);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //	}
 
         Xf = Xdd + x01;
         Yf = Ydd + y01;
-<<<<<<< HEAD
 
 //printf("x01=%f y01=%f Xdd=%f Ydd=%f Xf=%f Yf=%f\n",x01, y01, Xdd, Ydd, Xf, Yf);
 
@@ -1424,57 +1143,6 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
 
 /******************************************************************************/
 
-=======
-
-//printf("x01=%f y01=%f Xdd=%f Ydd=%f Xf=%f Yf=%f\n",x01, y01, Xdd, Ydd, Xf, Yf);
-
-        pstOTFCurrentStation->m_lOTFFinalCorrection[iSlotNum][1] = pstOTFCurrentStation->m_lFinalPos[1] = (long)(sqrt (Xf * Xf + Yf * Yf) - dEELength + 0.5);
-        pstOTFCurrentStation->m_lFinalPos[0] = (long)((atan2(Yf, Xf) * 18000.0f / PIDEF + 0.5)+dTOffsetSourceArg);
-
-	// MAKE SURE WE DON'T PUT
-//        pstOTFCurrentStation->m_lROffset = pstOTFCurrentStation->m_lOTFFinalCorrection[iSlotNum][2] = -1;
-
-/********************************************************************************/
-
-
-/********** SIMPLE COMPUTATION FOR FINDING FINAL DESTINATION ****************
-	// MAKE IT SIMPLE FINDING FINAL POS
-//	x01 = pstOTFCurrentStation->m_fOTFRef[iSlotNum][0] - fAverageCenterX;
-//
-//  	y01 = pstOTFCurrentStation->m_fOTFRef[iSlotNum][1] - fAverageCenterY;
-
-	x01 = fAverageCenterX - pstOTFCurrentStation->m_fOTFRef[iSlotNum][0];
-
-  	y01 = fAverageCenterY - pstOTFCurrentStation->m_fOTFRef[iSlotNum][1];
-	if(dROffsetDestinationArg < 0.0)
-		Ydd = dEELength - dROffsetDestinationArg;
-	else 
-		Ydd = dEELength + dROffsetDestinationArg;
-
-//	Yf  = atan2(y01, Ydd) * 18000.0f / PIDEF + 0.5;	// converted to 0.01 degree
-	Yf2 = atan2(y01, Ydd);
-//	Yf2 = asin(y01 / Ydd);
-	Yf  = Yf2 * 18000.0f / PIDEF + 0.5;	// converted to 0.01 degree
-
-// additional compensation computation for R axis
-	xx01 = y01 * sin(Yf2);
-
-// use it to compensate for T axis
-	yy01 = atan2(xx01, Ydd);
-	Yf2 = Yf2 + yy01;
-	Yf = Yf2 * 18000.0f / PIDEF + 0.5;
-
-
-        pstOTFCurrentStation->m_lOTFFinalCorrection[iSlotNum][1] = pstOTFCurrentStation->m_lFinalPos[1] = (long)(dROffsetDestinationArg + x01 + xx01);
-        pstOTFCurrentStation->m_lFinalPos[0] = (long)(dTOffsetDestinationArg - Yf);
-
-//printf("x01=%f xx01=%f y01=%f yy01=%f Yf=%f Ydd=%f\n",x01, xx01, y01, yy01, Yf, Ydd);
-	// MAKE SURE WE DON'T PUT
-        pstOTFCurrentStation->m_lROffset = pstOTFCurrentStation->m_lOTFFinalCorrection[iSlotNum][2] = -1;
-
-/******************************************************************************/
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
         // Check for the boundary of T, T should be between 0 to 360 degrees 3/25/98  see ABED's note
         while (pstOTFCurrentStation->m_lFinalPos[0] < 0)
@@ -1486,15 +1154,9 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
             pstOTFCurrentStation->m_lFinalPos[0] -= 36000L;
         }
         pstOTFCurrentStation->m_lOTFFinalCorrection[iSlotNum][0] = pstOTFCurrentStation->m_lFinalPos[0];
-<<<<<<< HEAD
 
 //printf("finalT=%d finalR=%d\n",pstOTFCurrentStation->m_lOTFFinalCorrection[iSlotNum][0],pstOTFCurrentStation->m_lOTFFinalCorrection[iSlotNum][1]);
 
-=======
-
-//printf("finalT=%d finalR=%d\n",pstOTFCurrentStation->m_lOTFFinalCorrection[iSlotNum][0],pstOTFCurrentStation->m_lOTFFinalCorrection[iSlotNum][1]);
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 
     return SUCCESS;
@@ -1511,7 +1173,6 @@ int MPAligning(double dTOffsetDestinationArg, double dROffsetDestinationArg, dou
  *
 \*****************************************************************/
 int MPPrepareOTFAligning()
-<<<<<<< HEAD
 {
     char caResp[20];
     int rc, iOutputL;
@@ -1528,29 +1189,10 @@ int MPPrepareOTFAligning()
 
     outb(iOutputL, IO_PRE_OUTPUT_L); // This sends latch signal to Galil
 
-=======
-{
-    char caResp[20];
-    int rc, iOutputL;
-    long laPos[8]={0,0,0,0,0,0,0,0}, laPosUnscale[8]={0,0,0,0,0,0,0,0};
-    long lExtendPos;
-
-    rc = GASendDMCCommand(ghDMC, caXQOTFcommand, caResp, 20);
-
-    iOutputL = inb(IO_PRE_OUTPUT_L);
-
-    iOutputL &= 0x8F;
-    iOutputL |= 0x70;		// Select A bracket for OTF
-//  iOutputL |= 0x60;		// Select B bracket for OTF
-
-    outb(iOutputL, IO_PRE_OUTPUT_L); // This sends latch signal to Galil
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if(!(memset(fplOTFPosition, 0, (size_t)(sizeof(long)*(MAX_OTF_INTERRUPTS)))))
         return FAILURE;
     if(!(memset(fpiOTFSensorsBitmap, 0, (size_t)(sizeof(int)*(MAX_OTF_INTERRUPTS)))))
         return FAILURE;
-<<<<<<< HEAD
 
     if(FIOGetStnCoord(0, 1, &lExtendPos)==FAILURE) // Station A extend position
     {
@@ -1605,62 +1247,6 @@ int MPPrepareOTFAligning()
 
 //    MPEnableOTFInterrupts();
 
-=======
-
-    if(FIOGetStnCoord(0, 1, &lExtendPos)==FAILURE) // Station A extend position
-    {
-    	if(FIOGetStnCoord(1, 1, &lExtendPos)==FAILURE) // Station B extend position
-	    return FAILURE;
-    }
-
-    laPos[1] = lExtendPos - 500; // 0.5" backward
-    ROUnscalePos(RO_AXIS_R, laPos, laPosUnscale);
-    glValidRPos = laPosUnscale[1];
-    laPos[1] = 8000;	// 8" = 200mm
-    ROUnscalePos(RO_AXIS_R, laPos, laPosUnscale);
-    glR200mm = laPosUnscale[1];
-
-//    rc = GASendDMCCommand(ghDMC, caHXcommand, caResp, 20);
-    
-
-//    iOTFBufferOverflow = FALSE;
-    iOTFInterruptsCounter = 0;
-    giOTFCounter = 0;
-    giSensorCount = 0;
-//    giPrevTint = 7;   // dark-ON
-    giPrevTint = 0; // light-ON
-//    giPrevSensor = inb( IO_ROBOT_INPUT_H );
-    giPrevSensor = 0xFF;
-//    giPrevSensor &= 0x07;
-
-//    NN[0][0]=4; NN[0][1]=0; NN[0][2]=0; NN[0][3]=2;
-//    NN[1][0]=5; NN[1][1]=1; NN[1][2]=1; NN[1][3]=2;
-//    NN[2][0]=0; NN[2][1]=2; NN[2][2]=2; NN[2][3]=3;
-//    NN[3][0]=1; NN[3][1]=2; NN[3][2]=2; NN[3][3]=3;
-//    NN[4][0]=2; NN[4][1]=3; NN[4][2]=3; NN[4][3]=5;
-//    NN[5][0]=2; NN[5][1]=3; NN[5][2]=3; NN[5][3]=4;
-//    NN[6][0]=3; NN[6][1]=4; NN[6][2]=4; NN[6][3]=1;
-//    NN[7][0]=3; NN[7][1]=5; NN[7][2]=5; NN[7][3]=1;
-//    NN[8][0]=3; NN[8][1]=4; NN[8][2]=4; NN[8][3]=0;
-
-    iOTFAligning = TRUE;
-    iOTFFirstTime = TRUE;
-    giOTFNullCount = 0;
-
-
-    // Set all VPS's to 0 in Galil before XQ#OTF2
-//    rc = GASendDMCCommand(ghDMC, caVC00command, caResp, 80);
-//    rc = GASendDMCCommand(ghDMC, caVP10command, caResp, 80);
-//    rc = GASendDMCCommand(ghDMC, caVP20command, caResp, 80);
-//    rc = GASendDMCCommand(ghDMC, caVP30command, caResp, 80);
-//    rc = GASendDMCCommand(ghDMC, caVP40command, caResp, 80);
-//    rc = GASendDMCCommand(ghDMC, caVP50command, caResp, 80);
-//    rc = GASendDMCCommand(ghDMC, caVP60command, caResp, 80);
-
-
-//    MPEnableOTFInterrupts();
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return SUCCESS;
 }
@@ -1676,7 +1262,6 @@ int MPPrepareOTFAligning()
  *
 \*****************************************************************/
 int MPQuitOTFAligning(int *piOTFBufferOverflowArg)
-<<<<<<< HEAD
 {
     int iOutputL;
 
@@ -1704,35 +1289,6 @@ int MPQuitOTFAligning(int *piOTFBufferOverflowArg)
     *piOTFBufferOverflowArg = iOTFBufferOverflow;
 
     rc = GASendDMCCommand(ghDMC, "ALB", caResp, 80);
-=======
-{
-    int iOutputL;
-
-//    giIOCountMax = 1;
-
-    int rc;
-    char caResp[80];
-//printf("giOTFNullCount=%d\n",giOTFNullCount);
-    iOTFFirstTime = FALSE;
-    iOTFAligning = FALSE;
-
-    rc = GASendDMCCommand(ghDMC, caHXcommand, caResp, 80);
-//
-// Now change the latch input signal to Extra sensor
-//
-    iOutputL = inb(IO_PRE_OUTPUT_L);
-    iOutputL &= 0x8F;
-    iOutputL |= 0x40;
-//    iOutputL &= 0xDF;		// turn 6th bit to 0 (Drift Latch select)
-//    iOutputL &= 0xBF;		// turn 6th bit to 0 (Drift Latch select)
-				// 5th bit remains 0 (bracket A select)
-    outb(iOutputL, IO_PRE_OUTPUT_L); // This sends latch signal to Galil
-
-//    MPDisableOTFInterrupts();
-    *piOTFBufferOverflowArg = iOTFBufferOverflow;
-
-    rc = GASendDMCCommand(ghDMC, "ALB", caResp, 80);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return SUCCESS;
 }
@@ -1746,15 +1302,9 @@ int MPQuitOTFAligning(int *piOTFBufferOverflowArg)
  *
 \*****************************************************************/
 int  MPEnableOTFInterrupts(void)
-<<<<<<< HEAD
 {
 
     
-=======
-{
-
-    
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    iSOP = inb(SCANNEROUTPORT);
 //    outb(iSOP&0xDF, SCANNEROUTPORT);
 
@@ -1770,21 +1320,12 @@ int  MPEnableOTFInterrupts(void)
  *
 \*****************************************************************/
 int MPDisableOTFInterrupts(void)
-<<<<<<< HEAD
 {
     int iSOP;
 
     if(iOTFAligning == TRUE)
     {
         iOTFAligning = FALSE;
-=======
-{
-    int iSOP;
-
-    if(iOTFAligning == TRUE)
-    {
-        iOTFAligning = FALSE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //	iSOP = inb(SCANNEROUTPORT);
 //        outb(iSOP|0x20, SCANNEROUTPORT);
     }
@@ -1810,11 +1351,7 @@ int MPCollectOTFData(int aiCustomerPortBitMapArg[])
     long lGalilIODiff, lRPos, lTemp1 = 0, lTemp2 = 0;
     long laUnscaledTemp[4]={0,0,0,0}, laScaledTemp[4]={0,0,0,0};
     char *pcRPos;
-<<<<<<< HEAD
     int iCounter;
-=======
-    int iCounter;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 
     if(ROGetParameter(TRUE, (ULONG)RO_AXIS_R, laScaledTemp, CUSTOMIZED_HOME) == FAILURE)
@@ -1822,11 +1359,7 @@ int MPCollectOTFData(int aiCustomerPortBitMapArg[])
     if(ROUnscalePos((ULONG)RO_AXIS_R, laScaledTemp, laUnscaledTemp) == FAILURE)
         return FAILURE;
     lGalilIODiff = laUnscaledTemp[1];
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iCounter = inb(SCANNEROUTPORT);
     outb(iCounter|0x40, SCANNEROUTPORT);
 
@@ -1861,7 +1394,6 @@ int MPCollectOTFData(int aiCustomerPortBitMapArg[])
     outb(iCounter&0xDF, SCANNEROUTPORT);
 
     return SUCCESS;
-<<<<<<< HEAD
 }
 
 int MPConvertOTFData( )
@@ -2171,324 +1703,12 @@ printf("OTFdata[%d]=%d\n",i, glOTFData[i]);
 
     giOTFCounter = nVcnt;
 
-=======
-}
-
-int MPConvertOTFData( )
-{
-    char caResp[80];
-    int i, j, rc;
-    int nVcnt;
-    long lVPS1, lVPS2, lVPS3, lVPS4, lVPS5, lVPS6, lVPS7, lVPS8, lVPS9;
-    long lRposLast;
-
-    long lGalilIODiff, lRPos, lTemp1 = 0, lTemp2 = 0;
-    long laUnscaledTemp[8]={0,0,0,0,0,0,0,0}, laScaledTemp[8]={0,0,0,0,0,0,0,0};
-    int  nGoodCnt;
-    int iSenMap[18];
-    int nSenCnt;
-
-    // just in case, halt the galil macro thread
-//    rc = GASendDMCCommand(ghDMC, caHXcommand, caResp, 80);
-
-
-    for (i=0;i<giSensorCount;++i) 
-    {
-	iSenMap[i] = ~giSensorMap[i] & 0x07;
-//printf("sensorMap %d = %d\n",i,iSenMap[i]);
-    }
-
-    lVPS1 = lVPS2 = lVPS3 = lVPS4 = lVPS5 = lVPS6 = lVPS7 = lVPS8 = lVPS9 = 0;
-    rc = GASendDMCCommand(ghDMC, caVCNTcommand, caResp, 80);
-    nVcnt = atoi(caResp);
-
-////printf("MPConvertOTFData() working... nVcnt=%d\n", nVcnt );
-//printf("nVcnt=%d glValidRPos=%d R200mm=%d\n",nVcnt,glValidRPos,glR200mm);
-
-    if(nVcnt < 5) 
-	return FAILURE;
-
-    nGoodCnt = 0;
-    nSenCnt = 0;
-    rc = GASendDMCCommand(ghDMC, caVPS1command, caResp, 80);
-    lVPS1 = atol(caResp);
-//printf("vps1=%d\n",lVPS1);
-    if (lVPS1 < glValidRPos)
-    {
-	giSmap[nGoodCnt] = iSenMap[nSenCnt];
-	glOTFData[nGoodCnt++] = lVPS1;
-    }
-    nSenCnt++;
-
-    rc = GASendDMCCommand(ghDMC, caVPS2command, caResp, 80);
-    lVPS2 = atol(caResp);
-//printf("vps2=%d\n",lVPS2);
-    if (lVPS2 < glValidRPos && labs(lVPS1-lVPS2)>1500)
-    {
-	if(iSenMap[nSenCnt] == 0) ++nSenCnt;
-        giSmap[nGoodCnt] = iSenMap[nSenCnt];
-    	glOTFData[nGoodCnt++] = lVPS2;
-    }
-    nSenCnt++;
-
-    rc = GASendDMCCommand(ghDMC, caVPS3command, caResp, 80);
-    lVPS3 = atol(caResp);
-//printf("vps3=%d\n",lVPS3);
-    if (lVPS3 < glValidRPos && labs(lVPS2-lVPS3)>1500)
-    {
-        giSmap[nGoodCnt] = iSenMap[nSenCnt];
-	glOTFData[nGoodCnt++] = lVPS3;
-    }
-    nSenCnt++;
-
-    rc = GASendDMCCommand(ghDMC, caVPS4command, caResp, 80);
-    lVPS4 = atol(caResp);
-//printf("vps4=%d\n",lVPS4);
-    if (lVPS4 < glValidRPos && nVcnt > 3 && labs(lVPS3-lVPS4)>1500)
-    {
-        giSmap[nGoodCnt] = iSenMap[nSenCnt];
-	glOTFData[nGoodCnt++] = lVPS4;
-    }
-    nSenCnt++;
-
-    rc = GASendDMCCommand(ghDMC, caVPS5command, caResp, 80);
-    lVPS5 = atol(caResp);
-//printf("vps5=%d\n",lVPS5);
-    if (lVPS5 < glValidRPos && nVcnt > 4 && labs(lVPS4-lVPS5)>1500)
-    {
-        giSmap[nGoodCnt] = iSenMap[nSenCnt];
-	glOTFData[nGoodCnt++] = lVPS5;
-    }
-    nSenCnt++;
-
-    if(nGoodCnt < 1)
-	return FAILURE;
-
-    lRposLast = glOTFData[0] - glR200mm - glR200mm/10;
-
-    if(nVcnt > 5)
-    {
-    	rc = GASendDMCCommand(ghDMC, caVPS6command, caResp, 80);
-    	lVPS6 = atol(caResp);
-//printf("vps6=%d\n",lVPS6);
-    	if (lVPS6 < glValidRPos && lVPS6 > lRposLast && labs(lVPS5-lVPS6)>1500)
-	{
-	    giSmap[nGoodCnt] = iSenMap[nSenCnt];
-	    glOTFData[nGoodCnt++] = lVPS6;
-	}
-    }
-    nSenCnt++;
-
-    if(nVcnt > 6)
-    {
-    	rc = GASendDMCCommand(ghDMC, caVPS7command, caResp, 80);
-    	lVPS7 = atol(caResp);
-//printf("vps7=%d\n",lVPS7);
-    	if (lVPS7 != 0 && nGoodCnt < 6 && lVPS7 > lRposLast && labs(lVPS6-lVPS7)>1500)
-	{
-	    giSmap[nGoodCnt] = iSenMap[nSenCnt];
-	    glOTFData[nGoodCnt++] = lVPS7;
-	}
-    }
-    nSenCnt++;
-
-    if(nVcnt > 7)
-    {
-	rc = GASendDMCCommand(ghDMC, caVPS8command, caResp, 80);
-	lVPS8 = atol(caResp);
-//printf("vps8=%d\n",lVPS8);
-	if (lVPS8 != 0 && nGoodCnt < 6 && lVPS7 > lRposLast && labs(lVPS7-lVPS8)>1500)
-	{
-	    giSmap[nGoodCnt] = iSenMap[nSenCnt];
-	    glOTFData[nGoodCnt++] = lVPS8;
-	}
-    }
-    nSenCnt++;
-
-    if(nVcnt > 8)
-    {
-	rc = GASendDMCCommand(ghDMC, caVPS9command, caResp, 80);
-	lVPS9 = atol(caResp);
-//printf("vps9=%d\n",lVPS9);
-	if (lVPS9 != 0 && nGoodCnt < 6 && lVPS9 > lRposLast && labs(lVPS8-lVPS9)>1500)
-	{
-	    giSmap[nGoodCnt] = iSenMap[nSenCnt];
-	    glOTFData[nGoodCnt++] = lVPS9;
-	}
-    }
-
-//for(i=0; i<nGoodCnt;++i)
-//printf("good %d pos=%d map=%d\n",i,glOTFData[i],giSmap[i]);
-
-    if (nGoodCnt < 5)
-	return FAILURE;
-
-    // good count must be 5 or 6
-    // if 5, must fix the data
-
-    if (nGoodCnt == 5)
-    {
-	// DO NOT Rely on only the 1st sensor map data
-	// find out which sensor-hit is missing
-	// must assume 1st hit is 2nd sensor
-	// assume 3rd hit & 4th hit has wafer size / 3 apart
-	if (glOTFData[2] - glOTFData[3] > glR200mm / 3)
-	{
-	    // hit 0, 1, 2 are  OK
-	    // hit 3 & 4 are same
-	    glOTFData[5] = glOTFData[4]; // bump
-	    glOTFData[4] = glOTFData[3]-11; // set 3 & 4 same
-//	    giSmap[3] = ~0x03;
-//	    giSmap[4] = ~0x02;
-//	    giSmap[5] = ~0x00;
-	}
-	else
-	{
-	    // hit 3, 4, 5 are  OK
-	    // hit 1 & 2 are same
-	    glOTFData[5] = glOTFData[4]; // bump
-	    glOTFData[4] = glOTFData[3]; // bump
-	    glOTFData[3] = glOTFData[2]; // bump
-	    glOTFData[2] = glOTFData[1]-11; // set 1 & 2 same
-//	    giSmap[1] = ~0x03;
-//	    giSmap[2] = ~0x07;
-//	    giSmap[3] = ~0x03;
-//	    giSmap[4] = ~0x02;
-//	    giSmap[5] = ~0x00;
-	}
-
-    }
-    else if (nGoodCnt == 6) // nGoodCnt = 6 
-    {
-	if (giSmap[1] == 6)
-	{
-	    // 3rd sensor trigger before 1st
-	    lTemp = glOTFData[2];
-	    glOTFData[2] = glOTFData[1];
-	    glOTFData[1] = lTemp;
-	}
-	if (giSmap[3] == 6)
-	{
-	    // 1st sensor cleared before 3rd
-	    lTemp = glOTFData[3];
-	    glOTFData[3] = glOTFData[4];
-	    glOTFData[4] = lTemp;
-	}
-    }
-    else // nGoodCnt > 6
-    {	 // remove spurious interrupts 
-printf("nGoodCnt=%d\n",nGoodCnt);
-	for (i=1; i<nGoodCnt; ++i)
-	{
-	    if(labs(glOTFData[i-1]-glOTFData[i])<1500) 
-	    {
-	    	for(j=i; j<nGoodCnt; ++j)
-		{
-		    glOTFData[j] = glOTFData[j+1];
-		}
-		nGoodCnt--;
-		break;
-	    }
-	}
-	if (nGoodCnt > 6)
-	{
-	    for (i=1; i<nGoodCnt; ++i)
-	    {
-	    	if(labs(glOTFData[i]-glOTFData[i-1])<1500) 
-		{
-		    for(j=i; j<nGoodCnt; ++j)
-		    {
-			glOTFData[j] = glOTFData[j+1];
-		    }
-		    nGoodCnt--;
-		    break;
-		}
-	    }
-	}
-	if (nGoodCnt > 6)
-	{
-	    for (i=1; i<nGoodCnt; ++i)
-	    {
-	    	if(labs(glOTFData[i]-glOTFData[i-1])<1500) 
-		{
-		    for(j=i; j<nGoodCnt; ++j)
-		    {
-			glOTFData[j] = glOTFData[j+1];
-		    }
-		    nGoodCnt--;
-		    break;
-		}
-	    }
-	}
-printf("nGoodCnt=%d\n",nGoodCnt);
-for(i=0;i<nGoodCnt;++i)
-printf("OTFdata[%d]=%d\n",i, glOTFData[i]); 
-    }
-
-
-//printf("data: %d %d %d %d %d %d\n",glOTFData[0],glOTFData[1],glOTFData[2],glOTFData[3],glOTFData[4],glOTFData[5]);
-//printf("map: %d %d %d %d %d %d\n", giSmap[0], giSmap[1], giSmap[2], giSmap[3], giSmap[4], giSmap[5]);
-
-    nGoodCnt = 6;
-    aiPortsMap[0] = 0x02;
-    aiPortsMap[1] = 0x03;
-    aiPortsMap[2] = 0x07;
-    aiPortsMap[3] = 0x03;
-    aiPortsMap[4] = 0x02;
-    aiPortsMap[5] = 0x00;
-
-    for (i=0; i<6; ++i)
-    {
-	pstOTFCurrentStation->m_lOTFData[i] = glOTFData[i];
-	pstOTFCurrentStation->m_lSensorMap[i] = aiPortsMap[i];
-//printf("Filtered %d pos=%d map=%d\n",i, glOTFData[i], aiPortsMap[i]);
-    }
-
-//for (i=0; i<6; ++i)
-//printf("i=%d VPS=%d sen=%x\n",i,glOTFData[i],aiPortsMap[i]);
-
-//    if(lVPS6 == 0 && lVPS5 == 0 || nVcnt < 6)
-//	return FAILURE;
-
-//("MPConvertOTFData() 3 working...\n");
-
-    nVcnt = 6;
-
-
-    // only one case of missing 1 latch --> latch count = 5
-/*****
-    if(nVcnt == 0 && lVPS5 != 0)
-    {
-	if (giSensorCount < 6) // both sensor map & latch counter are less than 6, failure
-		return FAILURE;
-	////////////////////////////////////////////////////////////////////////
-	// Assumption:
-	//    1. two sensors are triggered at the same time --> same R position
-	//    2. this will happen only with sensors 1 and 3
-	//    3. sensor hardware failure is not considered!!!!!!!!!!!!!!!!!!!!!!
-	////////////////////////////////////////////////////////////////////////
-	if(labs(lVPS2 - lVPS3) > 12000) // assume sensor 3 missing
-	{
-	    lVPS6 = lVPS5; lVPS5 = lVPS4; lVPS4 = lVPS3; lVPS3 = lVPS2;
-	}
-	else // assume sensor 1 missing
-	{
-	    lVPS6 = lVPS5; lVPS5 = lVPS4;
-	}
-	nVcnt = 6;
-    }
-*******/
-
-    giOTFCounter = nVcnt;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if(ROGetParameter(TRUE, (ULONG)RO_AXIS_R, laScaledTemp, CUSTOMIZED_HOME) == FAILURE)
         return FAILURE;
     if(ROUnscalePos((ULONG)RO_AXIS_R, laScaledTemp, laUnscaledTemp) == FAILURE)
         return FAILURE;
     lGalilIODiff = laUnscaledTemp[1];
-<<<<<<< HEAD
 
     iOTFInterruptsCounter = 0;
     for (i = 0; i < giOTFCounter; ++i)
@@ -2516,40 +1736,10 @@ printf("OTFdata[%d]=%d\n",i, glOTFData[i]);
 //    {
 //printf("sensorIO i=%d sensorMap=%d\n",i,~giSensorMap[i]&7);
 //    }
-=======
-
-    iOTFInterruptsCounter = 0;
-    for (i = 0; i < giOTFCounter; ++i)
-    {
-//        laUnscaledTemp[1] = glOTFData[i] + lGalilIODiff;
-	laUnscaledTemp[1] = glOTFData[i];
-        if(ROScalePos((ULONG)RO_AXIS_R, laUnscaledTemp, laScaledTemp) == FAILURE)
-            return FAILURE;
-       	fplOTFPosition[iOTFInterruptsCounter] = laScaledTemp[1];
-//       	fpiOTFSensorsBitmap[iOTFInterruptsCounter++] = aiPortsMap[i];  // dark-ON
-     	fpiOTFSensorsBitmap[iOTFInterruptsCounter++] = ~aiPortsMap[i]; // light-ON
-
-	// if R pos is too little different from the previous data, discard the current
-//	if (iOTFInterruptsCounter > 0)
-//	{
-//	    if(labs(laScaledTemp[1] - fplOTFPosition[iOTFInterruptsCounter-1]) < 100)
-//	    {
-//        	--iOTFInterruptsCounter;
-//	    }
-//	}
-//printf("i=%d VPS=%d pos=%f sen=%x\n",i,glOTFData[i], fplOTFPosition[i],fpiOTFSensorsBitmap[i]);
-    }
-
-//    for (i=0; i<giSensorCount; ++i)
-//    {
-//printf("sensorIO i=%d sensorMap=%d\n",i,~giSensorMap[i]&7);
-//    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return SUCCESS;
 }
 int MPConvertOTFDataOld( )
-<<<<<<< HEAD
 {
     char caResp[80];
     int i, rc;
@@ -2637,102 +1827,12 @@ int MPConvertOTFDataOld( )
 
     giOTFCounter = nVcnt;
 
-=======
-{
-    char caResp[80];
-    int i, rc;
-    int nVcnt;
-    long lVPS1, lVPS2, lVPS3, lVPS4, lVPS5, lVPS6;
-
-    long lGalilIODiff, lRPos, lTemp1 = 0, lTemp2 = 0;
-    long laUnscaledTemp[8]={0,0,0,0,0,0,0,0}, laScaledTemp[8]={0,0,0,0,0,0,0,0};
-
-    // just in case, halt the galil macro thread
-//    rc = GASendDMCCommand(ghDMC, caHXcommand, caResp, 80);
-
-
-    for (i=0;i<giSensorCount;++i) 
-    {
-	giSensorMap[i] &= 0x07;
-	giSensorMap[i] = ~giSensorMap[i];
-    }
-
-    lVPS1 = lVPS2 = lVPS3 = lVPS4 = lVPS5 = lVPS6 = 0;
-    rc = GASendDMCCommand(ghDMC, caVCNTcommand, caResp, 80);
-    nVcnt = atoi(caResp);
-
-////printf("MPConvertOTFData() working... nVcnt=%d\n", nVcnt );
-
-//    if(nVcnt < 5) 
-//	return FAILURE;
-
-//printf("MPConvertOTFData() 2 working...\n");
-
-    rc = GASendDMCCommand(ghDMC, caVPS1command, caResp, 80);
-    lVPS1 = atol(caResp);
-    rc = GASendDMCCommand(ghDMC, caVPS2command, caResp, 80);
-    lVPS2 = atol(caResp);
-    rc = GASendDMCCommand(ghDMC, caVPS3command, caResp, 80);
-    lVPS3 = atol(caResp);
-    rc = GASendDMCCommand(ghDMC, caVPS4command, caResp, 80);
-    lVPS4 = atol(caResp);
-    rc = GASendDMCCommand(ghDMC, caVPS5command, caResp, 80);
-    lVPS5 = atol(caResp);
-    rc = GASendDMCCommand(ghDMC, caVPS6command, caResp, 80);
-    lVPS6 = atol(caResp);
-
-    glOTFData[0] = lVPS1; aiPortsMap[0] = 0x02;
-    glOTFData[1] = lVPS2; aiPortsMap[1] = 0x03;
-    glOTFData[2] = lVPS3; aiPortsMap[2] = 0x07;
-    glOTFData[3] = lVPS4; aiPortsMap[3] = 0x03;
-    glOTFData[4] = lVPS5; aiPortsMap[4] = 0x02;
-    glOTFData[5] = lVPS6; aiPortsMap[5] = 0x00;
-
-//for (i=0; i<6; ++i)
-//printf("i=%d VPS=%d sen=%x\n",i,glOTFData[i],aiPortsMap[i]);
-
-    if(lVPS6 == 0 && lVPS5 == 0 || nVcnt < 6)
-	return FAILURE;
-
-//("MPConvertOTFData() 3 working...\n");
-
-    nVcnt = 6;
-
-
-    // only one case of missing 1 latch --> latch count = 5
-/*****
-    if(nVcnt == 0 && lVPS5 != 0)
-    {
-	if (giSensorCount < 6) // both sensor map & latch counter are less than 6, failure
-		return FAILURE;
-	////////////////////////////////////////////////////////////////////////
-	// Assumption:
-	//    1. two sensors are triggered at the same time --> same R position
-	//    2. this will happen only with sensors 1 and 3
-	//    3. sensor hardware failure is not considered!!!!!!!!!!!!!!!!!!!!!!
-	////////////////////////////////////////////////////////////////////////
-	if(labs(lVPS2 - lVPS3) > 12000) // assume sensor 3 missing
-	{
-	    lVPS6 = lVPS5; lVPS5 = lVPS4; lVPS4 = lVPS3; lVPS3 = lVPS2;
-	}
-	else // assume sensor 1 missing
-	{
-	    lVPS6 = lVPS5; lVPS5 = lVPS4;
-	}
-	nVcnt = 6;
-    }
-*******/
-
-    giOTFCounter = nVcnt;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if(ROGetParameter(TRUE, (ULONG)RO_AXIS_R, laScaledTemp, CUSTOMIZED_HOME) == FAILURE)
         return FAILURE;
     if(ROUnscalePos((ULONG)RO_AXIS_R, laScaledTemp, laUnscaledTemp) == FAILURE)
         return FAILURE;
     lGalilIODiff = laUnscaledTemp[1];
-<<<<<<< HEAD
 
     iOTFInterruptsCounter = 0;
     for (i = 0; i < giOTFCounter; ++i)
@@ -2760,35 +1860,6 @@ int MPConvertOTFDataOld( )
 //    {
 //printf("sensorIO i=%d sensorMap=%d\n",i,~giSensorMap[i]&7);
 //    }
-=======
-
-    iOTFInterruptsCounter = 0;
-    for (i = 0; i < giOTFCounter; ++i)
-    {
-//        laUnscaledTemp[1] = glOTFData[i] + lGalilIODiff;
-	laUnscaledTemp[1] = glOTFData[i];
-        if(ROScalePos((ULONG)RO_AXIS_R, laUnscaledTemp, laScaledTemp) == FAILURE)
-            return FAILURE;
-       	fplOTFPosition[iOTFInterruptsCounter] = laScaledTemp[1];
-//       	fpiOTFSensorsBitmap[iOTFInterruptsCounter++] = aiPortsMap[i];  // dark-ON
-     	fpiOTFSensorsBitmap[iOTFInterruptsCounter++] = ~aiPortsMap[i]; // light-ON
-
-	// if R pos is too little different from the previous data, discard the current
-//	if (iOTFInterruptsCounter > 0)
-//	{
-//	    if(labs(laScaledTemp[1] - fplOTFPosition[iOTFInterruptsCounter-1]) < 100)
-//	    {
-//        	--iOTFInterruptsCounter;
-//	    }
-//	}
-//printf("i=%d VPS=%d pos=%f sen=%x\n",i,glOTFData[i], fplOTFPosition[i],fpiOTFSensorsBitmap[i]);
-    }
-
-//    for (i=0; i<giSensorCount; ++i)
-//    {
-//printf("sensorIO i=%d sensorMap=%d\n",i,~giSensorMap[i]&7);
-//    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return SUCCESS;
 }

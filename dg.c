@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-/****************************************************************
- *
- * Program:     Controller firmware
- * File:        diag.c
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -31,7 +25,6 @@
  *
  * Program:     Controller firmware
  * File:        dg.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   DiagStart
  *              DiagGetFlag
  *              DiagSetFlag
@@ -1258,11 +1251,7 @@ int DiagGetFlag()
 int DiagSetFlag(int iPortNumArg)
 {
     if ((iPortNumArg != COM1) && (iPortNumArg != COM2) &&
-<<<<<<< HEAD
         (iPortNumArg != COM3) && (iPortNumArg != COM4) &&
-=======
-        (iPortNumArg != COM3) && (iPortNumArg != COM4) &&
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	(iPortNumArg != NO_PORT_NUM))
     {
         return FAILURE;

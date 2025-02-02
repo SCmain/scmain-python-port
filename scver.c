@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-/****************************************************************
- *
- * Program:     Controller firmware
- * File:        stdver.c
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -31,7 +25,6 @@
  *
  * Program:     Controller firmware
  * File:        scver.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   InitVersionString
  *              GetVersionString
  *              GetFilename
@@ -51,11 +44,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
-<<<<<<< HEAD
 #include <malloc.h>
-=======
-#include <malloc.h>
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <ctype.h>
 #include "sck.h"
 #include "scver.h"
@@ -96,21 +85,12 @@ char *caSysCfgTypeList[MAXNUMSYSCFGS] =
     "IPS",
     "I4ATF",
     "I4DAT",
-<<<<<<< HEAD
     "AK",
     "ASF",
     "I3AS",
     "I3A1",
     "I3DA",
     "I2AS",
-=======
-    "AK",
-    "ASF",
-    "I3AS",
-    "I3A1",
-    "I3DA",
-    "I2AS",
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     "I2AXO"
 };
 /* corresponding list of the current revision strings matched by system configuration */
@@ -140,7 +120,6 @@ char *caVersionList[MAXNUMSYSCFGS] =
     "6.00",     /* IPS 		22	*/
     "6.00",     /* I4ATF 	23	*/
     "6.00",     /* I4DAT 	24	*/
-<<<<<<< HEAD
     "6.00",     /* AK 		25	*/
     "6.00",	/* ASF 		26	*/
     "5.03",	/* I3AS 	27	*/
@@ -152,19 +131,6 @@ char *caVersionList[MAXNUMSYSCFGS] =
 
 int giVersionPA = 0;
 int giSysCfgNum = 0;
-=======
-    "6.00",     /* AK 		25	*/
-    "6.00",	/* ASF 		26	*/
-    "5.03",	/* I3AS 	27	*/
-    "5.09",	/* I3A1 	28	*/
-    "4.56",	/* I3DA 	29	*/
-    "4.72",	/* I2AS 	30	*/
-    "4.53"	/* I2AXO	31	*/
-};
-
-int giVersionPA = 0;
-int giSysCfgNum = 0;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /****************************************************************
  * Function:    InitVersionString
@@ -193,11 +159,7 @@ void InitVersionString(char *cpSysCfgArg, char *cpFilenameArg)
     {
         if ((caTempStr[iCharIndex-iSlashIndex] = cpFilenameArg[iCharIndex]) == '.') break;
     }
-<<<<<<< HEAD
     caTempStr[iCharIndex-iSlashIndex] = '\0';
-=======
-    caTempStr[iCharIndex-iSlashIndex] = '\0';
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     for (i=0; i<strlen(caTempStr); ++i) caTempStr[i] = toupper(caTempStr[i]);
 //    strupr(caTempStr);
 //    strcat(caTempStr, ".EXE");  no need to append
@@ -214,11 +176,7 @@ void InitVersionString(char *cpSysCfgArg, char *cpFilenameArg)
     sprintf(caTempStr, "%s%s", caVersionList[iSysCfgNum], caSysCfgString);
     /* Save it for future use */
     strncpy(caVersionString, caTempStr, VERSTRLEN);
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    strcpy(caVersionString, "4.49IAS");
     return;
 }
@@ -266,30 +224,18 @@ int InitMechArrays(int *ipNumOfAxesArg, int *ipDefineFlagArg, int *ipEmulatorArg
         int *ipEquipeAxesArg, int *ipGalilAxesArg, int *ipMechTypeArg,
         int *ipSpecialAxesArg, int *ipDiagParmsArg)
 {
-<<<<<<< HEAD
     int iSysCfgNum, iCount, iReadLoop;
-=======
-    int iSysCfgNum, iCount, iReadLoop;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     FILE *iFP;
     stSysCfgs stSysCfgInfo;
 
     giSysCfgNum = ValidateSysCfgString(caSysCfgString);
     if (giSysCfgNum == MAXNUMSYSCFGS)
         goto return_default_vals;
-<<<<<<< HEAD
 
 //printf("syscfgnum=%d str=%s\n",giSysCfgNum, caSysCfgString);
 
     /* Open the syscfgs file on the PROM. */
 //    iFP = open("A:\\SYSCFGS", O_RDONLY|O_BINARY);
-=======
-
-//printf("syscfgnum=%d str=%s\n",giSysCfgNum, caSysCfgString);
-
-    /* Open the syscfgs file on the PROM. */
-//    iFP = open("A:\\SYSCFGS", O_RDONLY|O_BINARY);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iFP = fopen("/root/controller/scmain/syscfgs", "r");
     if( iFP == NULL )
     {
@@ -304,19 +250,11 @@ int InitMechArrays(int *ipNumOfAxesArg, int *ipDefineFlagArg, int *ipEmulatorArg
         {
             /* Read the file directly into the syscfgs structure. */
 //            iCount = read(iFP, &stSysCfgInfo, sizeof(stSysCfgs));
-<<<<<<< HEAD
             iCount = fread(&stSysCfgInfo, sizeof(stSysCfgs), 1, iFP);
             if (iCount < 1)
 	    {
 		fclose( iFP );
                 goto return_default_vals;
-=======
-            iCount = fread(&stSysCfgInfo, sizeof(stSysCfgs), 1, iFP);
-            if (iCount < 1)
-	    {
-		fclose( iFP );
-                goto return_default_vals;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    }
             else if (!strcmp(stSysCfgInfo.m_caSysCfgType, caSysCfgTypeList[giSysCfgNum]))
                 break;
@@ -336,19 +274,11 @@ int InitMechArrays(int *ipNumOfAxesArg, int *ipDefineFlagArg, int *ipEmulatorArg
     memcpy(ipMechTypeArg, stSysCfgInfo.m_iaMechType, MAXARRAYSIZE*sizeof(int));
     memcpy(ipSpecialAxesArg, stSysCfgInfo.m_iaSpecialAxes, MAXARRAYSIZE*sizeof(int));
     memcpy(ipDiagParmsArg, stSysCfgInfo.m_iaDiagParms, 3*sizeof(int));
-<<<<<<< HEAD
 
 //printf("numOfAxes=%d cfgnum=%d cfgstr=%s",*ipNumOfAxesArg,iReadLoop,stSysCfgInfo.m_caSysCfgType);
 int i;
 for (i=0; i<*ipNumOfAxesArg; ++i)
 //printf("ipGalilAxes[%d]=%d\n",i,ipGalilAxesArg[i]);
-=======
-
-//printf("numOfAxes=%d cfgnum=%d cfgstr=%s",*ipNumOfAxesArg,iReadLoop,stSysCfgInfo.m_caSysCfgType);
-int i;
-for (i=0; i<*ipNumOfAxesArg; ++i)
-//printf("ipGalilAxes[%d]=%d\n",i,ipGalilAxesArg[i]);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return SUCCESS;
 

@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -26,7 +24,6 @@
  *
  *******************************************************************/
 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>

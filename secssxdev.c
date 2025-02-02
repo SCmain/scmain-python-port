@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-/************************************************************************************************
-*
-* Program:      File contains those of functions needed for SECS-II com when our controller is a
-*               device
-* File:         S2SecsDe.c
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -33,7 +26,6 @@
 * Program:      File contains those of functions needed for SECS-II com when our controller is a
 *               device
 * File:         secssxdev.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 * Functions:
 *
 * Description:
@@ -47,11 +39,7 @@
 #include <stdlib.h>
 #include "sck.h"
 #include "secsl.h"
-<<<<<<< HEAD
 #include "secsg.h"
-=======
-#include "secsg.h"
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "scregg.h"
 
 // For ToolS2F67

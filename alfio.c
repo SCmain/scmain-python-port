@@ -1,4 +1,3 @@
-/**********************************************************************
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -50,8 +49,6 @@
 #include "alfio.h"
 #include "fiol.h"
 #include "fiog.h"
-
-extern int giVersionPA;
 
 extern int giVersionPA;
 
@@ -426,14 +423,6 @@ int ALGetAligningSpeed(int iWhichArg, long *lpWaferSpeedArg, long *lpWaferAccelA
 		lpWaferAccelArg[i+4] = lpWaferAccelArg[i];
 	    }
 	}
-	if(!giVersionPA)
-	{
-	    for (i=0; i<4; ++i)
-	    {
-		lpWaferSpeedArg[i+4] = lpWaferSpeedArg[i];
-		lpWaferAccelArg[i+4] = lpWaferAccelArg[i];
-	    }
-	}
     }
     else
     {
@@ -479,15 +468,6 @@ int ALGetAligningSpeed(int iWhichArg, long *lpWaferSpeedArg, long *lpWaferAccelA
 //				lpWaferSpeedArg[i+4] = lpWaferSpeedArg[i];
 //				lpWaferAccelArg[i+4] = lpWaferAccelArg[i];
 //			}
-    	lpWaferAccelArg[giAxisIndx] = lWaferAccel;
-//printf("giAxisIndx=%d waferSpeed=%d Accel=%d\n",giAxisIndx, lWaferSpeed, lWaferAccel);
-//		if(!giVersionPA)
-//		{
-//			for (i=0; i<4; ++i)
-//			{
-//				lpWaferSpeedArg[i+4] = lpWaferSpeedArg[i];
-//				lpWaferAccelArg[i+4] = lpWaferAccelArg[i];
-//			}
 //		}
 	}
 	return SUCCESS;
@@ -508,20 +488,6 @@ int ALSetAligningGASpeed(unsigned long ulAxisArg, long *lpWaferSpeedArg, long *l
 
     memcpy(laWaferDecel, lpWaferAccelArg, sizeof(long)*8);
     /* set operating speed, acceleration and deceleration */
-    if(ROSetParameter(FALSE, ulAxisArg, lpWaferSpeedArg, OPERATIONAL_SPEED)==FAILURE)
-    {
-printf("axis=%d speed=%d\n",ulAxisArg,lpWaferSpeedArg[4]);
-        goto error_exit;
-    }
-    if(ROSetParameter(FALSE, ulAxisArg, lpWaferAccelArg, OPERATIONAL_ACCEL)==FAILURE)
-    {
-printf("axis=%d accel=%d\n",ulAxisArg,lpWaferAccelArg[4]);
-        goto error_exit;
-    }
-    if(ROSetParameter(FALSE, ulAxisArg, laWaferDecel, OPERATIONAL_DECEL)==FAILURE)
-    {
-printf("axis=%d decel=%d\n",ulAxisArg,laWaferDecel[4]);
-        goto error_exit;
     if(ROSetParameter(FALSE, ulAxisArg, lpWaferSpeedArg, OPERATIONAL_SPEED)==FAILURE)
     {
 printf("axis=%d speed=%d\n",ulAxisArg,lpWaferSpeedArg[4]);

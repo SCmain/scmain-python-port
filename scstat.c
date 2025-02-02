@@ -1,10 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
- *
- * Program:     Status
- * File:        status.c
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -31,7 +26,6 @@
  *
  * Program:     Status
  * File:        scstat.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   SSSetStatusWord
  *              SSReadStatusBits
  *              SSGetVacuumBits
@@ -78,11 +72,7 @@ unsigned SSuEmulatorType;
 int iSystemInitializationStatus = 0;    /* keeps the record of failures during
                                          * main initialization of modules */
 unsigned int SSuDebugBit = 0;   /* general purpose debug on/off bit */
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 /****************************************************************\
  *
  * Function:    SSSetStatusWord
@@ -171,11 +161,7 @@ int SSGetVacuumBits(void)
     int iStatus = 0;
     int iEnd, iVac, iCurrentStation, iOnOffFlag;
 
-<<<<<<< HEAD
     /* Find out which end effector we're using */
-=======
-    /* Find out which end effector we're using */
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iEnd = 0;
     iCurrentStation = FIOGetCurrentStationInt();
     if ((iCurrentStation>=0) && (iCurrentStation<=51))
@@ -191,11 +177,7 @@ int SSGetVacuumBits(void)
     }
 
     /* Get the state of the vacuum sensor. */
-<<<<<<< HEAD
 //    GAReadGalilInputOutputPort(GA_CARD_0, &iVac);
-=======
-//    GAReadGalilInputOutputPort(GA_CARD_0, &iVac);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iVac = inb(IO_ROBOT_INPUT_F);
     /* Adjust it to get the vacuum sensor bit for the selected end effector. */
     iVac = (iVac >> iEnd) & 0x01;
@@ -208,11 +190,7 @@ int SSGetVacuumBits(void)
     iVac = inb(IO_ROBOT_OUTPUT_A);
     iVac = (iVac >> iEnd) & 0x01;
     /* Set the temporary status word, which is used by the system status word.
-<<<<<<< HEAD
      * Switch is ACTIVE LOW!!! */
-=======
-     * Switch is ACTIVE LOW!!! */
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (!iVac)
         iStatus |= VACUUM_SW;
 
@@ -242,13 +220,8 @@ int SSGetSystemStatus(void)
 {
     int iStatus, iAligning;
     unsigned long ulAllEquipeAxes;
-<<<<<<< HEAD
 
     ROUpdateTS(FALSE);
-=======
-
-    ROUpdateTS(FALSE);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (!MPIsNotScanning())
     {
@@ -262,11 +235,7 @@ int SSGetSystemStatus(void)
         iStatus = SSuSystemStatus & 0xE883;
 
     }
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Add in the Vacuum Sensor Bits */
     iStatus |= SSGetVacuumBits();
 

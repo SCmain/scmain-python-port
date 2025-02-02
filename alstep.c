@@ -1,4 +1,3 @@
-/******************************************************************************\
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -37,13 +36,8 @@
 \******************************************************************************/
 #include <stdlib.h>
 #include <string.h>
-<<<<<<< HEAD
 #include <pthread.h>
 #include <unistd.h>
-=======
-#include <pthread.h>
-#include <unistd.h>
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <time.h>
 
 #include "sck.h"
@@ -59,21 +53,12 @@
 #include "ser.h"
 #include "cmdfns.h"
 #include "roga.h"
-<<<<<<< HEAD
 
 int MCCheckWaferOnChuck();
 void ALChuckVacuum(int iFlagArg);
 void ALPinVacuum(int iFlagArg);
 int ALWaferOnChuck(void);
 
-=======
-
-int MCCheckWaferOnChuck();
-void ALChuckVacuum(int iFlagArg);
-void ALPinVacuum(int iFlagArg);
-int ALWaferOnChuck(void);
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 extern long glZPos1[8], glZPos2[8], glRPos1[8], glRPos2[8]; 
 
 long glMaxOffsetVector;         // max_offset_vec - max offset for only 1
@@ -82,7 +67,6 @@ int giDataEdgeIndex;            // data_edge_i - index in data edge meas.
 int giWABalFlatSubStep;         // bfp_substep
 int giWASubStep;                // bi_substep
 double gdCountIn100th;          // count_in_100th
-<<<<<<< HEAD
 
 int giBCORSubStep;
 int giBCORcount;
@@ -103,28 +87,6 @@ void *procALCorrectOffset(void *ptr)
     int iRetVal;
 
     giALCorrectOffsetDone = 0;
-=======
-
-int giBCORSubStep;
-int giBCORcount;
-int giBCORStepOff;
-int giBCORDone;
-int giFlatSubStepOff;
-
-int giRndDataCount;
-
-pthread_t thCorrectOffset;
-void *procALCorrectOffset(void *ptr);
-
-int giALCorrectOffsetDone;
-int giThreadCreated = 0;
-
-void *procALCorrectOffset(void *ptr)
-{
-    int iRetVal;
-
-    giALCorrectOffsetDone = 0;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iRetVal = ALOffsetAnglePosition();
     if( iRetVal < 0 )
     {
@@ -140,7 +102,6 @@ void *procALCorrectOffset(void *ptr)
             giTrace =  6150;
         giPrevNumCorr = giNumCorr;
         giNumCorr++;
-<<<<<<< HEAD
         giWAStep = 1;                   // reset alignment step to begining
 		giALCorrectOffsetDone = -1;
     }
@@ -150,17 +111,6 @@ void *procALCorrectOffset(void *ptr)
         giALCorrectOffsetDone = 1;
     }
 }
-=======
-        giWAStep = 1;                   // reset alignment step to begining
-		giALCorrectOffsetDone = -1;
-    }
-    else
-    {
-        ALCorrectOffset();
-        giALCorrectOffsetDone = 1;
-    }
-}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /*******************************************************************************
  * Function:    ALGetWaferRoundSeg
@@ -324,11 +274,7 @@ int ALAbort(void)
  ******************************************************************************/
 int ALBegin(void)
 {
-<<<<<<< HEAD
     long laScaledPos[8]={100000,100000,100000,100000,100000,100000,100000,100000}, 
-=======
-    long laScaledPos[8]={100000,100000,100000,100000,100000,100000,100000,100000}, 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		 laUnscaledPos[8]={0,0,0,0,0,0,0,0};
     int iCardNum, iFileType;
     unsigned uGalilAxes;
@@ -339,11 +285,7 @@ int ALBegin(void)
 
     giTrace = 0;
 
-<<<<<<< HEAD
     // initialize the alignment status start value
-=======
-    // initialize the alignment status start value
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     giAlignmentStatus = AL_FLAT_NOT_FOUND | AL_OFFSET_NOT_FOUND | 0x1000;
 
     if( ROUnscalePos(gulAxis,laScaledPos,laUnscaledPos) == FAILURE )
@@ -363,17 +305,10 @@ int ALBegin(void)
     }
 
     giWASubStep = 0;
-<<<<<<< HEAD
     giBCORSubStep = 0;
     giBCORStepOff = 0;
     giBCORcount = 0;
     giBCORDone = 0;
-=======
-    giBCORSubStep = 0;
-    giBCORStepOff = 0;
-    giBCORcount = 0;
-    giBCORDone = 0;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     giFlatSubStepOff = 0;
     giTrace = 20;
     giWAStep++;
@@ -394,15 +329,9 @@ int ALInit(int iTypeAlignmentArg)
     long laScaledPos[8]={0,0,0,0,0,0,0,0};
     long laUnscaledPos[8]={0,0,0,0,0,0,0,0};
     long lPosBuf[8]={0,0,0,0,0,0,0,0};
-<<<<<<< HEAD
     int  iWaferOnChuck = TRUE;
     struct timespec tv;
 
-=======
-    int  iWaferOnChuck = TRUE;
-    struct timespec tv;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     tv.tv_sec = 0;
 
     // alignment will not proceed if motion is not complete.
@@ -517,21 +446,12 @@ int ALInit(int iTypeAlignmentArg)
 //        if (giChuckVacSensorInputPos == AL_CHUCK_VAC_SEN_SAP4)  // prealigner on first Galil card
 //            iWaferOnChuck = ~ROReadGalilPort(0) & giChuckVacSensorInputPos;
 //        else
-<<<<<<< HEAD
 //            iWaferOnChuck = ~ROReadGalilPort(1) & giChuckVacSensorInputPos;
 	ALChuckVacuum(1);
 	ALPinVacuum(0);
         tv.tv_nsec = 50000000;
 	nanosleep(&tv, NULL);
 	iWaferOnChuck = ALWaferOnChuck();
-=======
-//            iWaferOnChuck = ~ROReadGalilPort(1) & giChuckVacSensorInputPos;
-	ALChuckVacuum(1);
-	ALPinVacuum(0);
-        tv.tv_nsec = 50000000;
-	nanosleep(&tv, NULL);
-	iWaferOnChuck = ALWaferOnChuck();
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     	// if wafer is not on chuck
     	if( !iWaferOnChuck )
@@ -555,21 +475,12 @@ int ALInit(int iTypeAlignmentArg)
     giDataEdgeIndex = AL_BEGIN_DATA;
     giMaxNumMeasStored = AL_OFFCENTER_END_INDEX;
     giOffsetIndexEnd = AL_OFFCENTER_END_INDEX;
-<<<<<<< HEAD
 
     giWASubStep = 0;
     giBCORSubStep = 0;
     giBCORStepOff = 0;
     giBCORcount = 0;
     giBCORDone = 0;
-=======
-
-    giWASubStep = 0;
-    giBCORSubStep = 0;
-    giBCORStepOff = 0;
-    giBCORcount = 0;
-    giBCORDone = 0;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     giFlatSubStepOff = 0;
     gulDuplicateCount = 0;              // used to count the number of times through the interrupt
 
@@ -635,21 +546,12 @@ int ALCheckEdge(void)
     int iDataPos=giRndDataIdx;
     int iRetVal=SUCCESS;
 
-<<<<<<< HEAD
     giTrace = 3010;
     if(giDataEdgeIndex+AL_SKIP_END >= iDataPos)
     {
 //printf("EdgeIdx=%d iDataPos=%d giRndDataIdx=%d\n",giDataEdgeIndex, iDataPos, giRndDataIdx);
 	while(giDataEdgeIndex+AL_SKIP_END >= iDataPos) iDataPos = giRndDataIdx;
     }
-=======
-    giTrace = 3010;
-    if(giDataEdgeIndex+AL_SKIP_END >= iDataPos)
-    {
-//printf("EdgeIdx=%d iDataPos=%d giRndDataIdx=%d\n",giDataEdgeIndex, iDataPos, giRndDataIdx);
-	while(giDataEdgeIndex+AL_SKIP_END >= iDataPos) iDataPos = giRndDataIdx;
-    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     while( (giDataEdgeIndex+AL_SKIP_END) < iDataPos )
     {
@@ -658,7 +560,6 @@ int ALCheckEdge(void)
             iRetVal = FAILURE;
         // mark collected data when there is a big change in data (possible chips)
         iDataPos = giRndDataIdx;
-<<<<<<< HEAD
 //    if(giDataEdgeIndex > giOffsetIndexEnd-5 || iRetVal == FAILURE)
 //    {
 //	long ulAmf;
@@ -676,35 +577,12 @@ int ALCheckEdge(void)
 
 
     // begining index of the data read >= last read index of the data read
-=======
-//    if(giDataEdgeIndex > giOffsetIndexEnd-5 || iRetVal == FAILURE)
-//    {
-//	long ulAmf;
-//	ulAmf = ROGetAMFlag();
-//	printf("amf=%d axis=%d EdgeIdx=%d OffIdx=%d ret=%d\n",ulAmf, gulAxis, giDataEdgeIndex, giOffsetIndexEnd,iRetVal);
-//    }
-    }
-
-//    if(giRndDataIdx > 1200 && giRndDataIdx < 1210)
-//    {
-//	long ulAmf;
-//	ulAmf = ROGetAMFlag();
-//	printf("amf=%d axis=%d EdgeIdx=%d OffIdx=%d ret=%d\n",ulAmf, gulAxis, giDataEdgeIndex, giOffsetIndexEnd,iRetVal);
-//    }
-
-
-    // begining index of the data read >= last read index of the data read
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if(( giDataEdgeIndex >= giOffsetIndexEnd ) || (ROGetAMFlag()&gulAxis))
     {
         giTrace = 3020;
         ALStopMeasurement();            // stop measurement
         giWAStep++;                     // advance to the next alignment step
-<<<<<<< HEAD
     }
-=======
-    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     else
         giTrace = 3030;
     return iRetVal;
@@ -720,21 +598,12 @@ int ALCheckEdge(void)
  ******************************************************************************/
 int ALCenterCalc(int iAlignTypeArg)
 {
-<<<<<<< HEAD
     long laScaledPos[8]={0,0,0,0,0,50,0,0}, 
 		 laUnscaledPos[8]={0,0,0,0,0,0,0,0};
     long lOffsetVec;
 
 //	giRndDataCount = giRndDataIdx;
 //	RGplRegister[19] = giRndDataIdx;
-=======
-    long laScaledPos[8]={0,0,0,0,0,50,0,0}, 
-		 laUnscaledPos[8]={0,0,0,0,0,0,0,0};
-    long lOffsetVec;
-
-//	giRndDataCount = giRndDataIdx;
-//	RGplRegister[19] = giRndDataIdx;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     giTrace = 5010;
     if( ALInitWaferCenterVar() == FAILURE )     // initialize centering variables
@@ -757,11 +626,7 @@ int ALCenterCalc(int iAlignTypeArg)
         if( ROUnscalePos((unsigned long)RO_AXIS_r,laScaledPos,laUnscaledPos) == FAILURE )
             return FAILURE;
         lOffsetVec = laUnscaledPos[1];
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         laScaledPos[1] = gstWaferCal.m_lOffsetVector;
         laUnscaledPos[1] = 0;
         if( ROUnscalePos((unsigned long)RO_AXIS_r,laScaledPos,laUnscaledPos) == FAILURE )
@@ -770,7 +635,6 @@ int ALCenterCalc(int iAlignTypeArg)
             giWAStep++;                         //      skip the next step (center
     }
 
-<<<<<<< HEAD
 	// if computed offset is greater than 100mm, something wrong.
 	if(gstWaferCal.m_lOffsetVector > 100000)
 	{
@@ -778,15 +642,6 @@ int ALCenterCalc(int iAlignTypeArg)
 			printf("Offset Vector Out of Range: %d\n",gstWaferCal.m_lOffsetVector);		
 		return FAILURE;
 	}
-=======
-	// if computed offset is greater than 100mm, something wrong.
-	if(gstWaferCal.m_lOffsetVector > 100000)
-	{
-	    if( giDisplayMode & AL_DISPAR_A )
-			printf("Offset Vector Out of Range: %d\n",gstWaferCal.m_lOffsetVector);		
-		return FAILURE;
-	}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 	/* for intellipick only */
     giWAStep++;                     // advance to the next alignment step
@@ -802,7 +657,6 @@ int ALCenterCalc(int iAlignTypeArg)
  * Replaces:    bal_center_corect()
  ******************************************************************************/
 int ALCenterCorrectBCOR(void)
-<<<<<<< HEAD
 {
     long rc;
     int iRetVal;
@@ -810,15 +664,6 @@ int ALCenterCorrectBCOR(void)
     long lOffset, lMaxOffset, lMoveOffset;
     struct timespec tv;
 
-=======
-{
-    long rc;
-    int iRetVal;
-    long lWaferLiftUpPos;
-    long lOffset, lMaxOffset, lMoveOffset;
-    struct timespec tv;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     tv.tv_sec = 0;
 
     // if ZZ1 Mode (only 420 deg rotation) is ON, skip this step.
@@ -827,28 +672,16 @@ int ALCenterCorrectBCOR(void)
         giWAStep++;
         return SUCCESS;
     }
-<<<<<<< HEAD
     giTrace = 6010;
-=======
-    giTrace = 6010;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     // alignment will not proceed if motion is not complete.
     if ( (ROGetAMFlag() & gulAllAxes) != gulAllAxes )
         return SUCCESS;
-<<<<<<< HEAD
 
     switch (giBCORSubStep)
     { 
         giTrace += 10;
 	case 0:
-=======
-
-    switch (giBCORSubStep)
-    { 
-        giTrace += 10;
-	case 0:
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    // move t to offset angle
 	    iRetVal = ALOffsetAnglePosition();
 	    if( iRetVal < 0 )
@@ -865,7 +698,6 @@ int ALCenterCorrectBCOR(void)
 	            giTrace =  6150;
 	        giPrevNumCorr = giNumCorr;
 	        giNumCorr++;
-<<<<<<< HEAD
 	        giWAStep = 1;                   // reset alignment step to begining
 			return FAILURE;
 	    }
@@ -940,82 +772,6 @@ int ALCenterCorrectBCOR(void)
 		    return SUCCESS;
 	    } // switch BCORStepOff
     } // switch BCORSubStep
-=======
-	        giWAStep = 1;                   // reset alignment step to begining
-			return FAILURE;
-	    }
-	    giBCORSubStep = 1;
-	    return SUCCESS;
-
-	case 1: // USE PINS to move the wafer to the center
-	    giTrace += 10;
-	    switch (giBCORStepOff)
-	    {
-		case 0: // move r to 0 pos to begin the next offset correction
-		    giTrace += 1;
-		    glRPos2[5] = 0;
-		    ROMoveToAbs(RO_AXIS_r, glRPos2);
-		    giBCORStepOff++;
-		    return SUCCESS;
-		case 1: // turn vacuum and move z up
-		    giTrace += 1;
-		    if( FIOGetParamWaferVals(WAFER_LIFT_UP_POSITION,&lWaferLiftUpPos) != SUCCESS )
-        		return FAILURE;
-
-		    ALChuckVacuum(0);	// turn off chuck vacuum
-		    ALPinVacuum(1);	// turn on pin vacuum
-    		    tv.tv_nsec = 50000000;
-		    nanosleep(&tv, NULL);
-
-        	glZPos1[6] = lWaferLiftUpPos;
-		    ROMoveToAbs(RO_AXIS_z, glZPos1);
-		    giBCORStepOff++;
-		    return SUCCESS;
-	
-		case 2:  // move r to offset or maxoffset
-		    giTrace += 1;
-		    giBCORcount++;
-		    lMaxOffset = AL_MAX_OFFSET;
-		    lOffset = gstWaferCal.m_lOffsetVector;
-		    lMoveOffset = lOffset - lMaxOffset * giBCORcount;
-		    if (lMoveOffset > 0L)
-			lMoveOffset = lMaxOffset;
-		    else
-		    {
-				lMoveOffset = lOffset;
-				giBCORDone = 1;
-		    }
-//printf("lOffset:%d lMoveOffset: %d giBCORDone: %d\n",lOffset, lMoveOffset, giBCORDone);
-		    if(giBCORcount > 5)
-				giBCORDone = 1;
-		    glRPos1[5] = lMoveOffset;
-		    ROMoveToAbs(RO_AXIS_r, glRPos1);
-		    giBCORStepOff++;
-		    return SUCCESS;
-
-		case 3:  // turn off pin vacuum and pin to chuck position (0 pos)
-		    giTrace += 1;
-		    ALPinVacuum(0); // turn off pin vacuum
-		    ALChuckVacuum(1); // turn on chuck vacuum
-    		tv.tv_nsec = 50000000;
-		    nanosleep(&tv, NULL);
-		    glZPos2[6] = 0;
-		    ROMoveToAbs(RO_AXIS_z, glZPos2);
-		    giBCORStepOff++;
-		    return SUCCESS;
-
-		case 4: // move r to 0 pos to begin the next offset correction
-		    giTrace += 1;
-		    glRPos2[5] = 0;
-		    ROMoveToAbs(RO_AXIS_r, glRPos2);
-		    giBCORStepOff = 0;
-		    giBCORSubStep = 1; // begin the offset correction
-		    if (giBCORDone)  
-				giWAStep++;	// all correction done, go to next (finished BCOR)
-		    return SUCCESS;
-	    } // switch BCORStepOff
-    } // switch BCORSubStep
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     return FAILURE;
 }
@@ -1116,7 +872,6 @@ int ALPositionNotch(void)
             giPass = 1;                 // first flat edge measurement
             return SUCCESS;
             break;
-<<<<<<< HEAD
         case 1 :
 	    // before the move to notch angle, we need to have a motion complete
     	    if( (ROGetAMFlag()&gulAllAxes) != gulAllAxes )
@@ -1126,17 +881,6 @@ int ALPositionNotch(void)
 		return SUCCESS;
 	    }
 
-=======
-        case 1 :
-	    // before the move to notch angle, we need to have a motion complete
-    	    if( (ROGetAMFlag()&gulAllAxes) != gulAllAxes )
-	    {
-//printf("finescan motion wait in case 1: giFlatBegining=%d giPass=%d\n", giFlatBegining, giPass);
-
-		return SUCCESS;
-	    }
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             giInternalTrace = (giFlatBegining) ? 1 : 2;  // set internal trace
             giInternalTrace += 7100;
             giTrace = giInternalTrace + 10;  // set global trace
@@ -1198,7 +942,6 @@ int ALPositionNotch(void)
                 else
                     return FAILURE;
             }
-<<<<<<< HEAD
             else if( iRetVal == 2)      // repeat this substep
 {
 //printf("case3: giInternalTrace=%d lastRead=%d giRndDataIdx=%d\n", giInternalTrace,giFlatIndexEndLastRead,giRndDataIdx);
@@ -1207,16 +950,6 @@ int ALPositionNotch(void)
 }
 //printf("switching starting point: giFlatBegining=%d iRetVal\n", giFlatBegining, iRetVal);
 //printf("case3: giInternalTrace=%d lastRead=%d giRndDataIdx=%d\n", giInternalTrace,giFlatIndexEndLastRead,giRndDataIdx);
-=======
-            else if( iRetVal == 2)      // repeat this substep
-{
-//printf("case3: giInternalTrace=%d lastRead=%d giRndDataIdx=%d\n", giInternalTrace,giFlatIndexEndLastRead,giRndDataIdx);
-
-                return SUCCESS;
-}
-//printf("switching starting point: giFlatBegining=%d iRetVal\n", giFlatBegining, iRetVal);
-//printf("case3: giInternalTrace=%d lastRead=%d giRndDataIdx=%d\n", giInternalTrace,giFlatIndexEndLastRead,giRndDataIdx);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
             // switch from measurements starting point (beg or end)
             giFlatBegining = !giFlatBegining;

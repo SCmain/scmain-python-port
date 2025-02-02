@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-/******************************************************************************\
- *
- * Program:     Controller firmware
- * File:        datafaln.c
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -31,7 +25,6 @@
  *
  * Program:     Controller firmware
  * File:        fiol.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   FIOInitWaferParam
  *              FIOReadWafer
  *              FIOWriteWafer

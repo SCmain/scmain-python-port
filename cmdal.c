@@ -113,22 +113,14 @@
 
 #include <stdlib.h>
 #include <malloc.h>
-<<<<<<< HEAD
 #include <math.h>
-=======
-#include <math.h>
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <string.h>
 #include "cmdfns.h"
 #include "cmdsp.h"
 #include "cmdal.h"
 #include "scregg.h"
 #include "ser.h"
-<<<<<<< HEAD
 #include "ro.h"
-=======
-#include "ro.h"
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "roga.h"
 #include "alk.h"
 #include "alfio.h"
@@ -310,11 +302,7 @@ int ex_MEAS(instr_ptr instr)
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_RAD1(instr_ptr instr)
-<<<<<<< HEAD
 {
-=======
-{
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	int i;
     long laParameters[8];
     ULONG ulAxis;
@@ -326,15 +314,9 @@ int ex_RAD1(instr_ptr instr)
         return FAILURE;
     if(FIOGetParamWaferAccel(laParameters) == FAILURE)
         return FAILURE;
-<<<<<<< HEAD
     laParameters[3] = laParameters[0];
 	for (i=0; i<4; ++i)
 		laParameters[i+4] = laParameters[i];
-=======
-    laParameters[3] = laParameters[0];
-	for (i=0; i<4; ++i)
-		laParameters[i+4] = laParameters[i];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (Optr)
     	Optr = Optr->next;
@@ -347,35 +329,21 @@ int ex_RAD1(instr_ptr instr)
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_RAD2(instr_ptr instr)
-<<<<<<< HEAD
 {
-=======
-{
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	int i;
     long laParameters[8];
     ULONG ulAxis;
     CMDoperand_ptr Optr;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     Optr = instr->opr_ptr;
     ulAxis = CMDgetAxis(instr);
     if(ulAxis < RO_AXIS_ALL)
         return FAILURE;
     if(FIOGetParamNoWaferAccel(laParameters) == FAILURE)
         return FAILURE;
-<<<<<<< HEAD
     laParameters[3] = laParameters[0];
 	for (i=0; i<4; ++i)
 		laParameters[i+4] = laParameters[i];
-=======
-    laParameters[3] = laParameters[0];
-	for (i=0; i<4; ++i)
-		laParameters[i+4] = laParameters[i];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (Optr)
     	Optr = Optr->next;
     return CMDreadBackParms(Optr, laParameters, ulAxis);
@@ -694,11 +662,7 @@ int ex_RPTY(instr_ptr instr)
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_RSP1(instr_ptr instr)
-<<<<<<< HEAD
 {
-=======
-{
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	int i;
     long laParameters[8];
     ULONG ulAxis;
@@ -710,17 +674,10 @@ int ex_RSP1(instr_ptr instr)
         return FAILURE;
     if(FIOGetParamWaferSpeed(laParameters) == FAILURE)
         return FAILURE;
-<<<<<<< HEAD
     laParameters[3] = laParameters[0];
 	for (i=0; i<4; i++)
 	{
 		laParameters[i+4] = laParameters[i];
-=======
-    laParameters[3] = laParameters[0];
-	for (i=0; i<4; i++)
-	{
-		laParameters[i+4] = laParameters[i];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	}
     if (Optr)
     	Optr = Optr->next;
@@ -733,11 +690,7 @@ int ex_RSP1(instr_ptr instr)
  * Returns:         SUCCESS/FAILURE.
  ***************************************************************************/
 int ex_RSP2(instr_ptr instr)
-<<<<<<< HEAD
 {
-=======
-{
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	int i;
     long laParameters[8];
     ULONG ulAxis;
@@ -750,15 +703,9 @@ int ex_RSP2(instr_ptr instr)
     if(FIOGetParamNoWaferSpeed(laParameters) == FAILURE)
         return FAILURE;
     laParameters[3] = laParameters[0];
-<<<<<<< HEAD
 	for (i=0; i<4; i++)
 	{
 		laParameters[i+4] = laParameters[i];
-=======
-	for (i=0; i<4; i++)
-	{
-		laParameters[i+4] = laParameters[i];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	}
     if (Optr)
     	Optr = Optr->next;
@@ -1321,19 +1268,11 @@ int ex_ZZ1(instr_ptr instr)
  * Description:     Debugging command
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
-<<<<<<< HEAD
  ***************************************************************************/
 void takeAL(int iMode);
 int ex_ZZ2(instr_ptr instr)
 {
 //    return CMDAlign(instr, ZZ2);
-=======
- ***************************************************************************/
-void takeAL(int iMode);
-int ex_ZZ2(instr_ptr instr)
-{
-//    return CMDAlign(instr, ZZ2);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     long   lMode;
     CMDoperand_ptr  Optr;
 
@@ -1341,19 +1280,11 @@ int ex_ZZ2(instr_ptr instr)
     if(CMDgetValue(Optr, &lMode)==FAILURE)
 	return FAILURE;
 
-<<<<<<< HEAD
     takeAL((int)lMode);
 
     return SUCCESS;
 
 }
-=======
-    takeAL((int)lMode);
-
-    return SUCCESS;
-
-}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /***************************************************************************
  * Function Name:   ex_DUMPC
@@ -1560,11 +1491,7 @@ int ex_DUMPW(instr_ptr instr)
     {
         if( (iReturn=FIOGetParamWaferVals(iParmPtr,&lParamVal)) == FAILURE )
 			goto error_exit;
-<<<<<<< HEAD
 //        ltoa( lParamVal, sBuf, 10 );
-=======
-//        ltoa( lParamVal, sBuf, 10 );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	sprintf(sBuf, "%d", (int)lParamVal);
         strcat( sBuf, "\r\n" );
         if( (iReturn=CMDdumpBuf(sBuf))==FAILURE )
@@ -1616,11 +1543,7 @@ int ex_DUMPW(instr_ptr instr)
     {
         if( (iReturn=FIOGetParamWaferVals(iParmPtr,&lParamVal)) == FAILURE )
 			goto error_exit;
-<<<<<<< HEAD
 //        ltoa( lParamVal, sBuf, 10 );
-=======
-//        ltoa( lParamVal, sBuf, 10 );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	sprintf(sBuf, "%d", (int)lParamVal);
         strcat( sBuf, "\r\n" );
         if( (iReturn=CMDdumpBuf(sBuf))==FAILURE )
@@ -2071,11 +1994,7 @@ int CMDReadParam(CMDoperand_ptr OperandArg, long lParameterArg)
     }
     else
     {
-<<<<<<< HEAD
 //        ltoa(lParameterArg, caString, 10);
-=======
-//        ltoa(lParameterArg, caString, 10);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	sprintf(caString, "%d", (int)lParameterArg);
         if( SERPutsTxBuff(iCmdPortNumber, caString) == FAILURE )
             return FAILURE;
@@ -2393,7 +2312,6 @@ int ex_RNFA(instr_ptr instr)
 
 	return CMDReadParam(instr->opr_ptr, lValue);
 }
-<<<<<<< HEAD
 
 int ex_RCCD(instr_ptr instr)
 {
@@ -2403,17 +2321,6 @@ int ex_RCCD(instr_ptr instr)
     CMDoperand_ptr Optr;
 
 	ALTakeMeasurement(&lValue[1], &lValue[0]);
-=======
-
-int ex_RCCD(instr_ptr instr)
-{
-	long lValue[2];
-    char caString[15];
-    int iCmdPortNumber;
-    CMDoperand_ptr Optr;
-
-	ALTakeMeasurement(&lValue[1], &lValue[0]);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if(instr->nofopr == 0)
     {
@@ -2421,16 +2328,11 @@ int ex_RCCD(instr_ptr instr)
         sprintf(caString, "%ld\r\n", lValue[0]);
         if( SERPutsTxBuff(iCmdPortNumber, caString) == FAILURE )
             return FAILURE;
-<<<<<<< HEAD
         sprintf(caString, "%ld\r\n", lValue[1]);
-=======
-        sprintf(caString, "%ld\r\n", lValue[1]);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if( SERPutsTxBuff(iCmdPortNumber, caString) == FAILURE )
             return FAILURE;
         return SUCCESS;
     }
-<<<<<<< HEAD
 	else if (instr->nofopr == 2)
 	{
 	    Optr = instr->opr_ptr;
@@ -2444,18 +2346,3 @@ int ex_RCCD(instr_ptr instr)
 	
 	return FAILURE;
 }
-=======
-	else if (instr->nofopr == 2)
-	{
-	    Optr = instr->opr_ptr;
-		if(CMDSetIndirectReg(Optr, lValue[0])==FAILURE)
-			return FAILURE;
-	    Optr = Optr->next;
-		if(CMDSetIndirectReg(Optr, lValue[1])==FAILURE)
-			return FAILURE;
-		return SUCCESS;
-	}
-	
-	return FAILURE;
-}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)

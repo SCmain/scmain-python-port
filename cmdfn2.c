@@ -1,10 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
- * Program:     low-level command, command interpreter and Opcode table.
- *
- * File:        LLexmisc.c
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -34,7 +29,6 @@
  *
  * Program:     low-level command, command interpreter and Opcode table.
  *
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Functions:
  *
@@ -62,11 +56,7 @@
 #include "scio.h"
 #include "sctim.h"
 #include "gag.h"
-<<<<<<< HEAD
 #include "scstat.h"
-=======
-#include "scstat.h"
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "ser.h"
 //#include "serl.h"
 #include "serm.h"
@@ -86,7 +76,6 @@
 #include "mapstn.h"
 #include "map.h"
 #include "scproc.h"
-<<<<<<< HEAD
 #include "secsg.h"
 #include "secsl.h"
 
@@ -102,23 +91,6 @@ struct CommStr
 //    struct termios m_OldKey;/* terminal io for current keyboard setting */
 //    struct termios m_NewKey;/* terminal io for new keyboard setting */
 //    struct sigaction m_saIO;/* signal action for each port communication */
-=======
-#include "secsg.h"
-#include "secsl.h"
-
-#define RX_BUF_SIZE 1024    /* Receive buffer size in bytes */
-#define TX_BUF_SIZE 1024    /* Transmit buffer size in bytes */
-
-struct CommStr
-{
-    int m_iFD;		    /* device fd from open device "/dev/ttyS0" */
-//    int m_iTTY;		    /* console port id "/dev/tty" */
-    struct termios m_OldTIO;/* terminal io structure for current setting */
-    struct termios m_NewTIO;/* terminal io structure for new console setting */
-//    struct termios m_OldKey;/* terminal io for current keyboard setting */
-//    struct termios m_NewKey;/* terminal io for new keyboard setting */
-//    struct sigaction m_saIO;/* signal action for each port communication */
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     int m_iStatus;          /* port status word */
     char *m_cpRxGet;        /* Input ring-buffer TAIL pointer */
     char *m_cpRxPut;        /* Input ring-buffer HEAD pointer */
@@ -144,11 +116,7 @@ struct CommStr
                              * This flag can indicate that the port is open by using
                              * SERSetPortOpen even though SERInitPort may not have been called. */
 };
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int SERCheckForEOT(struct CommStr *pCommDataArg);
 int SERCheckValidPort(int iPortNumArg);
 int SERFetchRxCh(struct CommStr *pCommDataArg, char *cCharToFetch);
@@ -161,7 +129,6 @@ int SERSetCommErr(int iPortNumArg);
 int SERGetSECSMsg(int iPortNumArg);
 int SERSendSECSMsg(int iPortNumArg);
 int SERSetSECSStatus(int iPortNumArg, int iCurrActivityStatArg, int iLastErrorStatArg, char cAckNakStatArg, int iGetStatArg);
-<<<<<<< HEAD
 
 #ifdef COMPORT6
 #define MAXSECSPORTS 6
@@ -169,15 +136,6 @@ int SERSetSECSStatus(int iPortNumArg, int iCurrActivityStatArg, int iLastErrorSt
 #define MAXSECSPORTS 3
 #endif
 
-=======
-
-#ifdef COMPORT6
-#define MAXSECSPORTS 6
-#else
-#define MAXSECSPORTS 3
-#endif
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 extern int giSECSComplete;
 int giFirstSECS = TRUE;
 int giExecutingSECS = FALSE;
@@ -646,19 +604,11 @@ int ex_TEACH(instr_ptr instr)
 int ex_RES(instr_ptr instr)
 {
     long lMode;
-<<<<<<< HEAD
     CMDoperand_ptr Optr;
 
     Optr = instr->opr_ptr;
     if(CMDgetValue(Optr,&lMode)==FAILURE)    /* get tge tracing mode */
         return FAILURE;
-=======
-    CMDoperand_ptr Optr;
-
-    Optr = instr->opr_ptr;
-    if(CMDgetValue(Optr,&lMode)==FAILURE)    /* get tge tracing mode */
-        return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if(lMode == 313)
         TIResetComputer();
 
@@ -745,13 +695,8 @@ int ex_SECS(instr_ptr instr)
     int iChangePCWaiting = 0;
     int iCounter;
     long lOprValue;
-<<<<<<< HEAD
     CMDoperand_ptr Optr;
 
-=======
-    CMDoperand_ptr Optr;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iChangePCWaiting = MRGetMacroIntegerVars(MR_PC_WAITING);
 
     Optr = instr->opr_ptr;
@@ -809,7 +754,6 @@ int ex_SECS(instr_ptr instr)
     if(CMDgetIntegerValue(Optr, &iFunction)==FAILURE)
 	return FAILURE;
 
-<<<<<<< HEAD
 //printf("SECS COM%d Dev=%d S%dF%d act=%d executing=%d\n",iPortNum, uDevID, iStream, iFunction, SERGetSecsActivity(iPortNum), giExecutingSECS);
 
     if(SERGetSecsActivity(iPortNum) != 0 && !giExecutingSECS) 
@@ -822,20 +766,6 @@ int ex_SECS(instr_ptr instr)
     {
 	giSECSComplete = 0;
 	giFirstSECS = FALSE;
-=======
-//printf("SECS COM%d Dev=%d S%dF%d act=%d executing=%d\n",iPortNum, uDevID, iStream, iFunction, SERGetSecsActivity(iPortNum), giExecutingSECS);
-
-    if(SERGetSecsActivity(iPortNum) != 0 && !giExecutingSECS) 
-    {
-        MASetPC(instr);
-	return SUCCESS;
-    }
-
-    if(giFirstSECS)
-    {
-	giSECSComplete = 0;
-	giFirstSECS = FALSE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 
     /* For SECS as device read next parameter if it's S0, F0, 200 function only */
@@ -849,15 +779,9 @@ int ex_SECS(instr_ptr instr)
         else
             iParameter = (int)lOprValue;
         Optr = Optr->next;
-<<<<<<< HEAD
     }
 
 //printf("SECS COM%d Dev=%d S%dF%d parm=%d\n",iPortNum, uDevID, iStream, iFunction, iParameter);
-=======
-    }
-
-//printf("SECS COM%d Dev=%d S%dF%d parm=%d\n",iPortNum, uDevID, iStream, iFunction, iParameter);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if((iParameter == 200) || (iParameter == 201) || (iParameter == 202))
     {
@@ -904,11 +828,7 @@ int ex_SECS(instr_ptr instr)
                         break;
                     case 2 :	// S1F2 requires 2 Parameters....
                         if(iPortNum != COM1)
-<<<<<<< HEAD
                         {
-=======
-                        {
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("ex_SECS S1F2\n");
 			    if(CMDgetIndirectValue(Optr, &iaGenValues[0])==FAILURE)
 				return FAILURE;
@@ -929,7 +849,6 @@ int ex_SECS(instr_ptr instr)
                         else if(iParameter == 0)
                         {
                             if(CMDgetIndirectValue(Optr, &iaGenValues[0])==FAILURE)
-<<<<<<< HEAD
 				return FAILURE;
 			    Optr = Optr->next;
 			    if (!Optr)
@@ -938,26 +857,12 @@ int ex_SECS(instr_ptr instr)
 			    Optr = Optr->next;
 			    if (!Optr)
 				return FAILURE;
-=======
-				return FAILURE;
-			    Optr = Optr->next;
-			    if (!Optr)
-				return FAILURE;
-			    CMDgetIndirectValue(Optr, &iaGenValues[1]);
-			    Optr = Optr->next;
-			    if (!Optr)
-				return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			    CMDgetIndirectValue(Optr, &iaGenValues[2]);
                             break;
                         }
                         else
                             return FAILURE;
-<<<<<<< HEAD
                     case 5 :
-=======
-                    case 5 :
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("ex_SECS S1F5 check\n");
                         if(iPortNum == COM1)
                             return FAILURE;
@@ -968,17 +873,10 @@ int ex_SECS(instr_ptr instr)
                 break;
             case 2 :
                 switch(iFunction)
-<<<<<<< HEAD
                 {
 		    case 13 :
 			if(iPortNum == COM1)
 			    return FAILURE;
-=======
-                {
-		    case 13 :
-			if(iPortNum == COM1)
-			    return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			break;
                     case 14 :
                         if(iPortNum != COM1)
@@ -989,7 +887,6 @@ int ex_SECS(instr_ptr instr)
                             return FAILURE;
                         break;
                     case 16 :
-<<<<<<< HEAD
                         if(iPortNum == COM1)
 			    return FAILURE;
                         break;
@@ -1001,19 +898,6 @@ int ex_SECS(instr_ptr instr)
 			if(iPortNum == COM1)
 			    return FAILURE;
 			break;
-=======
-                        if(iPortNum == COM1)
-			    return FAILURE;
-                        break;
-		    case 37:
-			if(iPortNum == COM1)
-			    return FAILURE;
-			break;
-		    case 38:
-			if(iPortNum == COM1)
-			    return FAILURE;
-			break;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
                     case 42 :
                         if(iPortNum == COM1)
@@ -1098,27 +982,16 @@ int ex_SECS(instr_ptr instr)
                             }
                         }
                         else
-<<<<<<< HEAD
                         {
  			    if(Optr)
-=======
-                        {
- 			    if(Optr)
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			    {
                             	if(Optr->type != INDIRECT_REG)
                                 	return FAILURE;
                             	else
                                 	iaGenValues[0] = Optr->opr.i;
-<<<<<<< HEAD
                             }
 			    else
 				return FAILURE;
-=======
-                            }
-			    else
-				return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 			}
                         break;
                     default:
@@ -1127,21 +1000,12 @@ int ex_SECS(instr_ptr instr)
                 break;
             case 6 :
                 switch(iFunction)
-<<<<<<< HEAD
                 {
 		    case 4 :	// reply to Indexer (S6F3 ack)
                         if(iPortNum == COM1)
                             return FAILURE;
 		   	break;	
 		    case 12 :	// reply to Indexer (S6F11 ack)
-=======
-                {
-		    case 4 :	// reply to Indexer (S6F3 ack)
-                        if(iPortNum == COM1)
-                            return FAILURE;
-		   	break;	
-		    case 12 :	// reply to Indexer (S6F11 ack)
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                         if(iPortNum == COM1)
                             return FAILURE;
 		   	break;	
@@ -1203,17 +1067,10 @@ int ex_SECS(instr_ptr instr)
             default:
                 return FAILURE;
         }
-<<<<<<< HEAD
     }
 
 iSetPCInstr = 0;
 //printf("ex_SECS S%dF%d iParm=%d\n",iStream,iFunction,iParameter);
-=======
-    }
-
-iSetPCInstr = 0;
-//printf("ex_SECS S%dF%d iParm=%d\n",iStream,iFunction,iParameter);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if(iPortNum == COM1)
         iRetVal = S2SecsDeviceCommand(iPortNum, uDevID, iStream, iFunction, iaGenValues, &iSetPCInstr);
@@ -1222,27 +1079,17 @@ iSetPCInstr = 0;
                             iaGenValues, pcGenString, &iSetPCInstr, &iChangePCWaiting);
 
     if(iSetPCInstr != TRUE && iSetPCInstr != FALSE)
-<<<<<<< HEAD
         return FAILURE;
 
     if(iSetPCInstr == TRUE && giSECSComplete == 0)
     {
 	giExecutingSECS = TRUE;
         MASetPC(instr);
-=======
-        return FAILURE;
-
-    if(iSetPCInstr == TRUE && giSECSComplete == 0)
-    {
-	giExecutingSECS = TRUE;
-        MASetPC(instr);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     else if(S2GetSecsSpecial())
     {
         CMDfreeOperands(instr->opr_ptr);
         MASetPC(NULL);
-<<<<<<< HEAD
         S2SetSecsSpecial(FALSE);
     }
 
@@ -1255,35 +1102,14 @@ if(giSECSComplete)
 }
     if(iChangePCWaiting != TRUE && iChangePCWaiting != FALSE)
         return FAILURE;
-=======
-        S2SetSecsSpecial(FALSE);
-    }
-
-if(giSECSComplete)
-{
-	//printf("ex_SECS complete! setPC=%d PCWait=%d\n",iSetPCInstr, iChangePCWaiting);
-	giFirstSECS = TRUE;
-	iChangePCWaiting = FALSE;
-	giExecutingSECS = FALSE;
-}
-    if(iChangePCWaiting != TRUE && iChangePCWaiting != FALSE)
-        return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     MASetMacroIntegerVars(MR_PC_WAITING, iChangePCWaiting);
 
     return iRetVal;
-<<<<<<< HEAD
 }
 
 // special command to reset SECS processing
 // the current activity is forced to set to IDLE
-=======
-}
-
-// special command to reset SECS processing
-// the current activity is forced to set to IDLE
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int ex_SCSR(instr_ptr instr)
 {
     int iRetVal, iPortNum, iStream, iFunction, iParameter, iSECSFlag;
@@ -1294,13 +1120,8 @@ int ex_SCSR(instr_ptr instr)
     int iChangePCWaiting = 0;
     int iCounter;
     long lOprValue;
-<<<<<<< HEAD
     CMDoperand_ptr Optr;
 
-=======
-    CMDoperand_ptr Optr;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     Optr = instr->opr_ptr;
     if(CMDgetIntegerValue(Optr, &iPortNum)==FAILURE)
 	return FAILURE;
@@ -1317,21 +1138,12 @@ int ex_SCSR(instr_ptr instr)
 	if(CMDgetIntegerValue(Optr, &iFunction)==FAILURE)
 		return FAILURE;
 
-<<<<<<< HEAD
     return S2AbortSecs();
 
 //    return SUCCESS;
 }
 // special command to reset SECS port RESet
 // the current activity is forced to set to IDLE
-=======
-    return S2AbortSecs();
-
-//    return SUCCESS;
-}
-// special command to reset SECS port RESet
-// the current activity is forced to set to IDLE
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int ex_SRES(instr_ptr instr)
 {
     int iRetVal, iPortNum, iStream, iFunction, iParameter, iSECSFlag;
@@ -1342,13 +1154,8 @@ int ex_SRES(instr_ptr instr)
     int iChangePCWaiting = 0;
     int iCounter;
     long lOprValue;
-<<<<<<< HEAD
     CMDoperand_ptr Optr;
 
-=======
-    CMDoperand_ptr Optr;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     Optr = instr->opr_ptr;
     if(CMDgetIntegerValue(Optr, &iPortNum)==FAILURE)
 	return FAILURE;
@@ -1369,7 +1176,6 @@ int ex_SRES(instr_ptr instr)
     if(CMDgetIntegerValue(Optr, &iParameter)==FAILURE)
 	return FAILURE;
 
-<<<<<<< HEAD
     return S2AbortSecs();
 
 //    if((iPortNum >= 3 && iPortNum <= MAXSECSPORTS) && iParameter==313)
@@ -1380,18 +1186,6 @@ int ex_SRES(instr_ptr instr)
 //            SSSetModulesInitializationsStatus(COM3_PORT, TRUE);
 //	    return FAILURE;
 //    	}
-=======
-    return S2AbortSecs();
-
-//    if((iPortNum >= 3 && iPortNum <= MAXSECSPORTS) && iParameter==313)
-//    {
-//	SERClosePorts(iPortNum);
-//    	if (SERInitPorts(iPortNum, BAUD_9600, NO_PARITY, EIGHT_DATA_BITS, ONE_STOP_BIT, FALSE, FALSE, TRUE) == FAILURE)
-//    	{
-//            SSSetModulesInitializationsStatus(COM3_PORT, TRUE);
-//	    return FAILURE;
-//    	}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    }
 //    return SUCCESS;
 }
@@ -1437,11 +1231,7 @@ int ex_DOS(instr_ptr instr)
 
     return SUCCESS;
 }
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 int ex_DSEC(instr_ptr instr)
 {
     int iRetVal, iPortNum, iStream, iFunction, iParameter, iSECSFlag;
@@ -1452,21 +1242,12 @@ int ex_DSEC(instr_ptr instr)
     int iChangePCWaiting = 0;
     int iCounter;
     long lOprValue;
-<<<<<<< HEAD
     CMDoperand_ptr Optr;
 
     Optr = instr->opr_ptr;
     if(CMDgetIntegerValue(Optr, &iPortNum)==FAILURE)
 	return FAILURE;
 
-=======
-    CMDoperand_ptr Optr;
-
-    Optr = instr->opr_ptr;
-    if(CMDgetIntegerValue(Optr, &iPortNum)==FAILURE)
-	return FAILURE;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     S2SecsDump(iPortNum);
 
 //    return SUCCESS;

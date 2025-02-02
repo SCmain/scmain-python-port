@@ -1,7 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -25,7 +23,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  *
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Program:     New commands for scmain controller definition.
  *
  * File:        cmdxq.c
@@ -63,11 +60,7 @@
 #include "scregg.h"
 #include "scmem.h"
 #include "ro.h"
-<<<<<<< HEAD
 #include "roga.h"
-=======
-#include "roga.h"
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "roloc.h"
 #include "rofio.h"
 #include "gaintr.h"
@@ -81,29 +74,17 @@
 #include "scproc.h"
 #include "secsg.h"
 #include "alstep.h"
-<<<<<<< HEAD
 #include "dmclnx.h"
 
-=======
-#include "dmclnx.h"
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 extern HANDLEDMC ghDMC;
 
 
 /***************************************************************************
  * Function Name:   ex_XQFN
-<<<<<<< HEAD
  * Description:     Execute Galil macros given function number
  *
  * NOTE:            This function send XQ#DAFN command to galil.
  *		    The function to execute is passed in "FNUM=nn" command.
-=======
- * Description:     Execute Galil macros given function number
- *
- * NOTE:            This function send XQ#DAFN command to galil.
- *		    The function to execute is passed in "FNUM=nn" command.
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
@@ -111,11 +92,7 @@ extern HANDLEDMC ghDMC;
 int ex_XQFN(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
-<<<<<<< HEAD
     long lFNum;
-=======
-    long lFNum;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     char caCommand[MAXGASTR];
     char caResponse[MAXGASTR];
     int rc;
@@ -123,18 +100,13 @@ int ex_XQFN(instr_ptr instr)
     Optr = instr->opr_ptr; /* get first operand, which is the function number to execute */
     if(!Optr)
         return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     switch( Optr->type )     /* based on operand set values of Bit number and Port ID */
     {
         case LONG_CONST :               /* function number */
         case INDIRECT_REG :             /* function number */
 	    if(CMDgetValue(Optr, &lFNum)==FAILURE)
 		return FAILURE;
-<<<<<<< HEAD
             sprintf(caCommand, "FNUM=%d",lFNum);
     	    rc = DMCCommand(ghDMC, caCommand, caResponse, MAXGASTR);
             sprintf(caCommand, "XQ#DAFN");
@@ -144,34 +116,15 @@ int ex_XQFN(instr_ptr instr)
         default:
             return FAILURE;
     }
-=======
-            sprintf(caCommand, "FNUM=%d",lFNum);
-    	    rc = DMCCommand(ghDMC, caCommand, caResponse, MAXGASTR);
-            sprintf(caCommand, "XQ#DAFN");
-    	    rc = DMCCommand(ghDMC, caCommand, caResponse, MAXGASTR);
-	    return SUCCESS;
-            break;
-        default:
-            return FAILURE;
-    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return FAILURE;
 }
 /***************************************************************************
  * Function Name:   ex_XQGT
-<<<<<<< HEAD
  * Description:     Execute Galil macros to retrieve data
  *
  * NOTE:            This function send XQ#GETV command to galil.
  *		    First set VTYPE=nn (Variable Type: which data array)
  *		    Second set VINDX=nn (Index to the array)
-=======
- * Description:     Execute Galil macros to retrieve data
- *
- * NOTE:            This function send XQ#GETV command to galil.
- *		    First set VTYPE=nn (Variable Type: which data array)
- *		    Second set VINDX=nn (Index to the array)
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Parameter:       instr - instruction pointer.
  * Returns:         SUCCESS/FAILURE.
@@ -179,25 +132,15 @@ int ex_XQFN(instr_ptr instr)
 int ex_XQGT(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
-<<<<<<< HEAD
     long lDataType, lIndex, lValue;
     char caCommand[MAXGASTR];
     char caResponse[MAXGASTR];
-=======
-    long lDataType, lIndex, lValue;
-    char caCommand[MAXGASTR];
-    char caResponse[MAXGASTR];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     int rc;
 
     Optr = instr->opr_ptr; /* get first operand, which is the function number to execute */
     if(!Optr)
         return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     switch( Optr->type )     /* based on operand set values of Bit number and Port ID */
     {
         case LONG_CONST :               /* function number */
@@ -207,17 +150,10 @@ int ex_XQGT(instr_ptr instr)
             break;
         default:
             return FAILURE;
-<<<<<<< HEAD
     }
 
     if( (Optr=Optr->next)) // the second is index to the array
     {
-=======
-    }
-
-    if( (Optr=Optr->next)) // the second is index to the array
-    {
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     	switch( Optr->type )     /* based on operand set values of Bit number and Port ID */
     	{
             case LONG_CONST :               /* function number */
@@ -226,7 +162,6 @@ int ex_XQGT(instr_ptr instr)
 		    return FAILURE;
                 break;
             default:
-<<<<<<< HEAD
                 return FAILURE;
    	}
     }
@@ -246,27 +181,6 @@ int ex_XQGT(instr_ptr instr)
 	if(Optr->type == INDIRECT_REG)
             return CMDSetIndirectReg(Optr, lValue);
 	else
-=======
-                return FAILURE;
-   	}
-    }
-
-    // now we have the data type and index, issue the command to galil
-    sprintf(caCommand, "VTYPE=%d",lDataType);
-    rc = DMCCommand(ghDMC, caCommand, caResponse, MAXGASTR);
-    sprintf(caCommand, "VINDX=%d",lIndex);
-    rc = DMCCommand(ghDMC, caCommand, caResponse, MAXGASTR);
-    sprintf(caCommand, "XQ#GETV");
-    rc = DMCCommand(ghDMC, caCommand, caResponse, MAXGASTR);
-
-    lValue = atoi(caResponse);
-
-    if( (Optr=Optr->next) )   // if there's 3rd operand, it should be a register.
-    {
-	if(Optr->type == INDIRECT_REG)
-            return CMDSetIndirectReg(Optr, lValue);
-	else
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    return FAILURE;
     }
     else     // no 3rd operand, send the response to the com port
@@ -274,10 +188,6 @@ int ex_XQGT(instr_ptr instr)
         //sprintf( cBuf, "%8d", lValue );
         return CMDShowDescription(SERGetCmdPort(), caResponse);
     }
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return FAILURE;
 }

@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-/******************************************************************************\
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -25,7 +22,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Program:     Scan mapper Module
  * File:        map.c
@@ -55,11 +51,7 @@
 #include <math.h>
 #include <memory.h>
 #include <malloc.h>
-<<<<<<< HEAD
 #include <string.h>
-=======
-#include <string.h>
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <stdlib.h>
 
 #include "sck.h"
@@ -69,11 +61,7 @@
 #include "mapfn.h"
 #include "mapstn.h"
 #include "map.h"
-<<<<<<< HEAD
 #include "scstat.h"
-=======
-#include "scstat.h"
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include "otf.h"
 
 // Globals
@@ -497,11 +485,7 @@ int MPFilterPass3( int iStnArg, int bCalibArg, int iIterArg, int iNewSchemeArg )
  *
  ***************************************************************/
 int MPFilterPass4( int iStationIndexArg, int iCalibArg, long lTorgArg, char cCalStationArg, int iIOShift )
-<<<<<<< HEAD
 { 
-=======
-{ 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     int iRet;
     long    lPosition[8]={0,0,0,0,0, 0, 0, 0};
     int  iStn;

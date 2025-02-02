@@ -1,28 +1,3 @@
-<<<<<<< HEAD
-/***************************************************************\
- *
- * Program:     Motion Control Main Routines
- * File:        MCMain.C
- * Functions:   GAInit
- *              GAGetMaxNumberOfAxisSupported
- *              GAInitTimerCounters
- *              GAInitStatusWord
- *              GATurnOnGalilInt
- *              GATurnOffGalilInt
- *              GASetUpInterruptVector
- *
- * Description: Provide routines for initializing the Motion
- *      Control module and getting initization realted information.
- *
- * Modification history:
- * Rev      ECO#    Date    Author          Brief Description
- *
-\***************************************************************/
-#include <sys/io.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -69,7 +44,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <sys/socket.h> /* for socket(), bind(), and connect() */
 #include <arpa/inet.h>  /* for sockaddr_in and inet_ntoa() */
 #include <fcntl.h>
@@ -81,7 +55,6 @@
 
 #include "sck.h"
 #include "gamn.h"
-<<<<<<< HEAD
 #include "dmclnx.h"
 
 /*********************************************\
@@ -149,81 +122,11 @@ int readGA(int fd)
         return rc;  
     }
 
-=======
-#include "dmclnx.h"
-
-/*********************************************\
- * GLOBAL VARIABLES DECLARATION
-\*********************************************/
-HANDLEDMC      	ghDMC = -1;         // Handle to controller
-CONTROLLERINFO 	gControllerInfo;    // Controller information structure	
-
-
-/****************************************************************\
- *
- * Function:    GAInit
- *
- * Abstract:    Initialize the Motion Control Module Timer and Galil Interrupt
- *
- * Returns:     SUCCESS or FAILURE
- *
-\*****************************************************************/
-int readGA(int fd)
-{
-    long rc = 0;
-    char buffer[80];
-    long  lSN, lSN2;
-    int  iTot;
-
-
-    memset(&gControllerInfo, '\0', sizeof(gControllerInfo));
-
-/////////////////////////////////////////////////////////////////////////////////////
-//  MODEL 2100 ETHERNET INTERFACE
-    gControllerInfo.cbSize = sizeof(gControllerInfo);
-    gControllerInfo.usModelID = MODEL_2100; 
-    gControllerInfo.fControllerType = ControllerTypeEthernet;
-    gControllerInfo.ulTimeout = 1000;
-    gControllerInfo.ulDelay = 5;
-//    gControllerInfo.ulDelay = 0;
-//    strcpy(gControllerInfo.hardwareinfo.socketinfo.szIPAddress, "169.254.82.100");
-    strcpy(gControllerInfo.hardwareinfo.socketinfo.szIPAddress, "10.10.1.11");
-    gControllerInfo.hardwareinfo.socketinfo.fProtocol = EthernetProtocolTCP;
-/////////////////////////////////////////////////////////////////////////////////////
-//  MODEL 1800 PCI INTERFACE
-//    gControllerInfo.cbSize = sizeof(gControllerInfo);
-//    gControllerInfo.usModelID = MODEL_1800; 
-//    gControllerInfo.fControllerType = ControllerTypePCIBus;
-//    gControllerInfo.ulTimeout = 1000;
-//    gControllerInfo.hardwareinfo.businfo.fDataRecordAccess = DataRecordAccessFIFO;
-//    gControllerInfo.ulSerialNumber = 0;  //use relative number
-//    gControllerInfo.ulRelativeNumber = 0; //(argc == 2 ? atoi(argv[1]) : 0); //0 is for /
-//////////////////////////////////////////////////////////////////////////////////////
-
-    DMCInitLibrary();
-	
-    // Open the connection
-    rc = DMCOpen( &gControllerInfo, &ghDMC );
-    if (rc)
-    {
-	printf("DMCOpen Error: %ld\n", rc);
-        return rc;  
-    }
-
-    rc = DMCCommand(ghDMC, "MG _BN", buffer, sizeof(buffer));
-    if (rc)
-    {
-	printf("DMC read Error: %ld\n", rc);
-        return rc;  
-    }
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     lSN = atol(buffer);
 
     // read from the file
     iTot = fread((void *)&lSN2, sizeof(long), 1, fd);
     
-<<<<<<< HEAD
     printf("    GalilSN=%ld fileSN=%ld\n",lSN,lSN2);
     if (lSN != lSN2)
     {
@@ -233,17 +136,6 @@ int readGA(int fd)
     rc = DMCClose(ghDMC);
     return 0;
  }
-=======
-    printf("    GalilSN=%ld fileSN=%ld\n",lSN,lSN2);
-    if (lSN != lSN2)
-    {
-	printf("SN does not match!\n");
-    }
-
-    rc = DMCClose(ghDMC);
-    return 0;
- }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 int readETH(int fd)
 {
@@ -323,11 +215,7 @@ int main()
     int iDone = 0, i, j=0, k=0;
     int iAMflag;
     long rc;
-<<<<<<< HEAD
     char buffer[80];
-=======
-    char buffer[80];
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     long lVPSdata[10];
     char c;
 
@@ -356,8 +244,4 @@ int main()
 
     return 0;
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)

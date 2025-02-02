@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-/****************************************************************
- *
- * Program:     Controller firmware
- * File:        teach.c
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -31,7 +25,6 @@
  *
  * Program:     Controller firmware
  * File:        sctch.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Functions:   TMTeach
  *              TMGetIP
  *              TMSetIP
@@ -112,7 +105,6 @@
 #include "alstep.h"
 
 //Holds the current Galil's modulo value
-<<<<<<< HEAD
 long lGalilModulo = 0;
 extern HANDLEDMC ghDMC;
 extern int giSysCfgNum;
@@ -122,17 +114,6 @@ long glaSoftNegLim[8];
 long glaSoftPosLim[8];
 
 long glVectorLength; // used for Smart-Motion vector distance
-=======
-long lGalilModulo = 0;
-extern HANDLEDMC ghDMC;
-extern int giSysCfgNum;
-extern int giIPWFlag[8];
-
-long glaSoftNegLim[8];
-long glaSoftPosLim[8];
-
-long glVectorLength; // used for Smart-Motion vector distance
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 /****************************************************************
  *
@@ -166,17 +147,10 @@ int TMTeach(int iPortNumArg, int iDefineFlagArg, int iEmulatorArg)
     char caPrompt[5];   /* The prompt string to output when exiting. */
     int iStn;           /* station number converted from letter */
     int iLMM, iERR;     /* LMM & ERR enabled flags */
-<<<<<<< HEAD
 
     for(iDoTeach=0; iDoTeach<8; ++iDoTeach)
     {
 	giIPWFlag[iDoTeach] = 0;
-=======
-
-    for(iDoTeach=0; iDoTeach<8; ++iDoTeach)
-    {
-	giIPWFlag[iDoTeach] = 0;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
 
     /* Check validity of initialization parameters */
@@ -206,11 +180,7 @@ int TMTeach(int iPortNumArg, int iDefineFlagArg, int iEmulatorArg)
 
     /* Look through all possible axes to make sure at least 1 teachable axis exists. */
     for (iDoTeach=0; iDoTeach<MAX_TCH_AXES; iDoTeach++)
-<<<<<<< HEAD
     {
-=======
-    {
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if (iaAxisExists[iDoTeach])
             break;
     }
@@ -524,19 +494,11 @@ int TMTeachMenu()
     int iAxis;
     long lTAFlags[8]={0,0,0,0,0,0,0,0};
     unsigned long ulAxisAll = RO_AXIS_ALL;
-<<<<<<< HEAD
     BOOL bCommandedMode;
     unsigned long laSoftNegLim[8]={0,0,0,0,0,0,0,0};
     unsigned long laSoftPosLim[8]={0,0,0,0,0,0,0,0};
     int iValue;
     int iStn;
-=======
-    BOOL bCommandedMode;
-    unsigned long laSoftNegLim[8]={0,0,0,0,0,0,0,0};
-    unsigned long laSoftPosLim[8]={0,0,0,0,0,0,0,0};
-    int iValue;
-    int iStn;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 
     /* get the S-curve profile flag value either enable(1) or disable(0) */
@@ -570,29 +532,19 @@ int TMTeachMenu()
             if (ROGetParameter(FALSE, ulaMechAxisDef[iAxis], laParms, OPERATIONAL_DECEL) == FAILURE)
                 return FAILURE;
             laSaveDecel[iAxis] = laParms[iaMechAxisIdx[iAxis]];
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         }
     }
     if (ROGetParameter(TRUE, ulaMechAxisDef[0], glaSoftNegLim, SOFT_NEG_LIMIT) == FAILURE)
         return FAILURE;
     if (ROGetParameter(TRUE, ulaMechAxisDef[0], glaSoftPosLim, SOFT_POS_LIMIT) == FAILURE)
         return FAILURE;
-<<<<<<< HEAD
 
     if (iaAxisExists[3])
-=======
-
-    if (iaAxisExists[3])
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     {
 	if (ROGetParameter(TRUE, ulaMechAxisDef[3], laSoftNegLim, SOFT_NEG_LIMIT) == FAILURE)
             return FAILURE;
       	if (ROGetParameter(TRUE, ulaMechAxisDef[3], laSoftPosLim, SOFT_POS_LIMIT) == FAILURE)
-<<<<<<< HEAD
             return FAILURE;
     	glaSoftNegLim[3] = laSoftNegLim[3];
     	glaSoftPosLim[3] = laSoftPosLim[3];
@@ -606,21 +558,6 @@ int TMTeachMenu()
 
     if (iValue == 313)
 	iSmartMode = TRUE;
-=======
-            return FAILURE;
-    	glaSoftNegLim[3] = laSoftNegLim[3];
-    	glaSoftPosLim[3] = laSoftPosLim[3];
-    }
-
-    glVectorLength = 50; // Set Smart-motion vector length to minimum.
-
-    iStn = isupper(cTchStn) ? cTchStn-'A' : cTchStn-'a'+26;
-    if (FIOGetStnlscsi(iStn, 5, &iValue) == FAILURE)
-	return FAILURE; 
-
-    if (iValue == 313)
-	iSmartMode = TRUE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     else
 	iSmartMode = FALSE;
 
@@ -646,23 +583,14 @@ int TMTeachMenu()
         return FAILURE;
 
     /*** The MAIN TEACH MODE LOOP. This gets key presses and processes them. ***/
-<<<<<<< HEAD
     /* Update information should not be in while loop. 
 	that changes regularly and without warning. */
-=======
-    /* Update information should not be in while loop. 
-	that changes regularly and without warning. */
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (TMDisplayAxes() == FAILURE)
         return FAILURE;
     if (TMDisplayOthers() == FAILURE)
         return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iQuitLoop = FALSE;
     while (!iQuitLoop)
     {
@@ -1111,7 +1039,6 @@ int TMDoTeachKey(char cCharToProcessArg)
             }
             else
                 goto error_exit;
-<<<<<<< HEAD
 
 	// new keys for Smart-Motion Teaching
 	case '1':
@@ -1127,23 +1054,6 @@ int TMDoTeachKey(char cCharToProcessArg)
 		TMMoveCartesian(cCharToProcessArg);
 	    }
 	    break;
-=======
-
-	// new keys for Smart-Motion Teaching
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	    if(iSmartMode)
-	    {
-		TMMoveCartesian(cCharToProcessArg);
-	    }
-	    break;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
         case 'V':       /* Select the output bit to toggle */
             if (++iOutputBit > 3)
@@ -1153,7 +1063,6 @@ int TMDoTeachKey(char cCharToProcessArg)
             break;
 
         case 'W':       /* Toggle the selected output bit ON or OFF */
-<<<<<<< HEAD
             iGAOutByte = inb(IO_ROBOT_OUTPUT_A);
 	    iGAOutByt2 = iGAOutByte>>iOutputBit;
 	    if(iGAOutByt2 & 1)
@@ -1161,15 +1070,6 @@ int TMDoTeachKey(char cCharToProcessArg)
 	    else
 		iGAOutByte |= (1<<iOutputBit);
 	    IOWriteIO(-1, iGAOutByte, IO_ROBOT_OUTPUT_A);
-=======
-            iGAOutByte = inb(IO_ROBOT_OUTPUT_A);
-	    iGAOutByt2 = iGAOutByte>>iOutputBit;
-	    if(iGAOutByt2 & 1)
-		iGAOutByte &= ~(1<<iOutputBit);
-	    else
-		iGAOutByte |= (1<<iOutputBit);
-	    IOWriteIO(-1, iGAOutByte, IO_ROBOT_OUTPUT_A);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    
 //            ROWriteGalilPort(0, iOutputBit, !(iGAOutByte & (1<<iOutputBit)));
             if (TTBeepTP(CLICK) == FAILURE)
@@ -1620,11 +1520,7 @@ int TMDisplayOthers()
         /* Get and print the current state of the selected INput bit. */
 //        itoa(iInputBit, caOutMsg, 10);
 	sprintf(caOutMsg, "%d", iInputBit);
-<<<<<<< HEAD
         iGAByte = inb(IO_ROBOT_INPUT_F);
-=======
-        iGAByte = inb(IO_ROBOT_INPUT_F);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if (iGAByte & (1<<iInputBit))
             strcpy(&caOutMsg[1], " ON ");
         else
@@ -1752,7 +1648,6 @@ int TMChgCoord()
             case ESC:
                 /* Reset the old station name...then exit. */
                 cTchStn = cOldStn;
-<<<<<<< HEAD
 	        iStn = isupper(cTchStn) ? cTchStn-'A' : cTchStn-'a'+26;
 	        if (FIOGetStnlscsi(iStn, 5, &iValue) == FAILURE)
 		    return FAILURE; 
@@ -1760,15 +1655,6 @@ int TMChgCoord()
 		    iSmartMode = TRUE;
 	        else
 		    iSmartMode = FALSE;
-=======
-	        iStn = isupper(cTchStn) ? cTchStn-'A' : cTchStn-'a'+26;
-	        if (FIOGetStnlscsi(iStn, 5, &iValue) == FAILURE)
-		    return FAILURE; 
-	        if (iValue == 313)
-		    iSmartMode = TRUE;
-	        else
-		    iSmartMode = FALSE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
                 if (RGSetCharacter(60, cTchStn) == FAILURE)
                     return FAILURE;
 
@@ -1808,7 +1694,6 @@ int TMChgCoord()
 //                    else
 //                        cTchStn = cButtonPressed;
                     cTchStn = cButtonPressed;
-<<<<<<< HEAD
 		    iStn = isupper(cTchStn) ? cTchStn-'A' : cTchStn-'a'+26;
 		    if (FIOGetStnlscsi(iStn, 5, &iValue) == FAILURE)
 			return FAILURE; 
@@ -1816,15 +1701,6 @@ int TMChgCoord()
 			iSmartMode = TRUE;
 		    else
 			iSmartMode = FALSE;
-=======
-		    iStn = isupper(cTchStn) ? cTchStn-'A' : cTchStn-'a'+26;
-		    if (FIOGetStnlscsi(iStn, 5, &iValue) == FAILURE)
-			return FAILURE; 
-		    if (iValue == 313)
-			iSmartMode = TRUE;
-		    else
-			iSmartMode = FALSE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
                     if (TTPrintcAt(1, 18, cTchStn) == FAILURE)
                         return FAILURE;
@@ -1868,13 +1744,8 @@ int TMSetTchSpd(int iAxis, int iDirection)
     int *ipSpdIndex;
     long laParms[8];
     int iRow, iCol;
-<<<<<<< HEAD
 
     ROUpdateTS(FALSE);
-=======
-
-    ROUpdateTS(FALSE);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Validate parameters passed in. */
     if (!iaAxisExists[iAxis])
@@ -1916,21 +1787,12 @@ int TMSetTchSpd(int iAxis, int iDirection)
         laParms[iaMechAxisIdx[iAxis]] *= lUnitConvDist;
     if (ROSetParameter(FALSE, ulaMechAxisDef[iAxis], laParms, OPERATIONAL_ACCEL) == FAILURE)
             return FAILURE;
-<<<<<<< HEAD
 
     // use R speed index to set Smart Motion Vector Distance for teaching
     if (iAxis == R)
     	glVectorLength = iaSmartInterval[*ipSpdIndex];
 
     /* Print the new speed index to the TP LCD screen. */
-=======
-
-    // use R speed index to set Smart Motion Vector Distance for teaching
-    if (iAxis == R)
-    	glVectorLength = iaSmartInterval[*ipSpdIndex];
-
-    /* Print the new speed index to the TP LCD screen. */
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     iCol = 12;
     if (iVacMode == VACZ1)
     {
@@ -1946,26 +1808,15 @@ int TMSetTchSpd(int iAxis, int iDirection)
         else
             iRow = 2;
     }
-<<<<<<< HEAD
     else if (iTrkMode || iFprMode)
     {
         iRow = 1;
 	iCol = 14;
-=======
-    else if (iTrkMode || iFprMode)
-    {
-        iRow = 1;
-	iCol = 14;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     else if (iAxis == DBM)
         iRow = R+1;
     else if (iaAxisExists[T])
-<<<<<<< HEAD
         iRow = iAxis+1;
-=======
-        iRow = iAxis+1;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (TTPrintsAt(iRow, iCol, pcaTchSpdStr[*ipSpdIndex-1]) == FAILURE)
         return FAILURE;
@@ -2098,11 +1949,7 @@ int TMTeachAxis(int iAxis, int iDirection)
     if (iDirection == 1)
     {
         if (laPosition[iaMechAxisIdx[iAxis]] >= glaSoftPosLim[iaMechAxisIdx[iAxis]])
-<<<<<<< HEAD
         {
-=======
-        {
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //printf("axis=%d idx=%d pos=%d pl=%d def=%d\n",iAxis,iaMechAxisIdx[iAxis],laPosition[iaMechAxisIdx[iAxis]],glaSoftPosLim[iaMechAxisIdx[iAxis]],ulaMechAxisDef[iAxis]);
             TTPrintMessage(ALERT, cpaSoftPosLimMessage[iAxis]);
             return FAILURE;
@@ -2776,7 +2623,6 @@ int TMMoveToCoord()
             return FAILURE;
     }
     else
-<<<<<<< HEAD
     {   /* Not in Scan mode, move to station coordinate */
 	if (iTrkMode)
 	{
@@ -2784,26 +2630,12 @@ int TMMoveToCoord()
             	return FAILURE;
 	}
 	else
-=======
-    {   /* Not in Scan mode, move to station coordinate */
-	if (iTrkMode)
-	{
-	    if (ROMoveRetract(iStn, 0, FALSE, FALSE, FALSE) == FAILURE)
-            	return FAILURE;
-	}
-	else
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	{
 	    if (TMWaitTchMotionNoError((unsigned)(ulaMechAxisDef[TRK])) == FAILURE)
         	return FAILURE;
 	    if (ROMoveRetract(iStn, 0, FALSE, TRUE, FALSE) == FAILURE)
-<<<<<<< HEAD
             	return FAILURE;
 	}
-=======
-            	return FAILURE;
-	}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	
     }
 
@@ -2811,11 +2643,7 @@ int TMMoveToCoord()
         return FAILURE;
     if (TMWaitTchMotionNoError((unsigned)(ulaMechAxisDef[TRK])) == FAILURE)
         return FAILURE;
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (iUseDBM)
     {
         if (TMWaitTchMotionNoError((unsigned)ulaMechAxisDef[DBM]) == FAILURE)
@@ -2854,7 +2682,6 @@ int TMDoGetPut(int iPickArg, long lSlotnArg)
 {
     char caCommand[20];
 
-<<<<<<< HEAD
     if (iSmartMode)
     {
 	if (cTchStn >= 'A' && cTchStn <= 'Z')
@@ -2867,20 +2694,6 @@ int TMDoGetPut(int iPickArg, long lSlotnArg)
     else
     {
         sprintf(caCommand, "%s %c,%ld", iPickArg?"GET":"PUT", cTchStn, lSlotnArg);
-=======
-    if (iSmartMode)
-    {
-	if (cTchStn >= 'A' && cTchStn <= 'Z')
-	{
-	    sprintf(caCommand, "%s %c,%ld", iPickArg?"XGET":"XPUT", cTchStn, lSlotnArg);
-	}
-	else
-	    return FAILURE;
-    }
-    else
-    {
-        sprintf(caCommand, "%s %c,%ld", iPickArg?"GET":"PUT", cTchStn, lSlotnArg);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     }
     if (TTPrintsAt(4, 1, "Msg:              ") == FAILURE)
         return FAILURE;
@@ -2932,11 +2745,7 @@ int TMPickPlaceWafer(int iPickArg)
     long lRetPos;       /* The station R retract position. */
     long laTrackPos[8]={0,0,0,0,0,0,0,0};
     long laFprCoord[8]={0,0,0,0,0,0,0,0};
-<<<<<<< HEAD
     long laSafeR[8]={0,0,0,0,0,0,0,0};
-=======
-    long laSafeR[8]={0,0,0,0,0,0,0,0};
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     int  iByte;
 
     /* All axes must be ready for motion. */
@@ -3012,13 +2821,8 @@ int TMPickPlaceWafer(int iPickArg)
                 break;
 
             case 'N':
-<<<<<<< HEAD
                 iSimulated = FALSE;
 		if(giSysCfgNum == 30) // 30 = I2AXO special 
-=======
-                iSimulated = FALSE;
-		if(giSysCfgNum == 30) // 30 = I2AXO special 
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 		    iSimulated = TRUE; // due to SECS processing, force to Simulation mode
                 iQuitLoop = TRUE;
                 break;
@@ -3031,15 +2835,9 @@ int TMPickPlaceWafer(int iPickArg)
         }
     }
 
-<<<<<<< HEAD
     // Force non-Simulated if smart-motion
     if(iSmartMode)
 	iSimulated = FALSE;
-=======
-    // Force non-Simulated if smart-motion
-    if(iSmartMode)
-	iSimulated = FALSE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* In non-simulated mode, ask for a slot number, then execute the GET or PUT macro. */
     if (!iSimulated)
@@ -3118,11 +2916,7 @@ int TMPickPlaceWafer(int iPickArg)
     /* Retract to station retract position */
     /* RORetractR uses iUseDBM flag to move the right axis */
     if (RORetractR(lRetPos, iUseDBM) == FAILURE)
-<<<<<<< HEAD
         goto error_exit;
-=======
-        goto error_exit;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (iUseDBM)
     {
@@ -3202,7 +2996,6 @@ int TMPickPlaceWafer(int iPickArg)
      * One more condition to be met: not Vac Prealigner or VAC514 */
     iInputBit = iOutputBit = iUseDBM;
     if (!iInverted && !(iTMDefineFlag&DFVACPRE) && !(iTMDefineFlag&DFVAC514))
-<<<<<<< HEAD
     {
 	iByte = inb (IO_ROBOT_OUTPUT_A);
 	if(iPickArg) // turn on vac, OUTP 0,0
@@ -3222,27 +3015,6 @@ int TMPickPlaceWafer(int iPickArg)
 
 	outb (iByte, IO_ROBOT_OUTPUT_A);
 
-=======
-    {
-	iByte = inb (IO_ROBOT_OUTPUT_A);
-	if(iPickArg) // turn on vac, OUTP 0,0
-	{
-	    if(iInputBit)
-		iByte &= 0xFC;
-	    else
-		iByte &= 0xFE;
-	}
-	else	// placing, turn off vac, OUTP 0,1
-	{
-	    if(iInputBit)
-		iByte |= 0x02;
-	    else
-		iByte |= 0x01;
-	}
-
-	outb (iByte, IO_ROBOT_OUTPUT_A);
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //        if (ROWriteGalilPort(0, iOutputBit, !iPickArg) == FAILURE)
 //            goto error_exit;
         if (TIDelay(150) == FAILURE)
@@ -3276,24 +3048,14 @@ int TMPickPlaceWafer(int iPickArg)
     /* Only non-vac prealigner, no VAC514 */
     if (!(iTMDefineFlag&DFVACPRE) && !(iTMDefineFlag&DFVAC514))
     {
-<<<<<<< HEAD
         /* Sense for vacuum on/off. */
 	iVacSense = inb (IO_ROBOT_INPUT_F) & 0x03;
-=======
-        /* Sense for vacuum on/off. */
-	iVacSense = inb (IO_ROBOT_INPUT_F) & 0x03;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
         /* If we're not Inverted and picking and there is no wafer, sense that and move back down. */
         if (!iInverted && iPickArg && (iVacSense & (1<<iInputBit)))
         {
-<<<<<<< HEAD
             /* Turn off vacuum. */
 	    iByte = inb (IO_ROBOT_OUTPUT_A) | 0x03;
-=======
-            /* Turn off vacuum. */
-	    iByte = inb (IO_ROBOT_OUTPUT_A) | 0x03;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	    outb (iByte, IO_ROBOT_OUTPUT_A);
             if (TIDelay(150) == FAILURE)
                 goto error_exit;
@@ -3354,11 +3116,7 @@ int TMPickPlaceWafer(int iPickArg)
     return SUCCESS;
 
 error_exit:
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     TTPrintsAt(4, 1, "Msg: Failed         ");
     return FAILURE;
 }
@@ -3466,13 +3224,8 @@ int TMToggleServo(int iAxis)
  ***************************************************************/
 int TMWaitTchMotionComplete(unsigned uAxis)
 {
-<<<<<<< HEAD
     char cButtonPressed;
     int i, iReturn;
-=======
-    char cButtonPressed;
-    int i, iReturn;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     char caMTCRcommand[10] = "MG VMTC";
     char caInMotionResp[50];
 
@@ -3482,17 +3235,10 @@ int TMWaitTchMotionComplete(unsigned uAxis)
     {
         uAxis |= (RO_AXIS_R | RO_AXIS_T);
     }
-<<<<<<< HEAD
 
     i = 1;
     while (i) // loop if MTCR running
     {
-=======
-
-    i = 1;
-    while (i) // loop if MTCR running
-    {
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         /* ...and update the teach pendant screen while you wait... */
         if (TMDisplayAxes() == FAILURE)
             return FAILURE;
@@ -3510,7 +3256,6 @@ int TMWaitTchMotionComplete(unsigned uAxis)
                 TTPrintMessage(CLICK, "               ");
                 return FAILURE;
         }
-<<<<<<< HEAD
 	iReturn = GASendDMCCommand(ghDMC, caMTCRcommand, caInMotionResp, 50);
 	if(iReturn)
 	{
@@ -3521,29 +3266,12 @@ int TMWaitTchMotionComplete(unsigned uAxis)
 	    i = atoi(caInMotionResp);
 	}
     }
-=======
-	iReturn = GASendDMCCommand(ghDMC, caMTCRcommand, caInMotionResp, 50);
-	if(iReturn)
-	{
-	    TIDelay(100);
-	}
-	else
-	{
-	    i = atoi(caInMotionResp);
-	}
-    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Check if the axis is still in motion... */
     while (~ROGetAMFlag() & (unsigned long)(uAxis))
     {
-<<<<<<< HEAD
 
 	ROUpdateTS(FALSE);
-=======
-
-	ROUpdateTS(FALSE);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         /* ...and update the teach pendant screen while you wait... */
         if (TMDisplayAxes() == FAILURE)
             return FAILURE;
@@ -3639,7 +3367,6 @@ int TMWaitTchMove()
  ***************************************************************/
 int TMTchMotionCheck(unsigned uAxis)
 {
-<<<<<<< HEAD
     int i, iReturn;
     char caHXcommand[10] = "HX";
     char caMTCRcommand[10] = "MG VMTC";
@@ -3649,17 +3376,6 @@ int TMTchMotionCheck(unsigned uAxis)
      * return FAILURE by default. */
     //On VAC514 robots check for both, R and T axes
     ROUpdateTS(FALSE);
-=======
-    int i, iReturn;
-    char caHXcommand[10] = "HX";
-    char caMTCRcommand[10] = "MG VMTC";
-    char caInMotionResp[50];
-
-    /* Checks for FAILURE are not necessary. Error states
-     * return FAILURE by default. */
-    //On VAC514 robots check for both, R and T axes
-    ROUpdateTS(FALSE);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if((iTMDefineFlag & DFVAC514) && ((uAxis & RO_AXIS_R) || (uAxis & RO_AXIS_T)))
     {
         uAxis |= (RO_AXIS_R | RO_AXIS_T);
@@ -3670,7 +3386,6 @@ int TMTchMotionCheck(unsigned uAxis)
         TTPrintMessage(ALERT, " Servo OFF     ");
         return FAILURE;
     }
-<<<<<<< HEAD
 
     iReturn = GASendDMCCommand(ghDMC, caHXcommand, caInMotionResp, 50);
     i = atoi(caInMotionResp);
@@ -3679,26 +3394,12 @@ int TMTchMotionCheck(unsigned uAxis)
         TTPrintMessage(ALERT, " Axis moving   ");
         return FAILURE;
     }
-=======
-
-    iReturn = GASendDMCCommand(ghDMC, caHXcommand, caInMotionResp, 50);
-    i = atoi(caInMotionResp);
-    if (i)
-    {
-        TTPrintMessage(ALERT, " Axis moving   ");
-        return FAILURE;
-    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (~ROGetAMFlag() & (unsigned long)(uAxis))
     {
         TTPrintMessage(ALERT, " Axis moving   ");
         return FAILURE;
-<<<<<<< HEAD
     }
-=======
-    }
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     if (~ROGetHomed() & (unsigned long)(uAxis))
     {
@@ -3750,11 +3451,7 @@ int TMGetTeachFlag()
 int TMSetTeachFlag(int iPortNumArg)
 {
     if ((iPortNumArg != COM1) && (iPortNumArg != COM2) &&
-<<<<<<< HEAD
         (iPortNumArg != COM3) && (iPortNumArg != COM4) &&
-=======
-        (iPortNumArg != COM3) && (iPortNumArg != COM4) &&
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	(iPortNumArg != NO_PORT_NUM))
     {
         return FAILURE;
@@ -4013,13 +3710,8 @@ int TMRestoreSpeedAndAccel()
     long laParms[8];        /* Temporary array for general use. */
     int iAxis;
 
-<<<<<<< HEAD
     ROUpdateTS(FALSE);
 
-=======
-    ROUpdateTS(FALSE);
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Restore the original operating speeds... */
     for (iAxis=0; iAxis<MAX_TCH_AXES; iAxis++)
     {
@@ -4073,13 +3765,8 @@ int TMSetJogSpeedAndAccel()
 {
     long laParms[8];        /* Temporary array for general use. */
     int iAxis;
-<<<<<<< HEAD
 
     ROUpdateTS(FALSE);
-=======
-
-    ROUpdateTS(FALSE);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* Get and set the JOG speeds... */
     for (iAxis=0; iAxis<MAX_TCH_AXES; iAxis++)
@@ -4147,15 +3834,9 @@ int TMSetJogSpeedAndAccel()
  ***************************************************************/
 int TMWaitTchMotionNoError(unsigned uAxis)
 {
-<<<<<<< HEAD
     char cButtonPressed;
     int i, iReturn;
     char caMTCRcommand[10] = "MG VMTC";
-=======
-    char cButtonPressed;
-    int i, iReturn;
-    char caMTCRcommand[10] = "MG VMTC";
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     char caInMotionResp[50];
 
     //Chek for motion complete on both, T and R axes for the VAC514 robots
@@ -4164,15 +3845,9 @@ int TMWaitTchMotionNoError(unsigned uAxis)
         uAxis |= (RO_AXIS_R | RO_AXIS_T);
     }
 
-<<<<<<< HEAD
     i = 1;
     while (i) // loop if MTCR running
     {
-=======
-    i = 1;
-    while (i) // loop if MTCR running
-    {
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         /* ...and update the teach pendant screen while you wait... */
         if (TMDisplayAxes() == FAILURE)
             return FAILURE;
@@ -4190,7 +3865,6 @@ int TMWaitTchMotionNoError(unsigned uAxis)
                 TTPrintMessage(CLICK, "               ");
                 return FAILURE;
         }
-<<<<<<< HEAD
 
 	iReturn = GASendDMCCommand(ghDMC, caMTCRcommand, caInMotionResp, 50);
 	if(iReturn)
@@ -4203,29 +3877,11 @@ int TMWaitTchMotionNoError(unsigned uAxis)
 	}
     }
 
-=======
-
-	iReturn = GASendDMCCommand(ghDMC, caMTCRcommand, caInMotionResp, 50);
-	if(iReturn)
-	{
-	    TIDelay(100);
-	}
-	else
-	{
-	    i = atoi(caInMotionResp);
-	}
-    }
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     /* Check if the axis is still in motion... */
     while (~ROGetAMFlag() & (unsigned long)(uAxis))
     {
         /* check for other axes error */
-<<<<<<< HEAD
 	ROUpdateTS(FALSE);
-=======
-	ROUpdateTS(FALSE);
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
         if (ROGetServoFlag() & (unsigned)(ROAxisAllRobot()))
         {
             ROStopMotion(uAxis);
@@ -4268,7 +3924,6 @@ int TMWaitTchMotionNoError(unsigned uAxis)
 
     return SUCCESS;
 }
-<<<<<<< HEAD
 
 int TMMoveCartesian(char cCharToProcessArg)
 {
@@ -4291,28 +3946,4 @@ int TMMoveCartesian(char cCharToProcessArg)
 
     return SUCCESS;
 }
-=======
-
-int TMMoveCartesian(char cCharToProcessArg)
-{
-    long lDir;
-    long lDistance;
-    unsigned uAxis = 0x03; // T & R
-
-    if (!iSmartMode)
-	return;
-
-    lDir = cCharToProcessArg - '0';
-
-    lDistance = glVectorLength;
-
-    if (ROMoveCartesianDirection(lDir, lDistance)==FAILURE)
-	return FAILURE;
-
-    if(TMWaitTchMotionNoError(uAxis)==FAILURE)
-	return FAILURE;  
-
-    return SUCCESS;
-}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 

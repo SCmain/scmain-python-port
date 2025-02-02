@@ -1,7 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -25,7 +23,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  *
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * Program:     low-level command, command interpreter and Opcode table.
  *
  * File:        cmdstn.c

@@ -1,21 +1,3 @@
-<<<<<<< HEAD
-/***************************************************************\
- *
- * File:        pdiog.c
- *
- * Program:     Controller firmware
- *
-\***************************************************************/
-#include <sys/io.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <ctype.h>
-#include <string.h>
-#include <malloc.h>
-#include <stdio.h>
-#include <time.h>
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -55,12 +37,10 @@
 #include <malloc.h>
 #include <stdio.h>
 #include <time.h>
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 #include <math.h>
 
 #include "cmdfns.h"
 #include "cmdsp.h"
-<<<<<<< HEAD
 #include "cmdal.h"
 #include "fio.h"
 #include "gag.h"
@@ -78,25 +58,6 @@ extern HANDLEDMC ghDMC;
 #define MOVINGDATANUM 20
 
 /********** Variables Used Locally **********
-=======
-#include "cmdal.h"
-#include "fio.h"
-#include "gag.h"
-#include "sck.h"
-#include "scstat.h"
-#include "otf.h"
-#include "scio.h"
-#include "scmem.h"
-#include "dmclnx.h"
-#include "ro.h"
-
-extern HANDLEDMC ghDMC;
-
-#define NUMBER_OF_LATCH_DATA 500
-#define MOVINGDATANUM 20
-
-/********** Variables Used Locally **********
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 * calibration table for realtime monitoring
 *    8 axes
 *    0 (+ motion), 1 (- motion)
@@ -104,11 +65,7 @@ extern HANDLEDMC ghDMC;
 *********************************************/
 long glPDCalTable[8][2][5]; // 0(min), 1(max), 2(ave), 3(user-range), 4(not used)
 long glPDCalTableEU[8][2][5]; // 0(min), 1(max), 2(ave), 3(user-range), 4(not used)
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 /*********************************************
 * Latch Encoder data buffer
 *    8 axes
@@ -228,7 +185,6 @@ long PDConvAxis(ULONG ulAxisArg)
 }
 
 // Read Latch calibration file into table
-<<<<<<< HEAD
 int PDReadLatchCalFile()
 {
     FILE *iFP;
@@ -464,269 +420,22 @@ int PDWriteMovingSlopeFile()
 // WRCT
 int ex_WRCT(instr_ptr instr)
 {
-=======
-int PDReadLatchCalFile()
-{
-    FILE *iFP;
-    int iTotalInt;
-
-    iFP = fopen(LATCHCLNAME, "r");
-    if( iFP == (FILE *)0 )
-    {
-        perror( "Latch Cal Read Open Error " );
-    }
-    else
-    {
-        iTotalInt = fread( glPDCalTable, sizeof( long ), 80, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "Latch Cal Read Error " );
-	}
-        iTotalInt = fread( glPDCalTableEU, sizeof( long ), 80, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "Latch Cal EU Read Error " );
-	}
-        /* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
-        fclose( iFP );
-    }
-
-    return SUCCESS;
-}
-
-// Latch Calibration file write
-int PDWriteLatchCalFile()
-{
-    FILE *iFP;
-    int iCount;
-    
-    iFP = fopen( LATCHCLNAME, "w");
-    if( iFP == (FILE *)0 )
-    {
-        perror( "Latch Cal Write Open Error " );
-    }
-    else
-    {
-        iCount = fwrite(glPDCalTable, sizeof(long), 80, iFP);
-        if (iCount <= 0) 
-        {
-            perror( "Latch Cal Write Error " );
-        }
-        iCount = fwrite(glPDCalTableEU, sizeof(long), 80, iFP);
-        if (iCount <= 0) 
-        {
-            perror( "Latch Cal Write Error " );
-        }
-        
-        /* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
-        fclose( iFP );
-    }
-
-    return SUCCESS;
-}
-
-// Latch Data buffer read from file.
-int PDReadLatchDataFile()
-{
-    FILE *iFP;
-    int iTotalInt;
-
-    iFP = fopen(LATCHDTNAME, "r");
-    if( iFP == (FILE *)0 )
-    {
-        perror( "Latch Data Read Open Error " );
-    }
-    else
-    {
-	iTotalInt = fread( glLatchPtr,  sizeof( long ), 32, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "Latch Ptr Read Error " );
-	}
-        iTotalInt = fread( glLatchData, sizeof( long ), 8000, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "Latch Data Read Error " );
-	}
-        iTotalInt = fread( glLatchDataEU, sizeof( long ), 8000, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "Latch Data Read Error " );
-	}
-        /* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
-        fclose( iFP );
-    }
-
-    return SUCCESS;
-}
-
-// Latch Data buffer write to file.
-int PDWriteLatchDataFile()
-{
-    FILE *iFP;
-    int iCount;
-    
-    iFP = fopen( LATCHDTNAME, "w");
-    if( iFP == (FILE *)0 )
-    {
-        perror( "Latch Data Write Open Error " );
-    }
-    else
-    {
-	iCount = fwrite(glLatchPtr, sizeof(long), 32, iFP);
-        if (iCount <= 0) 
-        {
-            perror( "Latch Ptr Write Error " );
-        }
-        iCount = fwrite(glLatchData, sizeof(long), 8000, iFP);
-        if (iCount <= 0) 
-        {
-            perror( "Latch Data Write Error " );
-        }
-        iCount = fwrite(glLatchDataEU, sizeof(long), 8000, iFP);
-        if (iCount <= 0) 
-        {
-            perror( "Latch Data Write Error " );
-        }
-        
-        /* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
-        fclose( iFP );
-    }
-
-    return SUCCESS;
-}
-// Moving Average Data buffer read from file.
-int PDReadMovingAverageFile()
-{
-    FILE *iFP;
-    int iTotalInt;
-
-    iFP = fopen(LATCHMANAME, "r");
-    if( iFP == (FILE *)0 )
-    {
-        perror( "Moving Average Read Open Error " );
-    }
-    else
-    {
-        iTotalInt = fread( glLatchMovingAverage, sizeof( long ), 8000, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "Moving Average Read Error " );
-	}
-        /* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
-        fclose( iFP );
-    }
-
-    return SUCCESS;
-}
-
-// Moving Average write to file.
-int PDWriteMovingAverageFile()
-{
-    FILE *iFP;
-    int iCount;
-    
-    iFP = fopen( LATCHMANAME, "w");
-    if( iFP == (FILE *)0 )
-    {
-        perror( "Moving Average Write Open Error " );
-    }
-    else
-    {
-        iCount = fwrite(glLatchMovingAverage, sizeof(long), 8000, iFP);
-        if (iCount <= 0) 
-        {
-            perror( "Moving Average Write Error " );
-        }
-        
-        /* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
-        fclose( iFP );
-    }
-
-    return SUCCESS;
-}
-// Latch Moving Slope Data buffer read from file.
-int PDReadMovingSlopeFile()
-{
-    FILE *iFP;
-    int iTotalInt;
-
-    iFP = fopen(LATCHMSNAME, "r");
-    if( iFP == (FILE *)0 )
-    {
-        perror( "Moving Slope Read Open Error " );
-    }
-    else
-    {
-        iTotalInt = fread( glLatchMovingSlope, sizeof( long ), 8000, iFP);
-	if( iTotalInt<=0 )
-	{
-            perror( "Moving Slope Read Error " );
-	}
-        /* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
-        fclose( iFP );
-    }
-
-    return SUCCESS;
-}
-
-// Moving Slope write to file.
-int PDWriteMovingSlopeFile()
-{
-    FILE *iFP;
-    int iCount;
-    
-    iFP = fopen( LATCHMSNAME, "w");
-    if( iFP == (FILE *)0 )
-    {
-        perror( "Moving Slope Write Open Error " );
-    }
-    else
-    {
-        iCount = fwrite(glLatchMovingSlope, sizeof(long), 8000, iFP);
-        if (iCount <= 0) 
-        {
-            perror( "Moving Slope Write Error " );
-        }
-        
-        /* CLOSE THE FILE IN NVSRAM!!! This is very important to prevent errors. */
-        fclose( iFP );
-    }
-
-    return SUCCESS;
-}
-//
-// Command to write Predictive Calibration Table to a file
-// WRCT
-int ex_WRCT(instr_ptr instr)
-{
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return PDWriteLatchCalFile();
 
 }
 //
 // Command to read Predictive Calibration Table from a file
 // LDCT
-<<<<<<< HEAD
 int ex_LDCT(instr_ptr instr)
 {
-=======
-int ex_LDCT(instr_ptr instr)
-{
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     return PDReadLatchCalFile();
 
 }
 //
 // Command to write Predictive Latch Data Buffer to a file
 // WRPD -- writes latch data, moving average, moving slope into separate files
-<<<<<<< HEAD
 int ex_WRPD(instr_ptr instr)
 {
-=======
-int ex_WRPD(instr_ptr instr)
-{
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (PDWriteLatchDataFile() == FAILURE)
 	return FAILURE;
     if (PDWriteMovingAverageFile() == FAILURE)
@@ -737,13 +446,8 @@ int ex_WRPD(instr_ptr instr)
 //
 // Command to read a file into Predictive Latch Data Buffers
 // LDPD -- reads latch data, moving average, moving slope from separate files
-<<<<<<< HEAD
 int ex_LDPD(instr_ptr instr)
 {
-=======
-int ex_LDPD(instr_ptr instr)
-{
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
     if (PDReadLatchDataFile() == FAILURE)
 	return FAILURE;
     if (PDReadMovingAverageFile() == FAILURE)
@@ -754,7 +458,6 @@ int ex_LDPD(instr_ptr instr)
 //
 // Command to access Predictive Calibration Table, (Read calib table Item)
 // RPCT axis, item, [R]
-<<<<<<< HEAD
 int ex_RPCT(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
@@ -867,138 +570,18 @@ int ex_SPCT(instr_ptr instr)
 
 	if(CMDgetValue(Optr,&lData)==FAILURE)
 	    return FAILURE;
-=======
-int ex_RPCT(instr_ptr instr)
-{
-    CMDoperand_ptr Optr;
-    //char sBuf[10];
-    long lAxis, lDir, lType, lData;
-    ULONG ulAxis;
-
-    Optr = instr->opr_ptr; 
-    if(Optr)
-    {
-	ulAxis = CMDgetAxis(instr);  // get the axis 
-	lAxis = PDConvAxis(ulAxis);
-        if(lAxis < 0 || lAxis > 7) return FAILURE;
-
-	Optr = Optr->next;   // get direction # 
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lDir)==FAILURE)
-	    return FAILURE;
-	if(lDir < 0 || lDir > 1) return FAILURE;
-
-	Optr = Optr->next;  // get type # (min, max, ave, user-range, unused)
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lType)==FAILURE)
-	    return FAILURE;
-    	if(lType < 0 || lType > 4) return FAILURE;
-
-	lData = glPDCalTable[lAxis][lDir][lType];
-
-	return CMDReadParam(Optr->next, lData);
-    }
-    return FAILURE;
-}
-int ex_RPCTE(instr_ptr instr)
-{
-    CMDoperand_ptr Optr;
-    //char sBuf[10];
-    long lAxis, lDir, lType, lData;
-    ULONG ulAxis;
-
-    Optr = instr->opr_ptr; 
-    if(Optr)
-    {
-	ulAxis = CMDgetAxis(instr);  // get the axis 
-	lAxis = PDConvAxis(ulAxis);
-        if(lAxis < 0 || lAxis > 7) return FAILURE;
-
-	Optr = Optr->next;   // get direction # 
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lDir)==FAILURE)
-	    return FAILURE;
-	if(lDir < 0 || lDir > 1) return FAILURE;
-
-	Optr = Optr->next;  // get type # (min, max, ave, user-range, unused)
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lType)==FAILURE)
-	    return FAILURE;
-    	if(lType < 0 || lType > 4) return FAILURE;
-
-	lData = glPDCalTableEU[lAxis][lDir][lType];
-
-	return CMDReadParam(Optr->next, lData);
-    }
-    return FAILURE;
-}
-// Command to Set Predictive Calibration Table Item
-// SPCT axis, direction, item, [R]/V
-int ex_SPCT(instr_ptr instr)
-{
-    CMDoperand_ptr Optr;
-    long lAxis, lDir, lType, lData;
-    ULONG ulAxis;
-
-    if(instr->nofopr != 4)
-        return FAILURE;
-
-    Optr = instr->opr_ptr;            /* get axis # */
-    if(Optr)
-    {
-	ulAxis = CMDgetAxis(instr);          /* get the axis */
-	lAxis = PDConvAxis(ulAxis);
-        if(lAxis < 0 || lAxis > 7) return FAILURE;
-    
-	Optr = Optr->next;                /* get direction # */
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lDir)==FAILURE)
-	    return FAILURE;
-	if(lDir < 0 || lDir > 1) return FAILURE;
-
-	Optr = Optr->next;  // get type # (min, max, ave, user-range, unused)
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lType)==FAILURE)
-	    return FAILURE;
-	if(lType < 0 || lType > 4) return FAILURE;
-
-	Optr = Optr->next;            /* get the new value */
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr,&lData)==FAILURE)
-	    return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 	glPDCalTable[lAxis][lDir][lType] = lData;
 	ROEncoderToEU(ulAxis, lData, &glPDCalTableEU[lAxis][lDir][lType]);
 
 	return SUCCESS;
     }
-<<<<<<< HEAD
     return FAILURE;
 }
-=======
-    return FAILURE;
-}
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 // Command to Read Predictive Data (Latched Encoder Pos)
 // RPDA axis, direction, item, [R]
 // If wrong operands entered, force them to a default.
 //
-<<<<<<< HEAD
 int ex_RPDA(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
@@ -1050,22 +633,6 @@ int ex_RDEU(instr_ptr instr)
         if(lAxis < 0 || lAxis > 7) lAxis = 0; // force T-axis return FAILURE;
 
 	Optr = Optr->next;                /* get direction # */
-=======
-int ex_RPDA(instr_ptr instr)
-{
-    CMDoperand_ptr Optr;
-    //char sBuf[10];
-    long lAxis, lDir, lItem, lData;
-    ULONG ulAxis;
-
-    Optr = instr->opr_ptr;            /* get axis # */
-    if(Optr)
-    {
-	ulAxis = CMDgetAxis(instr);          /* get the axis */
-	lAxis = PDConvAxis(ulAxis);
-        if(lAxis < 0 || lAxis > 7) lAxis = 0; // force T-axis return FAILURE;
-
-	Optr = Optr->next;                /* get direction # */
 	if(!Optr)
 	    return FAILURE;
 
@@ -1081,71 +648,15 @@ int ex_RPDA(instr_ptr instr)
 	if(CMDgetValue(Optr, &lItem)==FAILURE) lItem = 0; // for index 0 return FAILURE;
     	if(lItem < 0 || lItem > (NUMBER_OF_LATCH_DATA-1)) lItem = 0; // force index 0 return FAILURE;
 
-	lData = glLatchData[lAxis][lDir][lItem];
-
-	return CMDReadParam(Optr->next, lData);
-    }
-    return FAILURE;
-}
-int ex_RDEU(instr_ptr instr)
-{
-    CMDoperand_ptr Optr;
-    //char sBuf[10];
-    long lAxis, lDir, lItem, lData;
-    ULONG ulAxis;
-
-    Optr = instr->opr_ptr;            /* get axis # */
-    if(Optr)
-    {
-	ulAxis = CMDgetAxis(instr);          /* get the axis */
-	lAxis = PDConvAxis(ulAxis);
-        if(lAxis < 0 || lAxis > 7) lAxis = 0; // force T-axis return FAILURE;
-
-	Optr = Optr->next;                /* get direction # */
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lDir)==FAILURE)
-	    lDir = 0; // force + direction return FAILURE;
-<<<<<<< HEAD
-
-	if(lDir < 0 || lDir > 1) lDir = 0; // force + direction return FAILURE;
-
-	Optr = Optr->next;                /* get item # */
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lItem)==FAILURE) lItem = 0; // for index 0 return FAILURE;
-    	if(lItem < 0 || lItem > (NUMBER_OF_LATCH_DATA-1)) lItem = 0; // force index 0 return FAILURE;
-
 	lData = glLatchDataEU[lAxis][lDir][lItem];
 
 	return CMDReadParam(Optr->next, lData);
     }
     return FAILURE;
-=======
-
-	if(lDir < 0 || lDir > 1) lDir = 0; // force + direction return FAILURE;
-
-	Optr = Optr->next;                /* get item # */
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lItem)==FAILURE) lItem = 0; // for index 0 return FAILURE;
-    	if(lItem < 0 || lItem > (NUMBER_OF_LATCH_DATA-1)) lItem = 0; // force index 0 return FAILURE;
-
-	lData = glLatchDataEU[lAxis][lDir][lItem];
-
-	return CMDReadParam(Optr->next, lData);
-    }
-    return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 
 // Command to Set Predictive Data (Latched Encoder Pos)
 // SPDA axis, direction, item, [R]
-<<<<<<< HEAD
 int ex_SPDA(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
@@ -1187,54 +698,10 @@ int ex_SPDA(instr_ptr instr)
 	return SUCCESS;
     }
     return FAILURE;
-=======
-int ex_SPDA(instr_ptr instr)
-{
-    CMDoperand_ptr Optr;
-    //char sBuf[10];
-    long lAxis, lDir, lItem, lData;
-    ULONG ulAxis;
-
-    Optr = instr->opr_ptr;            /* get axis # */
-    if(Optr)
-    {
-	ulAxis = CMDgetAxis(instr);          /* get the axis */
-	lAxis = PDConvAxis(ulAxis);
-        if(lAxis < 0 || lAxis > 7) return FAILURE;
-
-	Optr = Optr->next;                /* get direction # */
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lDir)==FAILURE)
-            return FAILURE;
-	if(lDir < 0 || lDir > 1) return FAILURE;
-
-	Optr = Optr->next;                /* get item # */
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lItem)==FAILURE)
-            return FAILURE;
-	if(lItem < 0 || lItem > (NUMBER_OF_LATCH_DATA-1)) return FAILURE;
-
-	Optr = Optr->next;                /* get value */
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lData)==FAILURE)
-            return FAILURE;
-
-	glLatchData[lAxis][lDir][lItem] = lData;
-	return SUCCESS;
-    }
-    return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 
 // Command to Read Latch PoinTer
 // RLPT axis, direction, item, [R]
-<<<<<<< HEAD
 int ex_RLPT(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
@@ -1262,40 +729,10 @@ int ex_RLPT(instr_ptr instr)
 	    return FAILURE;
 
     	if(CMDgetValue(Optr, &lItem)==FAILURE)
-=======
-int ex_RLPT(instr_ptr instr)
-{
-    CMDoperand_ptr Optr;
-    //char sBuf[10];
-    long lAxis, lDir, lItem, lData;
-    ULONG ulAxis;
-
-    Optr = instr->opr_ptr;            /* get axis # */
-    if(Optr)
-    {
-	ulAxis = CMDgetAxis(instr);          /* get the axis */
-	lAxis = PDConvAxis(ulAxis);
-        if(lAxis < 0 || lAxis > 7) return FAILURE;
-
-	Optr = Optr->next;                /* get direction # */
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lDir)==FAILURE)
-            return FAILURE;
-	if(lDir < 0 || lDir > 1) return FAILURE;
-
-	Optr = Optr->next;                /* get item # */
-	if(!Optr)
-	    return FAILURE;
-
-    	if(CMDgetValue(Optr, &lItem)==FAILURE)
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
             return FAILURE;
 
 	if(lItem < 0 || lItem > 1) return FAILURE;
 
-<<<<<<< HEAD
 	lData = glLatchPtr[lAxis][lDir][lItem];
 
 	return CMDReadParam(Optr->next, lData);
@@ -1345,57 +782,6 @@ int ex_SLPT(instr_ptr instr)
     	return SUCCESS;
     }
     return FAILURE;
-=======
-	lData = glLatchPtr[lAxis][lDir][lItem];
-
-	return CMDReadParam(Optr->next, lData);
-    } 
-    return FAILURE;
-}
-// Command to Set Latch PoinTer
-// SLPT axis, direction, item, [R]
-int ex_SLPT(instr_ptr instr)
-{
-    CMDoperand_ptr Optr;
-    //char sBuf[10];
-    long lAxis, lDir, lItem, lData;
-    ULONG ulAxis;
-
-    Optr = instr->opr_ptr;            /* get axis # */
-    if(Optr)
-    {
-	ulAxis = CMDgetAxis(instr);          /* get the axis */
-	lAxis = PDConvAxis(ulAxis);
-        if(lAxis < 0 || lAxis > 7) return FAILURE;
-
-	Optr = Optr->next;                /* get direction # */
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lDir)==FAILURE)
-            return FAILURE;
-    	if(lDir < 0 || lDir > 1) return FAILURE;
-
-	Optr = Optr->next;                /* get item # */
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lItem)==FAILURE)
-            return FAILURE;
-	if(lItem < 0 || lItem > 1) return FAILURE;
-
-	Optr = Optr->next;                /* get value */
-	if(!Optr)
-	    return FAILURE;
-
-	if(CMDgetValue(Optr, &lData)==FAILURE)
-            return FAILURE;
-
-	glLatchPtr[lAxis][lDir][lItem] = lData;
-    	return SUCCESS;
-    }
-    return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }
 // Compute the alarm level
 // 1. current encoder position out of range (min, max) <-- calibrated
@@ -1573,7 +959,6 @@ int PDSTDeviation(int iAxisArg, int iDirArg, int iFirstArg, int iLastArg, long l
 }
 // Command to Compute Min,Max,Ave
 // XCL axis, direction, runpointer, #item
-<<<<<<< HEAD
 int ex_XCL(instr_ptr instr)
 {
     CMDoperand_ptr Optr;
@@ -1600,45 +985,13 @@ int ex_XCL(instr_ptr instr)
 	Optr = Optr->next;                /* get item # */
 	if(CMDgetValue(Optr, &lItem)==FAILURE)
             return FAILURE;
-=======
-int ex_XCL(instr_ptr instr)
-{
-    CMDoperand_ptr Optr;
-    //char sBuf[10];
-    long lAxis, lDir, lItem, lRun, lLast, lMin, lMax, lAve;
-    ULONG ulAxis;
-
-    Optr = instr->opr_ptr;            /* get axis # */
-    if(Optr)
-    {
-	ulAxis = CMDgetAxis(instr);          /* get the axis */
-	lAxis = PDConvAxis(ulAxis);
-        if(lAxis < 0 || lAxis > 7) return FAILURE;
-
-	Optr = Optr->next;                /* get direction # */
-	if(CMDgetValue(Optr, &lDir)==FAILURE)
-            return FAILURE;
-    	if(lDir < 0 || lDir > 1) return FAILURE;
-
-	Optr = Optr->next;                /* get run pointer */
-	if(CMDgetValue(Optr, &lRun)==FAILURE)
-            return FAILURE;
-
-	Optr = Optr->next;                /* get item # */
-	if(CMDgetValue(Optr, &lItem)==FAILURE)
-            return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
 	lLast = lRun + lItem - 1;
 	if(lLast >= NUMBER_OF_LATCH_DATA)
 	    lLast -= NUMBER_OF_LATCH_DATA;
 
 	PDMinMax(lAxis, lDir, lRun, lLast, &lMin, &lMax, &lAve);
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 	glPDCalTable[lAxis][lDir][0] = lMin;
 	glPDCalTable[lAxis][lDir][1] = lMax;
 	glPDCalTable[lAxis][lDir][2] = lAve;
@@ -1647,9 +1000,5 @@ int ex_XCL(instr_ptr instr)
 	ROEncoderToEU(ulAxis, lAve, &glPDCalTableEU[lAxis][lDir][2]);
     	return SUCCESS;
     }
-<<<<<<< HEAD
     return FAILURE;
-=======
-    return FAILURE;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 }

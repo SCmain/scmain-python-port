@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-/******************************************************************************\
-=======
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
@@ -25,7 +22,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Program:     Scan mapper Module
  * File:        mapfn.c

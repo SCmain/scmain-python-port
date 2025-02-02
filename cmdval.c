@@ -1,10 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
- * Program:     Validation routines for the low level commands
- *
- * File:        LLvalid.c
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -31,7 +26,6 @@
  * Program:     Validation routines for the low level commands
  *
  * File:        cmdval.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Functions:   vld_QUERYo
  *              vld_QUERY

@@ -1,10 +1,5 @@
 /***************************************************************\
  *
-<<<<<<< HEAD
- * Program:     low-level command, command interpreter and Opcode table.
- *
- * File:        LLexinfo.c
-=======
  *              Copyright (c) 2007 SCFI Automation, Inc.
  * Code taken over by georges@sancosme.net after the author passed away and
  * published under GNU GPLv3
@@ -31,7 +26,6 @@
  * Program:     low-level command, command interpreter and Opcode table.
  *
  * File:        cmdro.c
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  * Functions:
  *
@@ -176,13 +170,8 @@ int ex_RM(instr_ptr instr)
 {
     long lRamp[8]={0,0,0,0,0,0,0,0};
     ULONG ulAxis;
-<<<<<<< HEAD
 
     return SUCCESS;
-=======
-
-    return SUCCESS;
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 
     /* get values from operands and set the value to galil.*/
     if( CMDgetGalilParms(instr,&ulAxis,lRamp) == SUCCESS )
@@ -1480,7 +1469,6 @@ int ex_RLS(instr_ptr instr)
 int ex_TA(instr_ptr instr)
 {
 //    long lBuf[8]={0,0,0,0,0,0,0,0};
-<<<<<<< HEAD
 //    ULONG ulAxis;
 //	int i;
 
@@ -1500,27 +1488,6 @@ int ex_TA(instr_ptr instr)
 //	}
 //    return FAILURE;
 
-=======
-//    ULONG ulAxis;
-//	int i;
-
-	return 0;
-
-    /* get the values from operands and set the values to galil */
-//    if( CMDgetGalilParms(instr,&ulAxis,lBuf) == SUCCESS )
-//	{
-//		for (i=0; i<8; ++i)
-//		{
-//			if (lBuf[i] == 0)
-//				lBuf[i] = 1000;
-//			else
-//				lBuf[i] = 4;
-//		}
-//        return ROSetParameter( FALSE, ulAxis, lBuf, IT_SCURVE );
-//	}
-//    return FAILURE;
-
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //    ULONG ulAxis;
 //    long lBuf[8]={0,0,0,0,0,0,0,0};
 
@@ -1528,19 +1495,11 @@ int ex_TA(instr_ptr instr)
 //		return FAILURE;
 
 //   return ROEnableSCurveProfile( ulAxis, lBuf );  /* set the S-curve motion profile flag (enable/disable) */
-<<<<<<< HEAD
 }
 
 /***************************************************************************
  * Function Name:   ex_IT
  * Description:     Set Independent Time constants.
-=======
-}
-
-/***************************************************************************
- * Function Name:   ex_IT
- * Description:     Set Independent Time constants.
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  *
  *                  Command Syntax: IT <AXIS>, [VAL](VAL1, VAL2, VAL3)
  *                      - AXIS:     axis to enable or disable the S-curve motion profile.
@@ -1552,19 +1511,11 @@ int ex_TA(instr_ptr instr)
 int ex_IT(instr_ptr instr)
 {
     long lBuf[8]={0,0,0,0,0,0,0,0};
-<<<<<<< HEAD
     ULONG ulAxis;
 
     if( CMDgetGalilParms(instr, &ulAxis, lBuf) == FAILURE )
         return FAILURE;
 	return ROSetParameter( FALSE, ulAxis, lBuf, IT_SCURVE );
-=======
-    ULONG ulAxis;
-
-    if( CMDgetGalilParms(instr, &ulAxis, lBuf) == FAILURE )
-        return FAILURE;
-	return ROSetParameter( FALSE, ulAxis, lBuf, IT_SCURVE );
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
 //   return ROSetITValue( ulAxis, lBuf );  /* set the IT value */
 }
 /***************************************************************************
@@ -1683,11 +1634,7 @@ int ex_RTA(instr_ptr instr)
 }
 /***************************************************************************
  * Function Name:   ex_RIT
-<<<<<<< HEAD
  * Description:     read Independent Time constants.
-=======
- * Description:     read Independent Time constants.
->>>>>>> 6e6eccb (Update headers of c files to include GPLv3 and new maintainer)
  * NOTE:            This function will get executed when the user typed RIT command
  *                  at the command line. The function is actually called in MRExecuteInstructions()
  *                  and execute it by getting the function pointer from oc_entry.
