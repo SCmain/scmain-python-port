@@ -1,13 +1,13 @@
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
- * Code taken over by georges@sancosme.net after the author passed away and
+ * Code taken over by Georges Sancosme after the author (Canh Le) passed away and
  * published under GNU GPLv3
  *
  * File Name            : cfg.c
  * Description          : config generator
- * Original Author      : (Deceased)
- * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Original Author      : Canh Le (Deceased)
+ * Current Maintainer   : Georges Sancosme (georges@sancosme.net)
  * Maintained Since     : 13.01.2025
  * Created On           : 04.06.2007
  *

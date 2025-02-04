@@ -1,7 +1,7 @@
 /***************************************************************\
  *
  *              Copyright (c) 2007 SCFI Automation, Inc.
- * Code taken over by georges@sancosme.net after the author passed away and
+ * Code taken over by Georges Sancosme after the author (Canh Le) passed away and
  * published under GNU GPLv3
  *
  * File Name            : scmain.c
@@ -11,8 +11,8 @@
  *                      for the entire system. It also handles the main loop
  *                      through which all system-wide activity is handled, from
  *                      comm port I/O to macro scheduling and execution.
- * Original Author      : (Deceased)
- * Current Maintainer   : gsancosme (georges@sancosme.net)
+ * Original Author      : Canh Le (Deceased)
+ * Current Maintainer   : Georges Sancosme (georges@sancosme.net)
  * Maintained Since     : 13.01.2025
  * Created On           : 04.06.2007
  *
